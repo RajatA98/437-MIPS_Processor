@@ -31,9 +31,9 @@ module register_file
 		n_reg_file[0] = 0;
 	end
 	
-	always_ff @(posedge CLK, negedge nRST)
+	always_ff @(posedge clk, negedge n_rst)
 	begin
-		if(!nRST)
+		if(!n_rst)
 			reg_file <= 0;
 		else
 			reg_file <= n_reg_file;
