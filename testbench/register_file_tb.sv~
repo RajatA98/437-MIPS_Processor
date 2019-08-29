@@ -49,22 +49,7 @@ module register_file_tb;
   );
 `endif
 	
-	
-
-		
-
-endmodule
-
-program test(
-	input logic CLK,
-	output logic nRST,
-	register_file_if.tb rfif
-);
-		int tb_test_num;
-		string tb_test_case;
-		parameter PERIOD = 10;
-
-		task reset_dut;
+	task reset_dut;
 	begin
 		
 		nRST = 1'b0;
@@ -80,6 +65,19 @@ program test(
 		@(posedge CLK);
 	end
 	endtask
+
+		
+
+endmodule
+
+program test(
+	input logic CLK,
+	output logic nRST,
+	register_file_if.tb rfif
+);
+		int tb_test_num;
+		string tb_test_case;
+		parameter PERIOD = 10;
 		initial 
 	  begin
 	
