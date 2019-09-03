@@ -1,5 +1,5 @@
 // mapped needs this
-`include "register_file_if.vh"
+`include "alu_if.vh"
 
 // mapped timing needs this. 1ns is too fast
 `timescale 1 ns / 1 ns
@@ -18,10 +18,10 @@ module alu_tb;
 		.\aluif.Output_Port (aluif.Output_Port),
     .\aluif.negative (aluif.negative),
     .\aluif.overflow (aluif.overflow),
-    .\aluif.zero(aluif.zero),
+    .\aluif.zero (aluif.zero),
     .\aluif.Port_A (aluif.Port_A),
     .\aluif.Port_B (aluif.Port_B),
-		.\aluif.Port_B (aluif.ALUOP)
+		.\aluif.ALUOP (aluif.ALUOP)
     
   );
 `endif
@@ -94,10 +94,10 @@ program test(
 		
 		#(10);
 		aluif.ALUOP = ALU_SLL;
-		aluif.Port_A = 32'b11111111111111111111111111111111;
-		aluif.Port_B = 32'b0;
+		aluif.Port_A = 32'd1;
+		aluif.Port_B = 32'd1;
 		#(10)
-		check_outputs(32'b11111111111111111111111111100000, 1'b0, 1'b1, 1'b0);
+		check_outputs(32'b11111111111111111111111111111111;, 1'b0, 1'b1, 1'b0);
 		//******************************************************************
 		// Test Case 2: SRL functionality
 		//******************************************************************
@@ -106,10 +106,10 @@ program test(
 		
 		#(10);
 		aluif.ALUOP = ALU_SRL;
-		aluif.Port_A = 32'b11111111111111111111111111111111;
-		aluif.Port_B = 32'b0;
+		aluif.Port_A = 32'd1;
+		aluif.Port_B = 32'd2;
 		#(10)
-		check_outputs(32'b00000111111111111111111111111111, 1'b0, 1'b1, 1'b0);
+		check_outputs(32'd1, 1'b0, 1'b0, 1'b0);
 		//******************************************************************
 		// Test Case 3: ADD functionality - overflow
 		//******************************************************************
@@ -128,7 +128,7 @@ program test(
 		aluif.Port_A = 32'd0;
 		aluif.Port_B = 32'b11111111111111111111111111111111;
 		#(10)
-		check_outputs(32'b1111111111111111111111111111111;, 1'b0, 1'b1, 1'b0);
+		check_outputs(32'b11111111111111111111111111111111, 1'b0, 1'b1, 1'b0);
 		
 		//******************************************************************
 		// Test Case 4: SUB functionality
@@ -209,6 +209,15 @@ program test(
 		#(10)
 		check_outputs( 32'b00000000000000000000000000000000, 1'b0, 1'b0, 1'b1);
 
+		#(10);
+		aluif.ALUOP = ALU_SLT;
+		aluif.Port_A = 32'b11111111111111111111111111111110;
+		aluif.Port_B = 32'b00011111111111111111111111111110;
+		#(10)
+		check_outputs( 32'b00000000000000000000000000000001, 1'b0, 1'b0, 1'b1);
+		
+		
+
 		//******************************************************************
 		// Test Case 10: SLTU functionality
 		//******************************************************************
@@ -221,6 +230,13 @@ program test(
 		aluif.Port_B = 32'b11111111111111111111111111111110;
 		#(10)
 		check_outputs( 32'b00000000000000000000000000000001, 1'b0, 1'b0, 1'b0);
+		
+		#(10);
+		aluif.ALUOP = ALU_SLTU;
+		aluif.Port_A = 32'b11111111111111111111111111111110; 
+		aluif.Port_B = 32'b00011111111111111111111111111110;
+		#(10)
+		check_outputs( 32'b00000000000000000000000000000000, 1'b0, 1'b0, 1'b0);
 	end
 endprogram
 		

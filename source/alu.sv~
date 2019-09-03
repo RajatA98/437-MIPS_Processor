@@ -4,20 +4,22 @@ module alu(
 	alu_if.alu aluif
 );
 	import cpu_types_pkg::*;
-	reg [32:0]temp;
+	logic [32:0]temp;
 
 
 	always_comb
 	begin
-			aluif.Output_Port = 32'd0;
+			aluif.Output_Port = '0;
 			aluif.overflow = 0;
 			aluif.negative = 0;
-		case(aluif.ALUOP)
+			aluif.zero = 0;
+			temp = '0;
+		casez(aluif.ALUOP)
 			
 			
 			ALU_SLL:
 			begin
-				aluif.Output_Port = {aluif.Port_A[26:0],aluif.Port_B[4:0]};
+				aluif.Output_Port = aluif.Port_B<<aluif.Port_A[4:0];
 				if(aluif.Output_Port == 32'd0)
 					aluif.zero = 1'b1;
 				if(aluif.Output_Port[31] == 1)
@@ -25,7 +27,7 @@ module alu(
 			end
 			ALU_SRL:
 			begin
-				aluif.Output_Port = {aluif.Port_B[4:0], aluif.Port_A[31:5]};
+				aluif.Output_Port = aluif.Port_B>>aluif.Port_A[4:0];
 				if(aluif.Output_Port == 32'd0)
 					aluif.zero = 1'b1;
 				if(aluif.Output_Port[31] == 1)
@@ -33,9 +35,11 @@ module alu(
 			end
 			ALU_ADD:
 			begin
-				temp = aluif.Port_A + aluif.Port_B;
-				aluif.Output_Port = temp[31:0];
-				aluif.overflow = temp[32];
+				aluif.Output_Port = aluif.Port_A + aluif.Port_B;
+				if(aluif.Port_A[31] == 1'b1 && aluif.Port_B[31] == 1'b1 && aluif.Output_Port[31] == 1'b0)
+					aluif.overflow = 1'b1;
+				if(aluif.Port_A[31] == 1'b0 && aluif.Port_B[31] == 1'b0 && aluif.Output_Port[31] == 1'b1)
+					aluif.overflow = 1'b1;
 				if(aluif.Output_Port == 32'd0)
 					aluif.zero = 1'b1;
 				if(aluif.Output_Port[31] == 1)
@@ -43,9 +47,11 @@ module alu(
 			end
 			ALU_SUB:
 			begin
-				temp = aluif.Port_A - aluif.Port_B;
-				aluif.Output_Port = temp[31:0];
-				aluif.overflow = temp[32];
+				aluif.Output_Port = aluif.Port_A - aluif.Port_B;
+				if(aluif.Port_A[31] == 1'b1 && aluif.Port_B[31] == 1'b1 && aluif.Output_Port[31] == 1'b0)
+					aluif.overflow = 1'b1;
+				if(aluif.Port_A[31] == 1'b0 && aluif.Port_B[31] == 1'b0 && aluif.Output_Port[31] == 1'b1)
+					aluif.overflow = 1'b1;
 				if(aluif.Output_Port == 32'd0)
 					aluif.zero = 1'b1;
 				if(aluif.Output_Port[31] == 1)
