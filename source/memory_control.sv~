@@ -41,37 +41,34 @@ module memory_control (
 	if(ccif.dWEN == 1'b1)
 	begin
 		ccif.ramWEN = ccif.dWEN;
-		ccif.ramaddr = ccif.daddr;
-		ccif.ramstore = ccif.dstore;
 		if(ccif.ramstate == ACCESS)
 		begin
-			ccif.dwait = 1'b0;
+			ccif.ramaddr = ccif.daddr;
+			//ccif.ramstore = ccif.dstore;
+			//ccif.dwait = 1'b0;
 		end
 	end
-	
+	/*
 	else if(ccif.dREN == 1'b1)
 	begin
 		ccif.ramREN = ccif.dREN;
-		ccif.ramaddr = ccif.daddr;
-		ccif.dload = ccif.ramload;
 		if(ccif.ramstate == ACCESS)
 		begin
-			
+			ccif.ramaddr = ccif.daddr;
+			ccif.dload = ccif.ramload;
 			ccif.dwait = 1'b0;
 		end
 	end
 	else if (ccif.iREN == 1'b1)
 	begin
 		ccif.ramREN = ccif.iREN;
-		ccif.ramaddr = ccif.iaddr;
-		ccif.iload = ccif.ramload;
 		if(ccif.ramstate == ACCESS)
 		begin
-			
+			ccif.ramaddr = ccif.iaddr;
+			ccif.iload = ccif.ramload;
 			ccif.iwait = 1'b0;
 		end
-	end
-
+	end*/
 	end	
 	
 	
