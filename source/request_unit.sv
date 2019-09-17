@@ -22,14 +22,9 @@ module request_unit
 			dREN <= 1'b0;
 			dWEN <= 1'b0;
 		end
-		else if(ihit && memtoReg)
+		else if(ihit)
 		begin
 			dREN <= memtoReg;
-			dWEN <= 1'b0;	
-		end
-		else if(ihit && memWr)
-		begin
-			dREN <= 1'b0;
 			dWEN <= memWr;	
 		end
 		else
