@@ -169,12 +169,15 @@ module datapath (
 	alu ALU(aluif);
 
 	word_t current_addr;
+	
+	
 	always_comb
 	begin		
 		if(PC_Src == 2'd3)
 			current_addr = aluif.Port_A;
 		else if (PC_Src == 2'd2)
-			current_addr = {dpif.imemload[31:28], dpif.imemload[25:0] << 2};
+			//j_temp = dpif.imemaddr + 4;
+			current_addr = {dpif.imemaddr[31:28], dpif.imemload[25:0] << 2};
 		else if (PC_Src == 2'd1)
 			current_addr = (extended << 2) + (dpif.imemaddr + 4);
 		else
