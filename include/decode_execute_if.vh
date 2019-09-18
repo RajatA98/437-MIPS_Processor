@@ -22,12 +22,10 @@ logic [1:0]Wsel;
 
 
 //signals from the register file
-register_file_if rfif();
 
 word_t busA, busB;
 
-assign busA = rfif.rdat1;
-assign busB = rfif.rdat2;
+
 
 //signals from fetch_decode_if
 
@@ -59,7 +57,7 @@ logic imemaddr_EX, instr_EX;
 //eanble and flush
 logic enable, flush;
 
-modport IDEX (
+modport idex (
 
 input enable, flush, memtoReg, memWR, ALUop, ALU_Src, EXTop, halt, PC_Src, RegDst, RegWr, Wsel, busA, busB, imemaddr_ID, instr_ID,
 
