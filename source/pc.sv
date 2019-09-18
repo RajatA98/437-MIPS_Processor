@@ -11,7 +11,7 @@ module pc
 	input word_t current_addr,
 	output word_t iaddr
 );
-	
+
 	always_ff @(posedge CLK, negedge nRST)
 	begin
 		if(!nRST)

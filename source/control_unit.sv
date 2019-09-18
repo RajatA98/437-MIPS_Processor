@@ -16,7 +16,7 @@ module control_unit
 	//output to extender
 	output logic [1:0] EXTop,
 	//output to PC
-	output logic halt, 
+	output logic halt,
 	output logic [1:0]PC_Src,
 	//output to regfile
 	output logic [1:0]RegDst,
@@ -25,9 +25,9 @@ module control_unit
 	//output to cache
 	output logic iREN
 );
-	
+
 r_t rt;
-assign rt = iload;	
+assign rt = iload;
 
 always_comb
 begin
@@ -67,7 +67,7 @@ begin
 				begin
 					RegDst = 2'd1;
 					RegWr = 1'b1;
-					ALUop = ALU_ADD;				
+					ALUop = ALU_ADD;
 				end
 				ADDU:
 				begin
@@ -135,14 +135,14 @@ begin
 			RegDst = 2'd2;
 			RegWr = 1'b1;
 			Wsel = 2'd1;
-			
+
 		end
 		BEQ:
 		begin
 			ALUop = ALU_SUB;
 			if(equal)
 				PC_Src = 2'd1;
-			
+
 		end
 		BNE:
 		begin
@@ -153,52 +153,52 @@ begin
 		ADDI:
 		begin
 			RegWr = 1'b1;
-			ALU_Src = 1'b1;	
-			ALUop = ALU_ADD;			
+			ALU_Src = 1'b1;
+			ALUop = ALU_ADD;
 		end
 		ADDIU:
 		begin
 			RegWr = 1'b1;
-			ALU_Src = 1'b1;	
+			ALU_Src = 1'b1;
 			ALUop = ALU_ADD;
 		end
 		SLTI:
 		begin
 			RegWr = 1'b1;
-			ALU_Src = 1'b1;	
+			ALU_Src = 1'b1;
 			ALUop = ALU_SLT;
 		end
 		SLTIU:
 		begin
 			RegWr = 1'b1;
-			ALU_Src = 1'b1;	
+			ALU_Src = 1'b1;
 			ALUop = ALU_SLTU;
 		end
 		ANDI:
 		begin
 			RegWr = 1'b1;
 			ALU_Src = 1'b1;
-			EXTop = 2'd1;	
+			EXTop = 2'd1;
 			ALUop = ALU_AND;
 		end
 		ORI:
 		begin
 			RegWr = 1'b1;
 			ALU_Src = 1'b1;
-			EXTop = 2'd1;	
+			EXTop = 2'd1;
 			ALUop = ALU_OR;
 		end
 		XORI:
 		begin
 			RegWr = 1'b1;
 			ALU_Src = 1'b1;
-			EXTop = 2'd1;	
+			EXTop = 2'd1;
 			ALUop = ALU_XOR;
 		end
 		LUI: //ask ta
 		begin
 			RegWr = 1'b1;
-			EXTop = 2'd2;	
+			EXTop = 2'd2;
 			Wsel = 2'd2;
 		end
 		LW:
@@ -210,7 +210,7 @@ begin
 		end
 		SW:
 		begin
-			
+
 			ALU_Src = 1'b1;
 			ALUop = ALU_ADD;
 			memWr = 1'b1;
