@@ -35,11 +35,11 @@ logic Output_Port_MEM;
 
 
 
-modport EXMEM(
+modport exmem(
 
-input RegWr_EX, RegDst_EX, memtoReg_EX, memWr_EX, PC_Src_EX, Wsel_EX, busA_EX, imemaddr_EX, jump_addr, branch_addr, zero, Port, enable, flush,
+input RegWr_EX, RegDst_EX, memtoReg_EX, memWr_EX, PC_Src_EX, Wsel_EX, busA_EX, imemaddr_EX, jump_addr, branch_addr, zero, Output_Port, enable, flush,
 
-output RegWr_MEM, RegDst_MEM, memtoReg_MEM, memWr_MEM, PC_Src_MEM, Wsel_MEM, busA_MEM, jump_addr_MEM, branch_addr_MEM, zero_MEM, Output_Port_MEM
+output RegWr_MEM, RegDst_MEM, memtoReg_MEM, memWr_MEM, PC_Src_MEM, Wsel_MEM, busA_MEM,imemaddr_MEM, jump_addr_MEM, branch_addr_MEM, zero_MEM, Output_Port_MEM
 
 );
 
