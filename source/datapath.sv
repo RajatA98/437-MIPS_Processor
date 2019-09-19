@@ -19,8 +19,6 @@
 // alu op, mips op, and instruction type
 `include "cpu_types_pkg.vh"
 
-
-
 module datapath (
   input logic CLK, nRST,
   datapath_cache_if.dp dpif
@@ -49,6 +47,7 @@ module datapath (
 	logic [1:0]RegDst;
 	logic RegWr;
 	logic [1:0]Wsel;
+  aluop_t ALUop;
 
 
 //PIPELINE STAGES CALLED BY JIHAN
@@ -106,7 +105,7 @@ assign imm16 = it.imm;
 		.equal(emif.zero_MEM),
 		.memtoReg(memtoReg),
 		.memWr(memWr),
-		.ALUop(aluif.ALUOP),
+		.ALUop(ALUop),
 		.ALU_Src(ALU_Src),
 		.EXTop(EXTop),
 		.halt(temp_halt),
@@ -119,11 +118,11 @@ assign imm16 = it.imm;
 
 //assign outputs of control unit to inputs of ID/EX latch
 //JIHAN
-assign deif.enable =  dpif.ihit || dpif.dhit;
+assign deif.enable =  dpif.ihit || dpif.dhit; //check
 assign deif.flush =  dpif.halt;
 assign deif.memtoReg = memtoReg;
 assign deif.memWr = memWr;
-assign deif.ALUop = aluif.ALUOP;
+assign deif.ALUop = ALUop; //check syntax
 assign deif.ALU_Src = ALU_Src;
 assign deif.EXTop = EXTop;
 assign deif.halt = temp_halt;
@@ -139,34 +138,15 @@ assign deif.opcode = opcode;
 assign deif.funct = funct;
 assign deif.imm16 = imm16;
 
-	/*module request_unit
-(
-	input logic CLK, nRST,
-	//input from control unit
-	input logic memtoReg, memWr,
-	//input from cache
-	input logic dhit,
-	//output to cache
-	output logic dREN, dWEN
-);*/
-
-	request_unit RU(
-		.CLK(CLK),
-		.nRST(nRST),
-		.memtoReg(memtoReg),
-		.memWr(memWr),
-		.ihit(dpif.ihit),
-		.dhit(dpif.dhit),
-		.dREN(dpif.dmemREN),
-		.dWEN(dpif.dmemWEN)
-	);
-
+/////////////////////////DECODE STAGE/////////////////////
 	r_t rt, rt_ID;
 	i_t it;
 
-  //when register file is writing
+  //when register file is write back mode
 	assign rt = mwif.instr_WB;
 	assign rfif.wsel = (mwif.RegDst_WB == 2'b1) ? rt.rd :  (mwif.RegDst_WB == 2'd2) ? 5'd31 : rt.rt;
+
+
 	assign rfif.WEN = mwif.RegWr_WB && (dpif.dhit || dpif.ihit);
 
 
@@ -182,7 +162,7 @@ assign deif.imm16 = imm16;
 		if(mwif.Wsel_WB == 2'd1)
 			rfif.wdat = mwif.imemaddr_WB + 4;
 		else if (mwif.Wsel_WB == 2'd2)
-			rfif.wdat = meif.extended_WB;
+			rfif.wdat = mwif.extended_WB;
 		else
 		begin
 			if (mwif.memtoReg_WB == 1'b1)
@@ -194,6 +174,9 @@ assign deif.imm16 = imm16;
 
 	register_file RF(CLK, nRST, rfif);
 
+
+//////////////////////EXECUTE STAGE////////////////////////
+
 	/*
 	module extender
 (
@@ -204,37 +187,82 @@ assign deif.imm16 = imm16;
 	word_t extended;
 	extender EXT(.EXTop(deif.EXTop_EX), .imm16(deif.imm16_EX), .extended(extended));
 
-	assign dpif.dmemstore = emif.busB_MEM;
-	assign dpif.dmemaddr = emif.Output_Port_MEM;
-
 	assign aluif.Port_A = deif.busA_EX;
-	assign aluif.Port_B = ALU_Src ? extended : rfif.deif.busB_EX;
+	assign aluif.Port_B = ALU_Src ? extended : deif.busB_EX;
+  assign aluif.ALUOP = deif.ALUop_EX;
 
 	alu ALU(aluif);
 
-	word_t current_addr;
+assign deif.jump_addr_EX =  {deif.imemaddr_EX[31:28], deif.instr_EX[25:0] << 2};
+assign deif.branch_addr_EX = (extended << 2) + (deif.imemaddr_EX + 4);
+
+//connecting signals to input of EX/MEM latch
+  assign emif.flush = dpif.halt;
+  assign emif.enable = dpif.ihit; //check
+  assign emif.RegWr_EX = deif.RegWr_EX;
+  assign emif.RegDst_EX = deif.RegDst_EX;
+  assign emif.memtoReg_EX = deif.memtoReg_EX;
+  assign emif.memWr_EX = deif.memWr_EX;
+  assign emif.PC_Src_EX = deif.PC_Src_EX;
+  assign emif.Wsel_EX = deif.Wsel_EX;
+  assign emif.busA_EX = deif.busA_EX;
+  assign emif.imemaddr_EX = deif.imemaddr_EX;
+  assign emif.jump_addr = deif.jump_addr_EX;
+  assign emif.branch_addr = deif.branch_addr_EX;
+  assign emif.zero = aluif.zero;
+  assign emif.Output_Port = aluif.Output_Port;
+  assign emif.opcode_EX = deif.opcode_EX;
+  assign emif.funct_EX = deif.funct_EX;
+  assign emif.imm16_EX = deif.imm16_EX;
+  assign emif.instr_EX = deif.instr_EX;
+  assign emif.extended = extended;
+
+/////////////////////MEMORY STAGE///////////////////////
+	assign dpif.dmemstore = emif.busB_MEM;
+	assign dpif.dmemaddr = emif.Output_Port_MEM;
+
+///replacement for request unit?????
+
+assign dpif.dmemWEN = emif.memWr_MEM;
+assign dpif.dmemREN = emif.memtoReg_MEM;
+
+//assigning inputs to MEM/WB latch
+
+assign mwif.flush = dpif.halt;
+assign mwif.enable = dpif.ihit; //check again
+assign mwif.memtoReg_MEM = emif.memtoReg_MEM;
+assign mwif.Output_Port_MEM = emif.Output_Port_MEM;
+assign mwif.RegDst_MEM = emif.RegDst_MEM;
+assign mwif.RegWr_MEM = emif.RegWr_MEM;
+assign mwif.opcode_MEM = emif.opcode_MEM;
+assign mwif.funct_MEM = emif.funct_MEM;
+assign mwif.imm16_MEM = emif.imm16_MEM;
+assign mwif.instr_MEM = emif.instr_MEM;
+assign mwif.imemaddr_MEM = emif.imemaddr_MEM;
+assign mwif.extended_MEM = emif.extended_MEM;
+
+
+////////////////BACK TO FETCH STAGE//////////////////////
 
 
 ///CHANGED BY JIHAN///I THINK THIS IS RIGHT!!!!
+
+	word_t next_addr;
+
 always_comb
 	begin
 		if(emif.PC_Src_MEM == 2'd3)
-			current_addr = emif.busA_MEM;
+			next_addr = emif.busA_MEM;
 		else if (emif.PC_Src_MEM == 2'd2)
 			//j_temp = dpif.imemaddr + 4;
 			//for jump
-      current_addr = emif.jump_addr_MEM;
+      next_addr = emif.jump_addr_MEM;
 		else if (emif.PC_Src_MEM == 2'd1)
       //for branch
-      current_addr = emif.branch_addr_MEM;
+      next_addr = emif.branch_addr_MEM;
 		else
-			current_addr = dpif.imemaddr + 4;
+			next_addr = dpif.imemaddr + 4;
 end
-
-assign deif.jump_addr_EX =  {deif.imemaddr_EX[31:28], deif.instr_EX[25:0] << 2};
-assign deif.branch_addr_EX = (deif.extended_EX << 2) + (deif.imemaddr_EX + 4);
-
-
 
 	/*module pc
 (
@@ -244,13 +272,13 @@ assign deif.branch_addr_EX = (deif.extended_EX << 2) + (deif.imemaddr_EX + 4);
 	//input from control unit
 	input logic halt,
 	//input from mux
-	input word_t current_addr,
+	input word_t next_addr,
 	output logic iaddr
 );
 	*/
 
 
-	pc PC(.CLK(CLK), .nRST(nRST),.ihit(dpif.ihit), .halt(dpif.halt), .current_addr(current_addr), .iaddr(dpif.imemaddr));
+	pc PC(.CLK(CLK), .nRST(nRST),.ihit(dpif.ihit), .halt(dpif.halt), .next_addr(next_addr), .iaddr(dpif.imemaddr));
 
 
 

@@ -25,7 +25,7 @@ module request_unit
 		else if(ihit)
 		begin
 			dREN <= memtoReg;
-			dWEN <= memWr;	
+			dWEN <= memWr;
 		end
 		else
 		begin
@@ -33,6 +33,6 @@ module request_unit
 			dWEN <= dWEN;
 		end
 	end
-	
-endmodule	
-	
+
+endmodule
+
