@@ -215,23 +215,21 @@ assign deif.imm16 = imm16;
 
 	alu ALU(aluif);
 
-	word_t current_addr;
+	word_t next_addr;
 
 
 ///CHANGED BY JIHAN///I THINK THIS IS RIGHT!!!!
 always_comb
 	begin
 		if(emif.PC_Src_MEM == 2'd3)
-			current_addr = emif.busA_MEM;
+			next_addr = emif.busA_MEM;
 		else if (emif.PC_Src_MEM == 2'd2)
-			//j_temp = dpif.imemaddr + 4;
-			//for jump
-      current_addr = emif.jump_addr_MEM;
+      next_addr = emif.jump_addr_MEM;
 		else if (emif.PC_Src_MEM == 2'd1)
       //for branch
-      current_addr = emif.branch_addr_MEM;
+      next_addr = emif.branch_addr_MEM;
 		else
-			current_addr = dpif.imemaddr + 4;
+			next_addr = dpif.imemaddr + 4;
 end
 
 assign deif.jump_addr_EX =  {deif.imemaddr_EX[31:28], deif.instr_EX[25:0] << 2};
@@ -247,13 +245,13 @@ assign deif.branch_addr_EX = (deif.extended_EX << 2) + (deif.imemaddr_EX + 4);
 	//input from control unit
 	input logic halt,
 	//input from mux
-	input word_t current_addr,
+	input word_t next_addr,
 	output logic iaddr
 );
 	*/
 
 
-	pc PC(.CLK(CLK), .nRST(nRST),.ihit(dpif.ihit), .halt(dpif.halt), .current_addr(current_addr), .iaddr(dpif.imemaddr));
+	pc PC(.CLK(CLK), .nRST(nRST),.ihit(dpif.ihit), .halt(dpif.halt), .next_addr(next_addr), .iaddr(dpif.imemaddr));
 
 
 

@@ -24,14 +24,15 @@ logic [1:0]Wsel;
 
 word_t busA, busB;
 
-
+regbits_t rs,rt;
 opcode_t opcode;
 funct_t funct;
 logic [15:0]imm16;
+logic [4:0]shamt;
 
 //signals from fetch_decode_if
 
-word_t imemaddr_ID, instr_ID;
+word_t next_addr_ID, imemaddr_ID, instr_ID;
 
 //signals from the control unit
 logic memtoReg_EX, memWr_EX;
@@ -45,32 +46,30 @@ logic RegWr_EX;
 logic [1:0]Wsel_EX;
 
 
-<<<<<<< HEAD
 //signals from the register file
 
-=======
+
 
 word_t busA_EX, busB_EX;
->>>>>>> 6a6d0532762d18bf79483fabf23ef7372d2df655
-
-logic busA_EX, busB_EX;
 
 
+regbits_t rs_EX,rt_EX;
 opcode_t opcode_EX;
 funct_t funct_EX;
 logic [15:0]imm16_EX;
+logic [4:0]shamt_EX;
 //signals from fetch_decode_if
 
-logic imemaddr_EX, instr_EX;
+word_t next_addr_EX, imemaddr_EX, instr_EX;
 
 //eanble and flush
 logic enable, flush;
 
 modport idex (
 
-input enable, flush, memtoReg, memWR, ALUop, ALU_Src, EXTop, halt, PC_Src, RegDst, RegWr, Wsel, busA, busB, opcode, funct, imm16, imemaddr_ID, instr_ID,
+input enable, flush, memtoReg, memWR, ALUop, ALU_Src, EXTop, halt, PC_Src, RegDst, RegWr, Wsel, busA, busB, rs, rt, opcode, funct, imm16, shamt, next_addr_ID, imemaddr_ID, instr_ID,
 
-output memtoReg_EX, memWR_EX, ALUop_EX, ALU_Src_EX, EXTop_EX, halt_EX, PC_Src_EX, RegDst_EX, RegWr_EX, Wsel_EX, busA_EX, opcode_EX, funct_EX, imm16_EX, busB_EX, imemaddr_EX, instr_EX
+output memtoReg_EX, memWR_EX, ALUop_EX, ALU_Src_EX, EXTop_EX, halt_EX, PC_Src_EX, RegDst_EX, RegWr_EX, Wsel_EX, busA_EX, busB_EX,rs_EX, rt_EX, opcode_EX, funct_EX, imm16_EX, shamt_EX, next_addr_EX, imemaddr_EX, instr_EX
 );
 
 endinterface
