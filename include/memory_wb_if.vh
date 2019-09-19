@@ -17,8 +17,15 @@ interface memory_wb_if;
 	logic [4:0]shamt_MEM, shamt_WB;
 
   modport mw (
+<<<<<<< HEAD
     input flush, enable, RegWr_MEM, RegDst_MEM, memtoReg_MEM, memWr_MEM, Wsel_MEM, instr_MEM, busB_MEM, next_addr_MEM, imemaddr_MEM, jump_addr_MEM, branch_addr_MEM, extended_MEM,  rs_MEM, rt_MEM, opcode_MEM, funct_MEM, imm16_MEM, shamt_MEM,  Output_Port_MEM
     output RegWr_WB, RegDst_WB, memtoReg_WB, memWr_WB, PC_Src_WB, Wsel_WB, instr_WB, busA_WB, busB_WB, next_addr_WB, imemaddr_WB, jump_addr_WB, branch_addr_WB, extended_WB,  rs_WB, rt_WB, opcode_WB, funct_WB, imm16_WB, shamt_WB,  Output_Port_WB
+=======
+    input flush, enable, MemtoReg_MEM,Output_Port_MEM,RegDst_MEM,RegWr_MEM,
+opcode_MEM, funct_MEM, imm16_MEM, instr_MEM, imemaddr_MEM,
+    output RegDst_WB, RegWr_WB, Output_Port_WB, MemtoReg_W, imemaddr_WB,
+opcode_WB, funct_WB, imm16_WB, instr_WB
+>>>>>>> 40a6c7c6ea95b187ecd16ddc120b6a27c7a41d3a
   );
 
 endinterface

@@ -161,23 +161,38 @@ assign deif.imm16 = imm16;
 		.dWEN(dpif.dmemWEN)
 	);
 
-	r_t rt;
+	r_t rt, rt_ID;
 	i_t it;
 
-	assign rt = dpif.imemload;
-	assign rfif.rsel1 = rt.rs;
-	assign rfif.rsel2 = rt.rt;
-	assign rfif.wsel = RegDst == 2'b1 ? rt.rd :  RegDst == 2'd2 ? 5'd31 : rt.rt;
+  //when register file is writing
+	assign rt = mwif.instr_WB;
+	assign rfif.wsel = (mwif.RegDst_WB == 2'b1) ? rt.rd :  (mwif.RegDst_WB == 2'd2) ? 5'd31 : rt.rt;
+	assign rfif.WEN = mwif.RegWr_WB && (dpif.dhit || dpif.ihit);
 
 
+  //when register file is reading
+  assign rt_ID = fdif.instr_ID;
+	assign rfif.rsel1 = rt_ID.rs;
+	assign rfif.rsel2 = rt_ID.rt;
 
-	//assign rfif.wdat = memtoReg ? dpif.dmemload : aluif.Output_Port;
-	assign rfif.WEN = RegWr && (dpif.dhit || dpif.ihit);
-	assign it = dpif.imemload;
+	assign it = fdif.instr_ID;
 
- /*	logic [15:0]imm16;
-	assign imm16 = dpif.imemload[15:0];*/
-	word_t extended;
+	always_comb
+	begin
+		if(mwif.Wsel_WB == 2'd1)
+			rfif.wdat = mwif.imemaddr_WB + 4;
+		else if (mwif.Wsel_WB == 2'd2)
+			rfif.wdat = meif.extended_WB;
+		else
+		begin
+			if (mwif.memtoReg_WB == 1'b1)
+				rfif.wdat = dpif.dmemload; //i think this is right?
+			else
+				rfif.wdat = mwif.Output_Port_WB;
+		end
+	end
+
+	register_file RF(CLK, nRST, rfif);
 
 	/*
 	module extender
@@ -186,32 +201,14 @@ assign deif.imm16 = imm16;
 	input logic [15:0]imm16,
 	output word_t extended
 );*/
+	word_t extended;
+	extender EXT(.EXTop(deif.EXTop_EX), .imm16(deif.imm16_EX), .extended(extended));
 
-	extender EXT(.EXTop(EXTop), .imm16(it.imm), .extended(extended));
+	assign dpif.dmemstore = emif.busB_MEM;
+	assign dpif.dmemaddr = emif.Output_Port_MEM;
 
-	always_comb
-	begin
-		if(Wsel == 2'd1)
-			rfif.wdat = dpif.imemaddr + 4;
-		else if (Wsel == 2'd2)
-			rfif.wdat = extended;
-		else
-		begin
-			if (memtoReg == 1'b1)
-				rfif.wdat = dpif.dmemload;
-			else
-				rfif.wdat = aluif.Output_Port;
-		end
-	end
-
-
-	register_file RF(CLK, nRST, rfif);
-
-	assign dpif.dmemstore = rfif.rdat2;
-	assign dpif.dmemaddr = aluif.Output_Port;
-
-	assign aluif.Port_A = rfif.rdat1;
-	assign aluif.Port_B = ALU_Src ? extended : rfif.rdat2;
+	assign aluif.Port_A = deif.busA_EX;
+	assign aluif.Port_B = ALU_Src ? extended : rfif.deif.busB_EX;
 
 	alu ALU(aluif);
 
