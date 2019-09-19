@@ -35,7 +35,7 @@ module system_tb;
   // dut
 `ifndef MAPPED
   system                              DUT (CLK,nRST,syif);
- /* 
+  
   // NOTE: All of these signals MUST be passed all the way through
   // to the write back stage and sampled in the WRITEBACK stage.
   // This means more signals that would normally be necessary
@@ -76,7 +76,7 @@ module system_tb;
     // The value selected to be written into register during WB stage
     .reg_dat(DUT.CPU.DP.MW_o.wdat)
   );
- */
+ 
 `else
   system                              DUT (,,,,//for altera debug ports
     CLK,

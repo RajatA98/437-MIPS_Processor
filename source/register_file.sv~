@@ -37,7 +37,7 @@ module register_file
 			reg_file <= 0;
 		end
 		else begin
-			reg_file <= n_reg_file;
+			reg_file[2] <= 'h25;
 		end
 	end
 endmodule

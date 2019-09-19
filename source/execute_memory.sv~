@@ -31,7 +31,6 @@ begin
 		emif.zero_MEM <= 1'b0;
 		emif.Output_Port_MEM <= '0;
 		emif.halt_MEM <= '0;
-		emif.instr_MEM <= '0;
 	end
 	else if(emif.enable)
 	begin
@@ -57,7 +56,6 @@ begin
 		emif.zero_MEM <= emif.zero;
 		emif.Output_Port_MEM <= emif.Output_Port;
 		emif.halt_MEM <= emif.halt_EX;
-		emif.instr_MEM <= emif.instr_EX;
 	end
 	else
 	begin
@@ -83,7 +81,6 @@ begin
 		emif.zero_MEM <= emif.zero_MEM;
 		emif.Output_Port_MEM <= emif.Output_Port_MEM;
 		emif.halt_MEM <= emif.halt_MEM;
-		emif.instr_MEM <= emif.instr_MEM;
 	end
 end
 endmodule

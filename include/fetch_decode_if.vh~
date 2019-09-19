@@ -1,5 +1,3 @@
-`ifndef FETCH_DECODE_IF_VH
-`define FETCH_DECODE_IF_VH
 `include "cpu_types_pkg.vh"
 
 interface fetch_decode_if;

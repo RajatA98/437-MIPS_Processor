@@ -59,7 +59,7 @@ module memory_wb(
 						mwif.halt_WB <= mwif.halt_MEM;
 						mwif.instr_WB <= mwif.instr_MEM;
         end
-        else if (mwif.flush) begin
+        /*else if (mwif.flush) begin
             mwif.RegWr_WB <= 1'b0;
 						mwif.RegDst_WB <= 2'b0;
 						mwif.memtoReg_WB <= 1'b0;
@@ -83,7 +83,7 @@ module memory_wb(
 						mwif.Output_Port_WB <= '0;
 						mwif.halt_WB <= '0;
 						mwif.instr_WB <= '0;
-        end
+        end*/
         else begin
             mwif.RegWr_WB <= mwif.RegWr_WB;
 						mwif.RegDst_WB <= mwif.RegDst_WB;
