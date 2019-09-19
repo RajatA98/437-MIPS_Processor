@@ -22,13 +22,16 @@ begin
 			deif.Wsel_EX <= 2'b0;
 			deif.busA_EX <= '0;
 			deif.busB_EX <= '0;
+			deif.opcode_EX <= '0;
+			deif.funct_EX <= '0;
+			deif.imm16_EX <= '0;
 			deif.imemaddr_EX <= '0;
 			deif.instr_EX <= '0;
 			
 		end
 		else if(deif.enable)
 		begin
-			deif.deif.memtoReg_EX <= deif.memtoReg;
+			deif.memtoReg_EX <= deif.memtoReg;
 			deif.memtWr_EX <= deif.memWr;
 			deif.ALUop_EX <= deif.ALUop;
 			deif.ALU_Src_EX <= deif.ALU_Src;
@@ -40,12 +43,15 @@ begin
 			deif.Wsel_EX <= deif.Wsel;
 			deif.busA_EX <= deif.busA;
 			deif.busB_EX <= deif.busB;
+			deif.opcode_EX <= deif.opcode;
+			deif.funct_EX <= deif.funct;
+			deif.imm16_EX <= deif.imm16;
 			deif.imemaddr_EX <= deif.imemaddr;
 			deif.instr_EX <= deif.instr;
 		end
 		else
 		begin
-			deif.deif.memtoReg_EX <= deif.memtoReg_EX;
+			deif.memtoReg_EX <= deif.memtoReg_EX;
 			deif.memtWr_EX <= deif.deif.memWr_EX;
 			deif.ALUop_EX <= deif.ALUop_EX;
 			deif.ALU_Src_EX <= deif.ALU_Src_EX;
@@ -57,6 +63,9 @@ begin
 			deif.Wsel_EX <= deif.Wsel_EX;
 			deif.busA_EX <= deif.busA_EX;
 			deif.busB_EX <= deif.busB_EX;
+			deif.opcode_EX <= deif.opcode_EX;
+			deif.funct_EX <= deif.funct_EX;
+			deif.imm16_EX <= deif.imm16_EX;
 			deif.imemaddr_EX <= deif.imemaddr_EX;
 			deif.instr_EX <= deif.instr_EX;
 		end

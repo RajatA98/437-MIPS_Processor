@@ -26,6 +26,9 @@ logic [1:0]Wsel;
 word_t busA, busB;
 
 
+opcode_t opcode;
+funct_t funct;
+logic [15:0]imm16;
 
 //signals from fetch_decode_if
 
@@ -44,12 +47,14 @@ logic [1:0]Wsel_EX;
 
 
 //signals from the register file
-register_file_if rfif();
+
 
 logic busA_EX, busB_EX;
 
 
-
+opcode_t opcode_EX;
+funct_t funct_EX;
+logic [15:0]imm16_EX;
 //signals from fetch_decode_if
 
 logic imemaddr_EX, instr_EX;
@@ -59,9 +64,9 @@ logic enable, flush;
 
 modport idex (
 
-input enable, flush, memtoReg, memWR, ALUop, ALU_Src, EXTop, halt, PC_Src, RegDst, RegWr, Wsel, busA, busB, imemaddr_ID, instr_ID,
+input enable, flush, memtoReg, memWR, ALUop, ALU_Src, EXTop, halt, PC_Src, RegDst, RegWr, Wsel, busA, busB, opcode, funct, imm16, imemaddr_ID, instr_ID,
 
-output memtoReg_EX, memWR_EX, ALUop_EX, ALU_Src_EX, EXTop_EX, halt_EX, PC_Src_EX, RegDst_EX, RegWr_EX, Wsel_EX, busA_EX, busB_EX, imemaddr_EX, instr_EX
+output memtoReg_EX, memWR_EX, ALUop_EX, ALU_Src_EX, EXTop_EX, halt_EX, PC_Src_EX, RegDst_EX, RegWr_EX, Wsel_EX, busA_EX, opcode_EX, funct_EX, imm16_EX, busB_EX, imemaddr_EX, instr_EX
 );
 
 `endif

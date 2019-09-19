@@ -19,6 +19,9 @@ begin
 		emif.imemaddr_MEM <= '0;
 		emif.jump_addr_MEM <= '0;
 		emif.branch_addr_MEM <= '0;
+		emif.opcode_MEM <= '0;
+		emif.funct_EX <= '0;
+		emif.imm16_EX <= '0;
 		emif.zero_MEM <= 1'b0;
 		emif.Output_Port_MEM <= '0;
 	end
@@ -34,6 +37,9 @@ begin
 		emif.imemaddr_MEM <= emif.imemaddr_EX;
 		emif.jump_addr_MEM <= emif.jump_addr;
 		emif.branch_addr_MEM <= emif.branch_addr;
+		emif.opcode_MEM <= emif.opcode_EX;
+		emif.funct_MEM <= emif.funct_EX;
+		emif.imm16_MEM <= emif.imm16_EX;
 		emif.zero_MEM <= emif.zero;
 		emif.Output_Port_MEM <= emif.Output_Port;
 	end
@@ -49,6 +55,9 @@ begin
 		emif.imemaddr_MEM <= emif.imemaddr_MEM;
 		emif.jump_addr_MEM <= emif.jump_addr_MEM;
 		emif.branch_addr_MEM <= emif.branch_addr_MEM;
+		emif.opcode_MEM <= emif.opcode_MEM;
+		emif.funct_MEM <= emif.funct_MEM;
+		emif.imm16_MEM <= emif.imm16_MEM;
 		emif.zero_MEM <= emif.zero_MEM;
 		emif.Output_Port_MEM <= emif.zero_MEM;
 	end
