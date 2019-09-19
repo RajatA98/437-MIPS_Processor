@@ -63,8 +63,16 @@ assign fdif.flush = dpif.halt;
 assign fdif.enable = dpif.ihit || dpif.dhit;
 assign fdif.imemaddr = dpif.imemaddr;
 
-
 assign dpif.halt = deif.halt_EX;
+
+////SIGNALS FOR CPU TRACKER
+opcode_t opcode;
+funct_t funct;
+logic [15:0] imm16;
+
+assign opcode = fdif.instr_ID[31:26];
+assign funct = fdif.instr_ID[5:0];
+assign imm16 = it.imm;
 
 
 	/*
@@ -109,10 +117,27 @@ assign dpif.halt = deif.halt_EX;
 		.iREN(dpif.imemREN)
 	);
 
-//assign outputs of control unit to ID/EX latch
-assign
-
-
+//assign outputs of control unit to inputs of ID/EX latch
+//JIHAN
+assign deif.enable =  dpif.ihit || dpif.dhit;
+assign deif.flush =  dpif.halt;
+assign deif.memtoReg = memtoReg;
+assign deif.memWr = memWr;
+assign deif.ALUop = aluif.ALUOP;
+assign deif.ALU_Src = ALU_Src;
+assign deif.EXTop = EXTop;
+assign deif.halt = temp_halt;
+assign deif.PC_Src = PC_Src;
+assign deif.RegDst = RegDst;
+assign deif.RegWr = RegWr;
+assign deif.Wsel = Wsel;
+assign deif.busA = rfif.rdat1;
+assign deif.busB = rfif.rdat2;
+assign deif.imemaddr_ID = fdif.imemaddr_ID;
+assign deif.instr_ID = fdif.instr_ID;
+assign deif.opcode = opcode;
+assign deif.funct = funct;
+assign deif.imm16 = imm16;
 
 	/*module request_unit
 (
@@ -140,19 +165,14 @@ assign
 	i_t it;
 
 	assign rt = dpif.imemload;
-
-
 	assign rfif.rsel1 = rt.rs;
-
 	assign rfif.rsel2 = rt.rt;
-
 	assign rfif.wsel = RegDst == 2'b1 ? rt.rd :  RegDst == 2'd2 ? 5'd31 : rt.rt;
 
 
 
 	//assign rfif.wdat = memtoReg ? dpif.dmemload : aluif.Output_Port;
 	assign rfif.WEN = RegWr && (dpif.dhit || dpif.ihit);
-
 	assign it = dpif.imemload;
 
  /*	logic [15:0]imm16;
