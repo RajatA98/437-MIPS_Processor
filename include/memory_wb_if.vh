@@ -16,7 +16,8 @@ interface memory_wb_if;
   logic [15:0] imm16_MEM, imm16_WB;
 
   modport mw (
-    input flush, enable, MemtoReg_MEM,Output_Port_MEM,RegDst_MEM,RegWr_MEM, opcode_MEM, funct_MEM, imm16_MEM, instr_MEM,
+    input flush, enable, MemtoReg_MEM,Output_Port_MEM,RegDst_MEM,RegWr_MEM,
+opcode_MEM, funct_MEM, imm16_MEM, instr_MEM, imemaddr_MEM,
     output RegDst_WB, RegWr_WB, Output_Port_WB, MemtoReg_W, imemaddr_WB,
 opcode_WB, funct_WB, imm16_WB, instr_WB
   );
