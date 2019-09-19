@@ -2,7 +2,6 @@
 `define DECODE_EXECUTE_IF_VH
 // types
 `include "cpu_types_pkg.vh"
-`include "register_file_if.vh"
 
 interface decode_execute_if;
   // import types
@@ -43,10 +42,8 @@ logic RegWr_EX;
 logic [1:0]Wsel_EX;
 
 
-//signals from the register file
-register_file_if rfif();
 
-logic busA_EX, busB_EX;
+word_t busA_EX, busB_EX;
 
 
 
@@ -64,6 +61,7 @@ input enable, flush, memtoReg, memWR, ALUop, ALU_Src, EXTop, halt, PC_Src, RegDs
 output memtoReg_EX, memWR_EX, ALUop_EX, ALU_Src_EX, EXTop_EX, halt_EX, PC_Src_EX, RegDst_EX, RegWr_EX, Wsel_EX, busA_EX, busB_EX, imemaddr_EX, instr_EX
 );
 
+endinterface
 `endif
 
 
