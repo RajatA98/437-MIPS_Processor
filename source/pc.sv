@@ -8,7 +8,7 @@ module pc
 	//input from control unit
 	input logic halt,
 	//input from mux
-	input word_t current_addr,
+	input word_t next_addr,
 	output word_t iaddr
 );
 
@@ -17,7 +17,7 @@ module pc
 		if(!nRST)
 			iaddr <= 32'b0;
 		else if(ihit && !halt)
-			iaddr <= current_addr;
+			iaddr <= next_addr;
 		else
 			iaddr <= iaddr;
 	end

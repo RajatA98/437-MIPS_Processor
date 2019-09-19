@@ -10,20 +10,24 @@ module fetch_decode(
 
   always_ff @ (posedge CLK, negedge nRST) begin
       if (nRST == 0) begin
-         fdif.imemaddr_ID <= '0;
-         fdif.instr_ID <= '0;
+        fdif.imemaddr_ID <= '0;
+        fdif.instr_ID <= '0;
+				fdif.next_addr_ID <= '0;
       end
       else if (fdif.enable) begin
-         fdif.imemaddr_ID <= fdif.imemaddr;
-         fdif.instr_ID <= fdif.imemload;
+        fdif.imemaddr_ID <= fdif.imemaddr;
+        fdif.instr_ID <= fdif.imemload;
+				fdif.next_addr_ID <= fdif.next_addr;
       end
       else if (fdif.flush) begin
-         fdif.imemaddr_ID <= '0;
-         fdif.instr_ID <= '0;
+        fdif.imemaddr_ID <= '0;
+        fdif.instr_ID <= '0;
+				fdif.next_addr_ID <= '0;
       end
       else begin
-         fdif.imemaddr_ID <= fdif.imemaddr_ID;
-         fdif.instr_ID <= fdif.instr_ID;
+        fdif.imemaddr_ID <= fdif.imemaddr_ID;
+        fdif.instr_ID <= fdif.instr_ID;
+				fdif.next_addr_ID <= fdif.next_addr_ID;
       end
   end
 

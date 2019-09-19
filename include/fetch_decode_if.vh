@@ -8,8 +8,8 @@ interface fetch_decode_if;
   word_t imemaddr_ID, instr_ID, imemload, imemaddr;
 
   modport fd (
-    input flush, enable, imemaddr, imemload,
-    output imemaddr_ID, instr_ID
+    input flush, enable, next_addr, imemaddr, imemload,
+    output next_addr_ID, imemaddr_ID, instr_ID
    );
 
 

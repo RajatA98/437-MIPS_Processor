@@ -228,6 +228,7 @@ assign dpif.dmemREN = emif.memtoReg_MEM;
 
 //assigning inputs to MEM/WB latch
 
+<<<<<<< HEAD
 assign mwif.flush = dpif.halt;
 assign mwif.enable = dpif.ihit; //check again
 assign mwif.memtoReg_MEM = emif.memtoReg_MEM;
@@ -243,6 +244,9 @@ assign mwif.extended_MEM = emif.extended_MEM;
 
 
 ////////////////BACK TO FETCH STAGE//////////////////////
+=======
+	word_t next_addr;
+>>>>>>> a36603fb9e58bc090df024b623c3789041f63fe7
 
 
 ///CHANGED BY JIHAN///I THINK THIS IS RIGHT!!!!
@@ -254,8 +258,11 @@ always_comb
 		if(emif.PC_Src_MEM == 2'd3)
 			next_addr = emif.busA_MEM;
 		else if (emif.PC_Src_MEM == 2'd2)
+<<<<<<< HEAD
 			//j_temp = dpif.imemaddr + 4;
 			//for jump
+=======
+>>>>>>> a36603fb9e58bc090df024b623c3789041f63fe7
       next_addr = emif.jump_addr_MEM;
 		else if (emif.PC_Src_MEM == 2'd1)
       //for branch
