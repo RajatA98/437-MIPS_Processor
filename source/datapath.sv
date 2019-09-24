@@ -264,7 +264,7 @@ assign mwif.halt_MEM = emif.halt_MEM;
 
 ///CHANGED BY JIHAN///I THINK THIS IS RIGHT!!!!
 
-	
+
 
 always_comb
 	begin
