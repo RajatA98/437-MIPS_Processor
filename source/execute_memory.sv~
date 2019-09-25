@@ -61,15 +61,8 @@ begin
 	end
 	else
 	begin
-			if (dhit == 1) begin
-					emif.memtoReg_MEM <= '0;
-					emif.memWr_MEM <= '0;
-			end
-			else begin 
-				emif.memWr_MEM <= emif.memWr_MEM;
-				emif.memtoReg_MEM <= emif.memtoReg_MEM;
-			end
-
+		emif.memWr_MEM <= emif.memWr_MEM;
+		emif.memtoReg_MEM <= emif.memtoReg_MEM;
 		emif.RegWr_MEM <= emif.RegWr_MEM;
 		emif.RegDst_MEM <= emif.RegDst_MEM;
 		emif.PC_Src_MEM <= emif.PC_Src_MEM;

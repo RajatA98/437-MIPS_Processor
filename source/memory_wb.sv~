@@ -110,7 +110,7 @@ module memory_wb(
 						mwif.Output_Port_WB <= mwif.Output_Port_WB;
 						mwif.halt_WB <= mwif.halt_WB;
 						mwif.instr_WB <= mwif.instr_WB;
-						mwif.dload_WB <= mwif.dload;
+						mwif.dload_WB <= mwif.dload_WB;
         end
 end
 endmodule

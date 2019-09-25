@@ -9,7 +9,7 @@ module fetch_decode(
   import cpu_types_pkg::*;
 
   always_ff @ (posedge CLK, negedge nRST) begin
-      if (nRST == 0) begin
+      if (nRST == 0 || fdif.flush) begin
         fdif.imemaddr_ID <= '0;
         fdif.instr_ID <= '0;
 				fdif.next_addr_ID <= '0;

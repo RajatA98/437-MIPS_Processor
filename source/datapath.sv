@@ -48,7 +48,9 @@ module datapath (
 	logic RegWr;
 	logic [1:0]Wsel;
   aluop_t ALUop;
-
+ 
+ //flush and enable signals
+	logic flush_ID_BP, flush_EX_BP, flush_MEM_BP,flush_ID, flush_EX, flush_MEM, enable_ID, enable_EX, enable_MEM;
 
 //PIPELINE STAGES CALLED BY JIHAN
 fetch_decode FD(CLK, nRST, fdif);
@@ -58,8 +60,8 @@ memory_wb MW(CLK, nRST, mwif);
 
 //fetch decode latch signal input assignments
 assign fdif.imemload = dpif.imemload;
-assign fdif.flush = dpif.halt;
-assign fdif.enable = dpif.ihit || dpif.dhit;
+assign fdif.flush = dpif.halt || flush_ID || flush_ID_BP;
+assign fdif.enable = (dpif.ihit || dpif.dhit) && enable_ID;
 assign fdif.imemaddr = dpif.imemaddr;
 //assign fdif.next_addr = next_addr;
 
@@ -128,8 +130,8 @@ assign imm16 = it.imm;
 
 //assign outputs of control unit to inputs of ID/EX latch
 //JIHAN
-assign deif.enable =   dpif.ihit || dpif.dhit; //check
-assign deif.flush =  dpif.halt;
+assign deif.enable =  (dpif.ihit || dpif.dhit) && enable_EX; //check
+assign deif.flush =  dpif.halt || flush_EX_BP || flush_EX;
 assign deif.memtoReg = memtoReg;
 assign deif.memWr = memWr;
 assign deif.ALU_Src = ALU_Src;
@@ -220,8 +222,8 @@ assign jump_addr_EX =  {deif.imemaddr_EX[31:28], deif.instr_EX[25:0] << 2};
 assign branch_addr_EX = (extended << 2) + (deif.imemaddr_EX + 4);
 
 //connecting signals to input of EX/MEM latch
-  assign emif.flush = dpif.halt;
-  assign emif.enable = dpif.ihit || dpif.dhit; //check
+  assign emif.flush = dpif.halt || flush_MEM_BP || flush_MEM;
+  assign emif.enable = (dpif.ihit || dpif.dhit) && enable_MEM; //check
   assign emif.RegWr_EX = deif.RegWr_EX;
   assign emif.RegDst_EX = deif.RegDst_EX;
   assign emif.memtoReg_EX = deif.memtoReg_EX;
@@ -287,11 +289,7 @@ assign final_rt = mwif.instr_WB[20:16];
 
 ///CHANGED BY JIHAN///I THINK THIS IS RIGHT!!!!
 
-<<<<<<< HEAD
-=======
 
-
->>>>>>> fcae4c2b64493d5c011538248ebd0fee0e25dd97
 always_comb
 	begin
 		if(emif.PC_Src_MEM == 2'd3) begin
@@ -330,6 +328,10 @@ end
 
 
 	pc PC(.CLK(CLK), .nRST(nRST),.ihit(dpif.ihit), .halt(dpif.halt), .next_addr(next_addr), .iaddr(dpif.imemaddr));
+
+	branch_predictor BP(.zero(emif.zero_MEM), .instr(emif.instr_MEM), .flush_ID(flush_ID_BP), .flush_EX(flush_EX_BP), .flush_MEM(flush_MEM_BP));
+
+	hazard_unit HU(.instr_ID(fdif.instr_ID), .instr_EX(deif.instr_EX), .instr_MEM(emif.instr_MEM), .flush_ID(flush_ID), .flush_EX(flush_EX), .flush_MEM(flush_MEM), .enable_ID(enable_ID), .enable_EX(enable_EX), .enable_MEM(enable_MEM));
 
 
 

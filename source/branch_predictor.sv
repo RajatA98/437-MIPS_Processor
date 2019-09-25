@@ -42,4 +42,5 @@ always_comb begin
         flush_EX = 0;
         flush_MEM = 0;
   end
+end
 endmodule

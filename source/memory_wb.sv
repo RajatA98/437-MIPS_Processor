@@ -9,7 +9,7 @@ module memory_wb(
   import cpu_types_pkg::*;
 
   always_ff @ (posedge CLK, negedge nRST) begin
-        if (nRST == 0) begin
+        if (nRST == 0 || mwif.flush) begin
             mwif.RegWr_WB <= 1'b0;
 						mwif.RegDst_WB <= 2'b0;
 						mwif.memtoReg_WB <= 1'b0;

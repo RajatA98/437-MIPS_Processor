@@ -67,12 +67,33 @@ add wave -noupdate -group {control unit} -color Orange /system_tb/DUT/CPU/DP/CU/
 add wave -noupdate -group {control unit} -color Orange /system_tb/DUT/CPU/DP/CU/Wsel
 add wave -noupdate -group {control unit} -color Orange /system_tb/DUT/CPU/DP/CU/iREN
 add wave -noupdate -group {control unit} -color Orange -expand -subitemconfig {/system_tb/DUT/CPU/DP/CU/rt.opcode {-color Orange -height 17} /system_tb/DUT/CPU/DP/CU/rt.rs {-color Orange -height 17} /system_tb/DUT/CPU/DP/CU/rt.rt {-color Orange -height 17} /system_tb/DUT/CPU/DP/CU/rt.rd {-color Orange -height 17} /system_tb/DUT/CPU/DP/CU/rt.shamt {-color Orange -height 17} /system_tb/DUT/CPU/DP/CU/rt.funct {-color Orange -height 17}} /system_tb/DUT/CPU/DP/CU/rt
-add wave -noupdate /system_tb/DUT/CPU/DP/rt
+add wave -noupdate -expand /system_tb/DUT/CPU/DP/rt
 add wave -noupdate /system_tb/DUT/CPU/DP/aluif/Output_Port
 add wave -noupdate /system_tb/DUT/CPU/DP/aluif/Port_A
 add wave -noupdate /system_tb/DUT/CPU/DP/aluif/Port_B
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/instr_ID
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/instr_EX
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/instr_MEM
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/flush_ID
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/flush_EX
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/flush_MEM
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/enable_ID
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/enable_EX
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/enable_MEM
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/rt_ID
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/rt_EX
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/rt_MEM
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/it_ID
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/it_EX
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/it_MEM
+add wave -noupdate -expand -group {branch predict} -itemcolor White /system_tb/DUT/CPU/DP/BP/zero
+add wave -noupdate -expand -group {branch predict} -itemcolor White /system_tb/DUT/CPU/DP/BP/instr
+add wave -noupdate -expand -group {branch predict} -itemcolor White /system_tb/DUT/CPU/DP/BP/flush_ID
+add wave -noupdate -expand -group {branch predict} -itemcolor White /system_tb/DUT/CPU/DP/BP/flush_EX
+add wave -noupdate -expand -group {branch predict} -itemcolor White /system_tb/DUT/CPU/DP/BP/flush_MEM
+add wave -noupdate -expand -group {branch predict} -itemcolor White /system_tb/DUT/CPU/DP/BP/opcode
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {429991 ps} 0}
+WaveRestoreCursors {{Cursor 1} {418878 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 150
 configure wave -valuecolwidth 100
@@ -88,4 +109,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {210781631650 ps} {210781724650 ps}
+WaveRestoreZoom {0 ps} {744 ns}
