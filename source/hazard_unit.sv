@@ -46,13 +46,13 @@ begin
 			end
 	endcase
 	
-	if(rt_EX.rd == rt_ID.rs || rt_EX.rd == rt_ID.rt || it_EX.rt == it_ID.rs)
+	if((((rt_EX.rd == rt_ID.rs || rt_EX.rd == rt_ID.rt) && (rt_EX.opcode == RTYPE)) || it_EX.rt == it_ID.rs) && (instr_EX && instr_ID))
 	begin
 		enable_ID = 1'b0;
 	
 		flush_EX = 1'b1;
 	end
-	if(rt_MEM.rd == rt_ID.rs || rt_MEM.rd == rt_ID.rt || it_MEM.rt == it_ID.rs)
+	if((((rt_MEM.rd == rt_ID.rs || rt_MEM.rd == rt_ID.rt) && (rt_MEM.opcode == RTYPE)) || it_MEM.rt == it_ID.rs) && (instr_MEM && instr_ID))
 	begin
 		enable_ID = 1'b0;
 		flush_EX = 1'b1;
