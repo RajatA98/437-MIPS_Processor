@@ -29,7 +29,7 @@ word_t Output_Port;
 logic enable, flush;
 
 
-
+logic [4:0] final_wsel_EX, final_wsel_MEM;
 //outputs
 
 logic RegWr_MEM;

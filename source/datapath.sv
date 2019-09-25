@@ -287,6 +287,11 @@ assign final_rt = mwif.instr_WB[20:16];
 
 ///CHANGED BY JIHAN///I THINK THIS IS RIGHT!!!!
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> fcae4c2b64493d5c011538248ebd0fee0e25dd97
 always_comb
 	begin
 		if(emif.PC_Src_MEM == 2'd3) begin

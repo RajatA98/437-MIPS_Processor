@@ -61,8 +61,16 @@ assign fdif.imemload = dpif.imemload;
 assign fdif.flush = dpif.halt;
 assign fdif.enable = dpif.ihit || dpif.dhit;
 assign fdif.imemaddr = dpif.imemaddr;
+assign fdif.next_addr = next_addr;
 
-assign dpif.halt = mwif.halt_WB;
+//assign dpif.halt = mwif.halt_WB;
+
+always_ff @(posedge CLK, negedge nRST) begin
+	if (!nRST)
+			dpif.halt <= '0;
+	else
+			dpif.halt <= mwif.halt_WB;
+end
 
 
 ////SIGNALS FOR CPU TRACKER
@@ -120,7 +128,7 @@ assign imm16 = it.imm;
 
 //assign outputs of control unit to inputs of ID/EX latch
 //JIHAN
-assign deif.enable =  dpif.ihit || dpif.dhit; //check
+assign deif.enable =   dpif.ihit || dpif.dhit; //check
 assign deif.flush =  dpif.halt;
 assign deif.memtoReg = memtoReg;
 assign deif.memWr = memWr;
@@ -136,14 +144,18 @@ assign deif.busB = rfif.rdat2;
 assign deif.imemaddr_ID = fdif.imemaddr_ID;
 assign deif.instr_ID = fdif.instr_ID;
 assign deif.imm16 = imm16;
+assign deif.shamt = fdif.instr_ID[10:6];
 
 assign deif.opcode = opcode_t'(opcode);
 assign deif.funct = funct_t'(funct);
 assign deif.ALUop = aluop_t'(ALUop); //check syntax
+assign deif.final_wsel = rfif.wsel;
+assign deif.next_addr_ID = fdif.next_addr_ID;
 
 /////////////////////////DECODE STAGE/////////////////////
 	r_t rt, rt_ID;
 	i_t it;
+
 
   //when register file is write back mode
 	assign rt = mwif.instr_WB;
@@ -158,7 +170,7 @@ assign deif.ALUop = aluop_t'(ALUop); //check syntax
 			rfif.wsel = rt.rt;
 	end
 
-	assign rfif.WEN = mwif.RegWr_WB && (dpif.dhit || dpif.ihit);
+	assign rfif.WEN = mwif.RegWr_WB; /*&& (dpif.dhit || dpif.ihit);*/
 
 
   //when register file is reading
@@ -177,14 +189,13 @@ assign deif.ALUop = aluop_t'(ALUop); //check syntax
 		else
 		begin
 			if (mwif.memtoReg_WB == 1'b1)
-				rfif.wdat = dpif.dmemload; //i think this is right?
+				rfif.wdat = mwif.dload_WB; //i think this is right?
 			else
 				rfif.wdat = mwif.Output_Port_WB;
 		end
 	end
 
 	register_file RF(CLK, nRST, rfif);
-
 
 //////////////////////EXECUTE STAGE////////////////////////
 
@@ -210,7 +221,7 @@ assign branch_addr_EX = (extended << 2) + (deif.imemaddr_EX + 4);
 
 //connecting signals to input of EX/MEM latch
   assign emif.flush = dpif.halt;
-  assign emif.enable = dpif.ihit; //check
+  assign emif.enable = dpif.ihit || dpif.dhit; //check
   assign emif.RegWr_EX = deif.RegWr_EX;
   assign emif.RegDst_EX = deif.RegDst_EX;
   assign emif.memtoReg_EX = deif.memtoReg_EX;
@@ -218,6 +229,7 @@ assign branch_addr_EX = (extended << 2) + (deif.imemaddr_EX + 4);
   assign emif.PC_Src_EX = deif.PC_Src_EX;
   assign emif.Wsel_EX = deif.Wsel_EX;
   assign emif.busA_EX = deif.busA_EX;
+	assign emif.busB_EX = deif.busB_EX;
   assign emif.imemaddr_EX = deif.imemaddr_EX;
   assign emif.jump_addr = jump_addr_EX;
   assign emif.branch_addr = branch_addr_EX;
@@ -229,6 +241,9 @@ assign branch_addr_EX = (extended << 2) + (deif.imemaddr_EX + 4);
   assign emif.instr_EX = deif.instr_EX;
   assign emif.extended = extended;
 	assign emif.halt_EX = deif.halt_EX;
+	assign emif.final_wsel_EX = deif.final_wsel_EX;
+	assign emif.next_addr_EX = deif.next_addr_EX;
+	assign emif.shamt_EX = deif.shamt_EX;
 
 /////////////////////MEMORY STAGE///////////////////////
 	assign dpif.dmemstore = emif.busB_MEM;
@@ -236,12 +251,12 @@ assign branch_addr_EX = (extended << 2) + (deif.imemaddr_EX + 4);
 
 ///replacement for request unit?????
 
-assign dpif.dmemWEN = emif.memWr_MEM;
-assign dpif.dmemREN = emif.memtoReg_MEM;
+assign dpif.dmemWEN =emif.memWr_MEM;
+assign dpif.dmemREN =emif.memtoReg_MEM;
 
 //assigning inputs to MEM/WB latch
-assign mwif.flush = dpif.dhit;
-assign mwif.enable = dpif.ihit && (mwif.memtoReg_MEM || mwif.RegWr_MEM); //check again
+assign mwif.flush = dpif.halt;
+assign mwif.enable = dpif.ihit || dpif.dhit; //check again
 assign mwif.memtoReg_MEM = emif.memtoReg_MEM;
 assign mwif.Output_Port_MEM = emif.Output_Port_MEM;
 assign mwif.RegDst_MEM = emif.RegDst_MEM;
@@ -255,16 +270,22 @@ assign mwif.extended_MEM = emif.extended_MEM;
 assign mwif.busB_MEM = emif.busB_MEM;
 assign mwif.Wsel_MEM = emif.Wsel_MEM;
 assign mwif.halt_MEM = emif.halt_MEM;
+assign mwif.dload = dpif.dmemload;
+assign mwif.final_wsel_MEM = emif.final_wsel_MEM;
+assign mwif.next_addr_MEM = emif.next_addr_MEM;
+assign mwif.jump_addr_MEM = emif.jump_addr_MEM;
+assign mwif.branch_addr_MEM = emif.branch_addr_MEM;
+assign mwif.shamt_MEM = emif.shamt_MEM;
 
+logic [4:0] final_rt, final_rs;
+
+assign final_rs = mwif.instr_WB[25:21];
+assign final_rt = mwif.instr_WB[20:16];
 
 ////////////////BACK TO FETCH STAGE//////////////////////
 	word_t next_addr;
 
-
-
 ///CHANGED BY JIHAN///I THINK THIS IS RIGHT!!!!
-
-	
 
 always_comb
 	begin

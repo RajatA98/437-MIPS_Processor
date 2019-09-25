@@ -7,7 +7,7 @@ execute_memory_if.exmem emif
   import cpu_types_pkg::*;
 always_ff @(posedge CLK, negedge nRST)
 begin	
-	if(!nRST || emif.flush || dhit)
+	if(!nRST)
 	begin
 		emif.RegWr_MEM <= 1'b0;
 		emif.RegDst_MEM <= 2'b0;
@@ -31,6 +31,7 @@ begin
 		emif.zero_MEM <= 1'b0;
 		emif.Output_Port_MEM <= '0;
 		emif.halt_MEM <= '0;
+		emif.instr_MEM <= '0;
 	end
 	else if(emif.enable)
 	begin
@@ -56,13 +57,21 @@ begin
 		emif.zero_MEM <= emif.zero;
 		emif.Output_Port_MEM <= emif.Output_Port;
 		emif.halt_MEM <= emif.halt_EX;
+		emif.instr_MEM <= emif.instr_EX;
 	end
 	else
 	begin
+			if (dhit == 1) begin
+					emif.memtoReg_MEM <= '0;
+					emif.memWr_MEM <= '0;
+			end
+			else begin 
+				emif.memWr_MEM <= emif.memWr_MEM;
+				emif.memtoReg_MEM <= emif.memtoReg_MEM;
+			end
+
 		emif.RegWr_MEM <= emif.RegWr_MEM;
 		emif.RegDst_MEM <= emif.RegDst_MEM;
-		emif.memtoReg_MEM <= emif.memtoReg_MEM;
-		emif.memWr_MEM <= emif.memtoReg_MEM;
 		emif.PC_Src_MEM <= emif.PC_Src_MEM;
 		emif.Wsel_MEM <= emif.Wsel_MEM;
 		emif.busA_MEM <= emif.busA_MEM;
@@ -81,6 +90,7 @@ begin
 		emif.zero_MEM <= emif.zero_MEM;
 		emif.Output_Port_MEM <= emif.Output_Port_MEM;
 		emif.halt_MEM <= emif.halt_MEM;
+		emif.instr_MEM <= emif.instr_MEM;
 	end
 end
 endmodule

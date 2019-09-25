@@ -14,7 +14,7 @@ add wave -noupdate -expand -group {Datapath Signals} -color Blue /system_tb/DUT/
 add wave -noupdate -expand -group {Datapath Signals} -color Blue /system_tb/DUT/CPU/DP/dpif/dmemstore
 add wave -noupdate -expand -group {Datapath Signals} -color Blue /system_tb/DUT/CPU/DP/dpif/dmemaddr
 add wave -noupdate -divider registers
-add wave -noupdate -color Salmon -subitemconfig {{/system_tb/DUT/CPU/DP/RF/reg_file[31]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[30]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[29]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[28]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[27]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[26]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[25]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[24]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[23]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[22]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[21]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[20]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[19]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[18]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[17]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[16]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[15]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[14]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[13]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[12]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[11]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[10]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[9]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[8]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[7]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[6]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[5]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[4]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[3]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[2]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[1]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[0]} {-color Salmon -height 17}} /system_tb/DUT/CPU/DP/RF/reg_file
+add wave -noupdate -color Salmon /system_tb/DUT/CPU/DP/RF/reg_file
 add wave -noupdate /system_tb/DUT/CPU/DP/RF/n_reg_file
 add wave -noupdate /system_tb/DUT/CPU/DP/RF/rfif/WEN
 add wave -noupdate /system_tb/DUT/CPU/DP/RF/rfif/wsel
@@ -33,13 +33,15 @@ add wave -noupdate -expand -group {DE Latch} -color Gold /system_tb/DUT/CPU/DP/d
 add wave -noupdate -expand -group {DE Latch} -color Gold /system_tb/DUT/CPU/DP/deif/ALUop
 add wave -noupdate -expand -group {DE Latch} -color Gold /system_tb/DUT/CPU/DP/deif/ALU_Src
 add wave -noupdate -expand -group {DE Latch} -color Gold /system_tb/DUT/CPU/DP/deif/PC_Src
+add wave -noupdate /system_tb/DUT/CPU/DP/deif/RegWr
 add wave -noupdate /system_tb/DUT/CPU/DP/DE/deif/RegWr_EX
 add wave -noupdate -expand -group {EM } -color Magenta /system_tb/DUT/CPU/DP/emif/opcode_EX
 add wave -noupdate -expand -group {EM } -color Magenta /system_tb/DUT/CPU/DP/emif/zero_MEM
-add wave -noupdate -expand -group {EM } -color Magenta /system_tb/DUT/CPU/DP/emif/Output_Port_MEM
+add wave -noupdate -expand -group {EM } /system_tb/DUT/CPU/DP/EM/emif/Output_Port_MEM
 add wave -noupdate -expand -group {EM } -color Magenta /system_tb/DUT/CPU/DP/emif/jump_addr
 add wave -noupdate -expand -group {EM } -color Magenta /system_tb/DUT/CPU/DP/emif/branch_addr
 add wave -noupdate /system_tb/DUT/CPU/DP/EM/emif/RegWr_MEM
+add wave -noupdate -color Magenta /system_tb/DUT/CPU/DP/emif/Output_Port_MEM
 add wave -noupdate -expand -group MW -color Aquamarine /system_tb/DUT/CPU/DP/MW/mwif/Output_Port_WB
 add wave -noupdate -expand -group MW -color Aquamarine /system_tb/DUT/CPU/DP/MW/mwif/busB_WB
 add wave -noupdate -expand -group MW -color Aquamarine /system_tb/DUT/CPU/DP/MW/mwif/extended_WB
@@ -47,20 +49,24 @@ add wave -noupdate -expand -group MW -color Aquamarine /system_tb/DUT/CPU/DP/MW/
 add wave -noupdate -expand -group MW -color Aquamarine /system_tb/DUT/CPU/DP/MW/mwif/memWr_WB
 add wave -noupdate -expand -group MW -color Aquamarine /system_tb/DUT/CPU/DP/MW/mwif/RegWr_WB
 add wave -noupdate -expand -group MW /system_tb/DUT/CPU/DP/mwif/RegDst_WB
-add wave -noupdate -expand -group {control unit} -color Orange /system_tb/DUT/CPU/DP/CU/iload
-add wave -noupdate -expand -group {control unit} -color Orange /system_tb/DUT/CPU/DP/CU/equal
-add wave -noupdate -expand -group {control unit} -color Orange /system_tb/DUT/CPU/DP/CU/memtoReg
-add wave -noupdate -expand -group {control unit} -color Orange /system_tb/DUT/CPU/DP/CU/memWr
-add wave -noupdate -expand -group {control unit} -color Orange /system_tb/DUT/CPU/DP/CU/ALUop
-add wave -noupdate -expand -group {control unit} -color Orange /system_tb/DUT/CPU/DP/CU/ALU_Src
-add wave -noupdate -expand -group {control unit} -color Orange /system_tb/DUT/CPU/DP/CU/EXTop
-add wave -noupdate -expand -group {control unit} -color Orange /system_tb/DUT/CPU/DP/CU/halt
-add wave -noupdate -expand -group {control unit} -color Orange /system_tb/DUT/CPU/DP/CU/PC_Src
-add wave -noupdate -expand -group {control unit} -color Orange /system_tb/DUT/CPU/DP/CU/RegDst
-add wave -noupdate -expand -group {control unit} -color Orange /system_tb/DUT/CPU/DP/CU/RegWr
-add wave -noupdate -expand -group {control unit} -color Orange /system_tb/DUT/CPU/DP/CU/Wsel
-add wave -noupdate -expand -group {control unit} -color Orange /system_tb/DUT/CPU/DP/CU/iREN
-add wave -noupdate -expand -group {control unit} -color Orange -expand -subitemconfig {/system_tb/DUT/CPU/DP/CU/rt.opcode {-color Orange -height 17} /system_tb/DUT/CPU/DP/CU/rt.rs {-color Orange -height 17} /system_tb/DUT/CPU/DP/CU/rt.rt {-color Orange -height 17} /system_tb/DUT/CPU/DP/CU/rt.rd {-color Orange -height 17} /system_tb/DUT/CPU/DP/CU/rt.shamt {-color Orange -height 17} /system_tb/DUT/CPU/DP/CU/rt.funct {-color Orange -height 17}} /system_tb/DUT/CPU/DP/CU/rt
+add wave -noupdate -color Cyan /system_tb/DUT/CPU/DP/MW/mwif/Output_Port_MEM
+add wave -noupdate -color Cyan /system_tb/DUT/CPU/DP/MW/mwif/memtoReg_MEM
+add wave -noupdate -color Cyan /system_tb/DUT/CPU/DP/MW/mwif/memWr_MEM
+add wave -noupdate -color Cyan /system_tb/DUT/CPU/DP/MW/mwif/RegWr_MEM
+add wave -noupdate -group {control unit} -color Orange /system_tb/DUT/CPU/DP/CU/iload
+add wave -noupdate -group {control unit} -color Orange /system_tb/DUT/CPU/DP/CU/equal
+add wave -noupdate -group {control unit} -color Orange /system_tb/DUT/CPU/DP/CU/memtoReg
+add wave -noupdate -group {control unit} -color Orange /system_tb/DUT/CPU/DP/CU/memWr
+add wave -noupdate -group {control unit} -color Orange /system_tb/DUT/CPU/DP/CU/ALUop
+add wave -noupdate -group {control unit} -color Orange /system_tb/DUT/CPU/DP/CU/ALU_Src
+add wave -noupdate -group {control unit} -color Orange /system_tb/DUT/CPU/DP/CU/EXTop
+add wave -noupdate -group {control unit} -color Orange /system_tb/DUT/CPU/DP/CU/halt
+add wave -noupdate -group {control unit} -color Orange /system_tb/DUT/CPU/DP/CU/PC_Src
+add wave -noupdate -group {control unit} -color Orange /system_tb/DUT/CPU/DP/CU/RegDst
+add wave -noupdate -group {control unit} -color Orange /system_tb/DUT/CPU/DP/CU/RegWr
+add wave -noupdate -group {control unit} -color Orange /system_tb/DUT/CPU/DP/CU/Wsel
+add wave -noupdate -group {control unit} -color Orange /system_tb/DUT/CPU/DP/CU/iREN
+add wave -noupdate -group {control unit} -color Orange -expand -subitemconfig {/system_tb/DUT/CPU/DP/CU/rt.opcode {-color Orange -height 17} /system_tb/DUT/CPU/DP/CU/rt.rs {-color Orange -height 17} /system_tb/DUT/CPU/DP/CU/rt.rt {-color Orange -height 17} /system_tb/DUT/CPU/DP/CU/rt.rd {-color Orange -height 17} /system_tb/DUT/CPU/DP/CU/rt.shamt {-color Orange -height 17} /system_tb/DUT/CPU/DP/CU/rt.funct {-color Orange -height 17}} /system_tb/DUT/CPU/DP/CU/rt
 add wave -noupdate /system_tb/DUT/CPU/DP/rt
 add wave -noupdate /system_tb/DUT/CPU/DP/aluif/Output_Port
 add wave -noupdate /system_tb/DUT/CPU/DP/aluif/Port_A
@@ -82,4 +88,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {373 ns} {466 ns}
+WaveRestoreZoom {210781631650 ps} {210781724650 ps}

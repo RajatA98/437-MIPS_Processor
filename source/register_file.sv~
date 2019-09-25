@@ -17,9 +17,10 @@ module register_file
 	
 	assign rfif.rdat1 = reg_file[rfif.rsel1];
 	assign rfif.rdat2 = reg_file[rfif.rsel2];
-	always_comb
+
+always_comb
 	begin
-		n_reg_file = reg_file;
+		n_reg_file = n_reg_file;
 		//rfif.rdat1 = 0;
 		//rfif.rdat2 = 0;	
 		if(rfif.WEN)
@@ -37,7 +38,7 @@ module register_file
 			reg_file <= 0;
 		end
 		else begin
-			reg_file[2] <= 'h25;
+			reg_file <= n_reg_file;
 		end
 	end
 endmodule

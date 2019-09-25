@@ -7,7 +7,7 @@ execute_memory_if.exmem emif
   import cpu_types_pkg::*;
 always_ff @(posedge CLK, negedge nRST)
 begin	
-	if(!nRST || emif.flush || dhit)
+	if(!nRST)
 	begin
 		emif.RegWr_MEM <= 1'b0;
 		emif.RegDst_MEM <= 2'b0;
@@ -61,10 +61,10 @@ begin
 	end
 	else
 	begin
+		emif.memWr_MEM <= emif.memWr_MEM;
+		emif.memtoReg_MEM <= emif.memtoReg_MEM;
 		emif.RegWr_MEM <= emif.RegWr_MEM;
 		emif.RegDst_MEM <= emif.RegDst_MEM;
-		emif.memtoReg_MEM <= emif.memtoReg_MEM;
-		emif.memWr_MEM <= emif.memtoReg_MEM;
 		emif.PC_Src_MEM <= emif.PC_Src_MEM;
 		emif.Wsel_MEM <= emif.Wsel_MEM;
 		emif.busA_MEM <= emif.busA_MEM;

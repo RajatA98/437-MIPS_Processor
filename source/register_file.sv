@@ -17,7 +17,8 @@ module register_file
 	
 	assign rfif.rdat1 = reg_file[rfif.rsel1];
 	assign rfif.rdat2 = reg_file[rfif.rsel2];
-	always_comb
+
+always_comb
 	begin
 		n_reg_file = reg_file;
 		//rfif.rdat1 = 0;

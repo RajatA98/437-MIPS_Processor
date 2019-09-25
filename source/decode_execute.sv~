@@ -1,14 +1,16 @@
 `include "decode_execute_if.vh"
+`include "cpu_types_pkg.vh"
 
 module decode_execute(
 
 	input CLK, nRST,
 	decode_execute_if.idex deif
 );
+  import cpu_types_pkg::*;
 
 always_ff @(posedge CLK, negedge nRST)
 begin
-		if(!nRST || deif.flush)
+		if(!nRST)
 		begin
 			deif.memtoReg_EX <= 1'b0;
 			deif.memWr_EX <= 1'b0;

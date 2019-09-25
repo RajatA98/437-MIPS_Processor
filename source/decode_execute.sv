@@ -10,7 +10,7 @@ module decode_execute(
 
 always_ff @(posedge CLK, negedge nRST)
 begin
-		if(!nRST || deif.flush)
+		if(!nRST)
 		begin
 			deif.memtoReg_EX <= 1'b0;
 			deif.memWr_EX <= 1'b0;
@@ -33,6 +33,7 @@ begin
 			deif.next_addr_EX <= '0;
 			deif.imemaddr_EX <= '0;
 			deif.instr_EX <= '0;
+			deif.final_wsel_EX <= '0;
 			
 		end
 		else if(deif.enable)
@@ -58,6 +59,7 @@ begin
 			deif.next_addr_EX <= deif.next_addr_ID;
 			deif.imemaddr_EX <= deif.imemaddr_ID;
 			deif.instr_EX <= deif.instr_ID;
+			deif.final_wsel_EX <= deif.final_wsel;
 		end
 		else
 		begin
@@ -82,6 +84,7 @@ begin
 			deif.next_addr_EX <= deif.next_addr_EX;
 			deif.imemaddr_EX <= deif.imemaddr_EX;
 			deif.instr_EX <= deif.instr_EX;
+			deif.final_wsel_EX <= deif.final_wsel_EX;
 		end
 end
 endmodule	
