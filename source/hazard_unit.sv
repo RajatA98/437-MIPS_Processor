@@ -3,7 +3,7 @@ import cpu_types_pkg::*;
 module hazard_unit
 (
 	input word_t instr_ID, instr_EX, instr_MEM,
-	input logic RegWr_MEM,
+	input logic RegWr_EX, memWr_EX, RegWr_MEM, memWr_MEM,
 	output logic flush_ID, flush_EX, flush_MEM, pc_enable, enable_ID, enable_EX, enable_MEM
 );
 
@@ -52,22 +52,37 @@ begin
 				pc_enable = 1'b0;
 			end
 	endcase
-	if(RegWr_MEM)
+	
+	if(RegWr_EX || memWr_EX)
 	begin
-		if((((rt_EX.rd == rt_ID.rs || rt_EX.rd == rt_ID.rt) && (rt_EX.opcode == RTYPE)) || it_EX.rt == it_ID.rs))
+		if((((rt_EX.rd == rt_ID.rs || rt_EX.rd == rt_ID.rt) && (rt_EX.opcode == RTYPE)) || (it_EX.opcode != RTYPE && it_EX.rt == it_ID.rs)))
 		begin
 	
 			pc_enable = 1'b1;
 			enable_ID = 1'b0;
 			flush_EX = 1'b1;
 		end
-		if((((rt_MEM.rd == rt_ID.rs || rt_MEM.rd == rt_ID.rt) && (rt_MEM.opcode == RTYPE)) || it_MEM.rt == it_ID.rs))
+		else if ((it_EX.opcode == SW) && ((it_ID.rt == it_EX.rs) || it_EX.rt == it_ID.rs)) begin
+			pc_enable = 1'b1;
+			enable_ID = 1'b0;
+			flush_EX = 1'b1;
+		end  
+	end
+	else if(RegWr_MEM || memWr_MEM)
+	begin
+		if((((rt_MEM.rd == rt_ID.rs || rt_MEM.rd == rt_ID.rt) && (rt_MEM.opcode == RTYPE)) || (it_MEM.opcode != RTYPE && it_MEM.rt == it_ID.rs)))
 		begin
 			pc_enable = 1'b1;
 			enable_ID = 1'b0;
 			flush_EX = 1'b1;
 		end
+	else if ((it_MEM.opcode == SW) && ((it_ID.rt == it_MEM.rs) || it_MEM.rt == it_ID.rs)) begin
+			pc_enable = 1'b1;
+			enable_ID = 1'b0;
+			flush_EX = 1'b1;
+		end  
 	end
+
 	
 end
 endmodule
