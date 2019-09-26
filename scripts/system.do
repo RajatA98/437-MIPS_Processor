@@ -5,6 +5,7 @@ add wave -noupdate /system_tb/DUT/CPUCLK
 add wave -noupdate /system_tb/nRST
 add wave -noupdate -expand -group {Datapath Signals} -color Blue /system_tb/DUT/CPU/DP/dpif/halt
 add wave -noupdate -expand -group {Datapath Signals} -color Blue /system_tb/DUT/CPU/DP/dpif/ihit
+add wave -noupdate -expand -group {Datapath Signals} /system_tb/DUT/CPU/DP/dpif/imemREN
 add wave -noupdate -expand -group {Datapath Signals} -color Blue /system_tb/DUT/CPU/DP/dpif/imemload
 add wave -noupdate -expand -group {Datapath Signals} -color Blue /system_tb/DUT/CPU/DP/dpif/imemaddr
 add wave -noupdate -expand -group {Datapath Signals} -color Blue /system_tb/DUT/CPU/DP/dpif/dhit
@@ -80,20 +81,29 @@ add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/flush_M
 add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/enable_ID
 add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/enable_EX
 add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/enable_MEM
-add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/rt_ID
-add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/rt_EX
-add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/rt_MEM
-add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/it_ID
-add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/it_EX
-add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/it_MEM
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/RegWr_MEM
+add wave -noupdate -expand -group {Hazard Unit} -expand -group rtype -radix unsigned -childformat {{/system_tb/DUT/CPU/DP/HU/rt_ID.opcode -radix unsigned} {/system_tb/DUT/CPU/DP/HU/rt_ID.rs -radix unsigned} {/system_tb/DUT/CPU/DP/HU/rt_ID.rt -radix unsigned} {/system_tb/DUT/CPU/DP/HU/rt_ID.rd -radix unsigned} {/system_tb/DUT/CPU/DP/HU/rt_ID.shamt -radix unsigned} {/system_tb/DUT/CPU/DP/HU/rt_ID.funct -radix unsigned}} -subitemconfig {/system_tb/DUT/CPU/DP/HU/rt_ID.opcode {-height 17 -radix unsigned} /system_tb/DUT/CPU/DP/HU/rt_ID.rs {-height 17 -radix unsigned} /system_tb/DUT/CPU/DP/HU/rt_ID.rt {-height 17 -radix unsigned} /system_tb/DUT/CPU/DP/HU/rt_ID.rd {-height 17 -radix unsigned} /system_tb/DUT/CPU/DP/HU/rt_ID.shamt {-height 17 -radix unsigned} /system_tb/DUT/CPU/DP/HU/rt_ID.funct {-height 17 -radix unsigned}} /system_tb/DUT/CPU/DP/HU/rt_ID
+add wave -noupdate -expand -group {Hazard Unit} -expand -group rtype /system_tb/DUT/CPU/DP/HU/rt_EX
+add wave -noupdate -expand -group {Hazard Unit} -expand -group rtype /system_tb/DUT/CPU/DP/HU/rt_MEM
+add wave -noupdate -expand -group {Hazard Unit} -group itype /system_tb/DUT/CPU/DP/HU/it_ID
+add wave -noupdate -expand -group {Hazard Unit} -group itype /system_tb/DUT/CPU/DP/HU/it_EX
+add wave -noupdate -expand -group {Hazard Unit} -group itype /system_tb/DUT/CPU/DP/HU/it_MEM
 add wave -noupdate -expand -group {branch predict} -itemcolor White /system_tb/DUT/CPU/DP/BP/zero
 add wave -noupdate -expand -group {branch predict} -itemcolor White /system_tb/DUT/CPU/DP/BP/instr
 add wave -noupdate -expand -group {branch predict} -itemcolor White /system_tb/DUT/CPU/DP/BP/flush_ID
 add wave -noupdate -expand -group {branch predict} -itemcolor White /system_tb/DUT/CPU/DP/BP/flush_EX
 add wave -noupdate -expand -group {branch predict} -itemcolor White /system_tb/DUT/CPU/DP/BP/flush_MEM
 add wave -noupdate -expand -group {branch predict} -itemcolor White /system_tb/DUT/CPU/DP/BP/opcode
+add wave -noupdate /system_tb/DUT/CPU/DP/fdif/next_addr
+add wave -noupdate /system_tb/DUT/CPU/DP/emif/branch_addr_MEM
+add wave -noupdate /system_tb/DUT/CPU/DP/emif/jump_addr_MEM
+add wave -noupdate /system_tb/DUT/CPU/DP/CU/equal
+add wave -noupdate /system_tb/DUT/CPU/DP/CU/PC_Src
+add wave -noupdate /system_tb/DUT/CPU/DP/deif/PC_Src_EX
+add wave -noupdate /system_tb/DUT/CPU/DP/emif/PC_Src_MEM
+add wave -noupdate /system_tb/DUT/CPU/DP/pc_halt
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {418878 ps} 0}
+WaveRestoreCursors {{Cursor 1} {800000 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 150
 configure wave -valuecolwidth 100
@@ -109,4 +119,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {0 ps} {744 ns}
+WaveRestoreZoom {205 ns} {966 ns}

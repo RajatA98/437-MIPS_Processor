@@ -18,7 +18,7 @@ module pc
 			iaddr <= 32'b0;
 		else if(ihit && !halt)
 			iaddr <= next_addr;
-		else
+		else 
 			iaddr <= iaddr;
 	end
 endmodule

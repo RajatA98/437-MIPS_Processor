@@ -114,7 +114,7 @@ assign imm16 = it.imm;
 ////CHANGED BY JIHAN (NEED TO CHECK)
 	control_unit CU(
 		.iload(fdif.instr_ID),
-		.equal(emif.zero_MEM),
+		.equal(aluif.zero),
 		.memtoReg(memtoReg),
 		.memWr(memWr),
 		.ALUop(ALUop),
@@ -288,24 +288,26 @@ assign final_rt = mwif.instr_WB[20:16];
 	word_t next_addr;
 
 ///CHANGED BY JIHAN///I THINK THIS IS RIGHT!!!!
-
-
+	logic bp_choose;
+	logic pc_halt, pc_enable, pc_enable_bp;
+	logic npc_enable, npc_enable_bp;
 always_comb
 	begin
-		if(emif.PC_Src_MEM == 2'd3) begin
-			next_addr = emif.busA_MEM;
-			fdif.next_addr = emif.busA_MEM;
-		end
-		else if (emif.PC_Src_MEM == 2'd2) begin
+
+		if (emif.PC_Src_MEM == 2'd2) begin
 			//j_temp = dpif.imemaddr + 4;
 			//for jump
       next_addr = emif.jump_addr_MEM;
 			fdif.next_addr = emif.jump_addr_MEM;
 		end
-		else if (emif.PC_Src_MEM == 2'd1) begin
+		else if (bp_choose) begin
       //for branch
       next_addr = emif.branch_addr_MEM;
 			fdif.next_addr = emif.branch_addr_MEM;
+		end
+		else if(emif.PC_Src_MEM == 2'd3) begin
+			next_addr = emif.busA_MEM;
+			fdif.next_addr = emif.busA_MEM;
 		end
 		else begin
 			next_addr = dpif.imemaddr + 4;
@@ -325,13 +327,26 @@ end
 	output logic iaddr
 );
 	*/
+	always_ff @(posedge CLK, negedge nRST)
+	begin
+		if(!nRST)
+		begin
+			pc_enable <= '0;
+		 	pc_enable_bp <= '0;
+		end
+		else
+		begin
+			pc_enable <= npc_enable;
+		 	pc_enable_bp <= npc_enable_bp;
+		end
+	end
+	assign pc_halt = dpif.halt || pc_enable || pc_enable_bp;
 
+	pc PC(.CLK(CLK), .nRST(nRST),.ihit(dpif.ihit), .halt(pc_halt), .next_addr(next_addr), .iaddr(dpif.imemaddr));
 
-	pc PC(.CLK(CLK), .nRST(nRST),.ihit(dpif.ihit), .halt(dpif.halt), .next_addr(next_addr), .iaddr(dpif.imemaddr));
+	branch_predictor BP(.zero(emif.zero_MEM), .instr(emif.instr_MEM), .pc_enable(npc_enable_bp), .flush_ID(flush_ID_BP), .flush_EX(flush_EX_BP), .flush_MEM(flush_MEM_BP), .bp_choose(bp_choose));
 
-	branch_predictor BP(.zero(emif.zero_MEM), .instr(emif.instr_MEM), .flush_ID(flush_ID_BP), .flush_EX(flush_EX_BP), .flush_MEM(flush_MEM_BP));
-
-	hazard_unit HU(.instr_ID(fdif.instr_ID), .instr_EX(deif.instr_EX), .instr_MEM(emif.instr_MEM), .flush_ID(flush_ID), .flush_EX(flush_EX), .flush_MEM(flush_MEM), .enable_ID(enable_ID), .enable_EX(enable_EX), .enable_MEM(enable_MEM));
+	hazard_unit HU(.instr_ID(fdif.instr_ID), .instr_EX(deif.instr_EX), .instr_MEM(emif.instr_MEM), .RegWr_MEM(emif.RegWr_MEM), .flush_ID(flush_ID), .flush_EX(flush_EX), .flush_MEM(flush_MEM), .pc_enable(npc_enable), .enable_ID(enable_ID), .enable_EX(enable_EX), .enable_MEM(enable_MEM));
 
 
 

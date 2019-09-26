@@ -35,6 +35,31 @@ module memory_wb(
 						mwif.instr_WB <= '0;
 						mwif.dload_WB <= '0;
         end
+				else if (mwif.flush && mwif.enable) begin
+            mwif.RegWr_WB <= 1'b0;
+						mwif.RegDst_WB <= 2'b0;
+						mwif.memtoReg_WB <= 1'b0;
+						mwif.memWr_WB <= 1'b0;
+						//mwif.PC_Src_WB <= 2'b0;
+						mwif.Wsel_WB <= 2'b0;
+						//mwif.busA_WB <= '0;
+						mwif.busB_WB <= '0;
+						mwif.next_addr_WB <= '0;
+						mwif.imemaddr_WB <= '0;
+						mwif.jump_addr_WB <= '0;
+						mwif.branch_addr_WB <= '0;
+						mwif.extended_WB <= '0;
+						mwif.rs_WB <= '0;
+						mwif.rt_WB <= '0;
+						mwif.opcode_WB <= ORI;
+						mwif.funct_WB <= OR;
+						mwif.imm16_WB <= '0;
+						mwif.shamt_WB <= '0;
+						//mwif.zero_WB <= 1'b0;
+						mwif.Output_Port_WB <= '0;
+						mwif.halt_WB <= '0;
+						mwif.instr_WB <= '0;
+        end
         else if (mwif.enable) begin
             mwif.RegWr_WB <= mwif.RegWr_MEM;
 						mwif.RegDst_WB <= mwif.RegDst_MEM;
@@ -61,31 +86,7 @@ module memory_wb(
 						mwif.instr_WB <= mwif.instr_MEM;
 						mwif.dload_WB <= mwif.dload;
         end
-        /*else if (mwif.flush) begin
-            mwif.RegWr_WB <= 1'b0;
-						mwif.RegDst_WB <= 2'b0;
-						mwif.memtoReg_WB <= 1'b0;
-						mwif.memWr_WB <= 1'b0;
-						//mwif.PC_Src_WB <= 2'b0;
-						mwif.Wsel_WB <= 2'b0;
-						//mwif.busA_WB <= '0;
-						mwif.busB_WB <= '0;
-						mwif.next_addr_WB <= '0;
-						mwif.imemaddr_WB <= '0;
-						mwif.jump_addr_WB <= '0;
-						mwif.branch_addr_WB <= '0;
-						mwif.extended_WB <= '0;
-						mwif.rs_WB <= '0;
-						mwif.rt_WB <= '0;
-						mwif.opcode_WB <= ORI;
-						mwif.funct_WB <= OR;
-						mwif.imm16_WB <= '0;
-						mwif.shamt_WB <= '0;
-						//mwif.zero_WB <= 1'b0;
-						mwif.Output_Port_WB <= '0;
-						mwif.halt_WB <= '0;
-						mwif.instr_WB <= '0;
-        end*/
+        
         else begin
             mwif.RegWr_WB <= mwif.RegWr_WB;
 						mwif.RegDst_WB <= mwif.RegDst_WB;

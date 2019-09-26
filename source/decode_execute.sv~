@@ -10,7 +10,7 @@ module decode_execute(
 
 always_ff @(posedge CLK, negedge nRST)
 begin
-		if(!nRST)
+		if(!nRST || deif.flush)
 		begin
 			deif.memtoReg_EX <= 1'b0;
 			deif.memWr_EX <= 1'b0;
