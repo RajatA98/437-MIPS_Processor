@@ -1,7 +1,7 @@
 `include "cpu_types_pkg.vh"
 
 module branch_predictor(
-  input logic zero, 
+  input logic zero,
   input logic [31:0] instr,
   output logic pc_enable, flush_ID, flush_EX, flush_MEM, bp_choose
 );
