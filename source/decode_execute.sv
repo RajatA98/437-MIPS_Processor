@@ -34,6 +34,7 @@ begin
 			deif.imemaddr_EX <= '0;
 			deif.instr_EX <= '0;
 			deif.final_wsel_EX <= '0;
+			deif.branch_addr_EX <= '0;
 		end
 		else if(deif.flush && deif.enable)
 		begin
@@ -59,6 +60,7 @@ begin
 			deif.imemaddr_EX <= '0;
 			deif.instr_EX <= '0;
 			deif.final_wsel_EX <= '0;
+			deif.branch_addr_EX <= '0;
 		end
 		else if(deif.enable)
 		begin
@@ -84,6 +86,7 @@ begin
 			deif.imemaddr_EX <= deif.imemaddr_ID;
 			deif.instr_EX <= deif.instr_ID;
 			deif.final_wsel_EX <= deif.final_wsel;
+			deif.branch_addr_EX <= deif.branch_addr;
 		end
 		else
 		begin
@@ -109,6 +112,7 @@ begin
 			deif.imemaddr_EX <= deif.imemaddr_EX;
 			deif.instr_EX <= deif.instr_EX;
 			deif.final_wsel_EX <= deif.final_wsel_EX;
+			deif.branch_addr_EX <= deif.branch_addr_EX;
 		end
 end
 endmodule	

@@ -44,7 +44,7 @@ logic [1:0] PC_Src_EX;
 logic [1:0] RegDst_EX;
 logic RegWr_EX;
 logic [1:0]Wsel_EX;
-logic [4:0] final_wsel;
+logic [4:0] final_wsel, final_wsel_EX;
 
 
 //signals from the register file

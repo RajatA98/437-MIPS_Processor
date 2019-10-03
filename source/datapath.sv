@@ -59,6 +59,8 @@ decode_execute DE(CLK, nRST, deif);
 execute_memory EM(CLK, nRST, dpif.dhit, emif);
 memory_wb MW(CLK, nRST, mwif);
 
+logic fw_enable, hazard_enable;
+
 //fetch decode latch signal input assignments
 assign fdif.imemload = dpif.imemload;
 assign fdif.flush = dpif.halt || (flush_ID && hazard_enable) || flush_ID_BP || flush_ID_j;
@@ -86,7 +88,7 @@ assign opcode = rt_fd.opcode;
 assign funct = rt_fd.funct;
 assign imm16 = it.imm;
 
-
+word_t branch_addr;
 	/*
 		module control_unit
 (
@@ -148,7 +150,7 @@ assign deif.imemaddr_ID = fdif.imemaddr_ID;
 assign deif.instr_ID = fdif.instr_ID;
 assign deif.imm16 = imm16;
 assign deif.shamt = fdif.instr_ID[10:6];
-
+assign deif.branch_addr = branch_addr;
 assign deif.opcode = opcode_t'(opcode);
 assign deif.funct = funct_t'(funct);
 assign deif.ALUop = aluop_t'(ALUop); //check syntax
@@ -208,12 +210,13 @@ end
 
 	register_file RF(CLK, nRST, rfif);	word_t next_addr;
 
-word_t branch_addr;
-assign branch_addr = (branch_extender << 2) + (fdif.imemaddr_ID + 4);
+
+assign branch_addr = (branch_extender << 2) + (dpif.imemaddr_ID + 4);
 
 	logic bp_choose;
 	logic pc_halt, pc_enable, pc_enable_bp;
 	logic npc_enable, npc_enable_bp;
+
 always_comb
 	begin
 
@@ -222,8 +225,8 @@ always_comb
       //for branch
       next_addr = branch_addr;
 			fdif.next_addr = branch_addr;
-
-		else if (emif.PC_Src == 2'd2) begin
+		end
+		else if (emif.PC_Src_MEM == 2'd2) begin
 			//j_temp = dpif.imemaddr + 4;
 			//for jump
       next_addr = emif.jump_addr_MEM;
@@ -256,25 +259,25 @@ end
 	word_t extended;
 	extender EXT(.EXTop(deif.EXTop_EX), .imm16(deif.imm16_EX), .extended(extended));
 
-logic word_t busB;
+word_t busB;
 logic [1:0] Asel, Bsel;
 ////MUXES FOR FORWARDING
 always_comb begin
   aluif.Port_A = deif.busA_EX;
   aluif.Port_B = busB;
   if (fw_enable) begin //need forwarding
-      if (Asel == 0)
+      if (Asel == 2'b0)
         aluif.Port_A = deif.busA_EX;
-      else if (Asel == 1)
+      else if (Asel == 2'b1)
         aluif.Port_A = emif.Output_Port_MEM;
-      else if (Asel == 2)
+      else if (Asel == 2'b10)
         aluif.Port_A = mwif.Output_Port_WB;
 
       if (Bsel == 0)
         aluif.Port_B = busB;
-      else if (Bsel == 1)
+      else if (Bsel == 2'b1)
         aluif.Port_B = emif.Output_Port_MEM;
-      else if (Bsel == 2)
+      else if (Bsel == 2'b10)
         aluif.Port_B = mwif.Output_Port_WB;
 
   end
@@ -303,7 +306,7 @@ assign jump_addr_EX =  {deif.imemaddr_EX[31:28], deif.instr_EX[25:0] << 2};
 	assign emif.busB_EX = deif.busB_EX;
   assign emif.imemaddr_EX = deif.imemaddr_EX;
   assign emif.jump_addr = jump_addr_EX;
-  assign emif.branch_addr = branch_addr_EX;
+  assign emif.branch_addr = deif.branch_addr_EX;
   assign emif.zero = aluif.zero;
   assign emif.Output_Port = aluif.Output_Port;
   assign emif.opcode_EX = opcode_t'(deif.opcode_EX);
@@ -356,7 +359,6 @@ assign final_rt = mwif.instr_WB[20:16];
 
 ///////LOGIC FOR FORWARDING UNIT TO OVERRIDE HAZARD UNIT
 logic [1:0] hazard_detect;
-logic fw_enable, hazard_enable;
 
 
 always_comb begin
@@ -433,10 +435,9 @@ logic pc_enable_j;
 .pc_enable_j(npc_enable_j), .hazard(hazard_detect));
 
   forwarding_unit FU(.instr_EX(deif.instr_EX), .instr_MEM(emif.instr_MEM),
-.instr_WB(mwif.instr_WB), .RegWR_EX(deif.RegWr_EX), .memWr_EX(deif.memWr_EX),
-.memtoReg_EX(deif.memtoReg_EX), .RegWr_MEM(emif.RegWr_MEM),
+.instr_WB(mwif.instr_WB), .RegWr_MEM(emif.RegWr_MEM),
 .memWr_MEM(emif.memWr_MEM), .memtoReg_MEM(emif.memtoReg_MEM),
 .RegWr_WB(mwif.RegWr_WB), .memtoReg_WB(mwif.memtoReg_WB), .Asel(Asel),
-.Bsel(Bsel);
+.Bsel(Bsel));
 
 endmodule

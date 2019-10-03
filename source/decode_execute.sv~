@@ -10,7 +10,7 @@ module decode_execute(
 
 always_ff @(posedge CLK, negedge nRST)
 begin
-		if(!nRST || deif.flush)
+		if(!nRST)
 		begin
 			deif.memtoReg_EX <= 1'b0;
 			deif.memWr_EX <= 1'b0;
@@ -34,7 +34,31 @@ begin
 			deif.imemaddr_EX <= '0;
 			deif.instr_EX <= '0;
 			deif.final_wsel_EX <= '0;
-			
+		end
+		else if(deif.flush && deif.enable)
+		begin
+			deif.memtoReg_EX <= 1'b0;
+			deif.memWr_EX <= 1'b0;
+			deif.ALUop_EX <= ALU_OR;
+			deif.ALU_Src_EX <= 1'b0;
+			deif.EXTop_EX <= 2'b0;
+			deif.halt_EX <= 1'b0;
+			deif.PC_Src_EX <= 2'b0;
+			deif.RegDst_EX <= 2'b0;
+			deif.RegWr_EX <= 1'b0;
+			deif.Wsel_EX <= 2'b0;
+			deif.busA_EX <= '0;
+			deif.busB_EX <= '0;
+			deif.rs_EX <= '0;
+			deif.rt_EX <= '0;
+			deif.opcode_EX <= ORI;
+			deif.funct_EX <= OR;
+			deif.imm16_EX <= '0;
+			deif.shamt_EX <= '0;
+			deif.next_addr_EX <= '0;
+			deif.imemaddr_EX <= '0;
+			deif.instr_EX <= '0;
+			deif.final_wsel_EX <= '0;
 		end
 		else if(deif.enable)
 		begin

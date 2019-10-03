@@ -6,7 +6,7 @@ module hazard_unit
 	input logic RegWr_EX, memWr_EX, RegWr_MEM, memWr_MEM,
 	output logic flush_ID, flush_EX, flush_MEM, pc_enable, enable_ID, enable_EX,
 enable_MEM,  flush_ID_j, flush_EX_j, flush_MEM_j, pc_enable_j,
-  output [1:0] hazard
+  output logic [1:0] hazard
 );
 
 r_t rt_ID, rt_EX, rt_MEM;
@@ -72,7 +72,7 @@ begin
 		else if ((it_EX.opcode == SW) && ((it_ID.rt == it_EX.rs) || it_EX.rt == it_ID.rs)) begin
 			pc_enable = 1'b1;
 			enable_ID = 1'b0;
-			flush_EX = 1'b1;'
+			flush_EX = 1'b1;
       hazard = 1;
 		end
 	end
