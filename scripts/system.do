@@ -26,6 +26,8 @@ add wave -noupdate /system_tb/DUT/CPU/DP/RF/rfif/rdat1
 add wave -noupdate /system_tb/DUT/CPU/DP/RF/rfif/rdat2
 add wave -noupdate -expand -group {FD Latch} -color {Spring Green} /system_tb/DUT/CPU/DP/fdif/imemaddr_ID
 add wave -noupdate -expand -group {FD Latch} -color {Spring Green} /system_tb/DUT/CPU/DP/fdif/instr_ID
+add wave -noupdate /system_tb/DUT/CPU/DP/fdif/flush
+add wave -noupdate /system_tb/DUT/CPU/DP/fdif/enable
 add wave -noupdate -group {DE Latch} -color Gold /system_tb/DUT/CPU/DP/deif/enable
 add wave -noupdate -group {DE Latch} -color Gold /system_tb/DUT/CPU/DP/deif/halt
 add wave -noupdate -group {DE Latch} -color Gold /system_tb/DUT/CPU/DP/deif/imemaddr_ID
@@ -77,23 +79,25 @@ add wave -noupdate /system_tb/DUT/CPU/DP/rt
 add wave -noupdate /system_tb/DUT/CPU/DP/aluif/Output_Port
 add wave -noupdate /system_tb/DUT/CPU/DP/aluif/Port_A
 add wave -noupdate /system_tb/DUT/CPU/DP/aluif/Port_B
-add wave -noupdate -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/instr_ID
-add wave -noupdate -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/instr_EX
-add wave -noupdate -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/instr_MEM
-add wave -noupdate -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/flush_ID
-add wave -noupdate -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/flush_EX
-add wave -noupdate -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/flush_MEM
-add wave -noupdate -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/enable_ID
-add wave -noupdate -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/enable_EX
-add wave -noupdate -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/enable_MEM
-add wave -noupdate -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/RegWr_MEM
-add wave -noupdate -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/memWr_MEM
-add wave -noupdate -group {Hazard Unit} -group rtype -radix unsigned -childformat {{/system_tb/DUT/CPU/DP/HU/rt_ID.opcode -radix unsigned} {/system_tb/DUT/CPU/DP/HU/rt_ID.rs -radix unsigned} {/system_tb/DUT/CPU/DP/HU/rt_ID.rt -radix unsigned} {/system_tb/DUT/CPU/DP/HU/rt_ID.rd -radix unsigned} {/system_tb/DUT/CPU/DP/HU/rt_ID.shamt -radix unsigned} {/system_tb/DUT/CPU/DP/HU/rt_ID.funct -radix unsigned}} -subitemconfig {/system_tb/DUT/CPU/DP/HU/rt_ID.opcode {-height 17 -radix unsigned} /system_tb/DUT/CPU/DP/HU/rt_ID.rs {-height 17 -radix unsigned} /system_tb/DUT/CPU/DP/HU/rt_ID.rt {-height 17 -radix unsigned} /system_tb/DUT/CPU/DP/HU/rt_ID.rd {-height 17 -radix unsigned} /system_tb/DUT/CPU/DP/HU/rt_ID.shamt {-height 17 -radix unsigned} /system_tb/DUT/CPU/DP/HU/rt_ID.funct {-height 17 -radix unsigned}} /system_tb/DUT/CPU/DP/HU/rt_ID
-add wave -noupdate -group {Hazard Unit} -group rtype -radix unsigned -childformat {{/system_tb/DUT/CPU/DP/HU/rt_EX.opcode -radix unsigned} {/system_tb/DUT/CPU/DP/HU/rt_EX.rs -radix unsigned} {/system_tb/DUT/CPU/DP/HU/rt_EX.rt -radix unsigned} {/system_tb/DUT/CPU/DP/HU/rt_EX.rd -radix unsigned} {/system_tb/DUT/CPU/DP/HU/rt_EX.shamt -radix unsigned} {/system_tb/DUT/CPU/DP/HU/rt_EX.funct -radix unsigned}} -subitemconfig {/system_tb/DUT/CPU/DP/HU/rt_EX.opcode {-height 17 -radix unsigned} /system_tb/DUT/CPU/DP/HU/rt_EX.rs {-height 17 -radix unsigned} /system_tb/DUT/CPU/DP/HU/rt_EX.rt {-height 17 -radix unsigned} /system_tb/DUT/CPU/DP/HU/rt_EX.rd {-height 17 -radix unsigned} /system_tb/DUT/CPU/DP/HU/rt_EX.shamt {-height 17 -radix unsigned} /system_tb/DUT/CPU/DP/HU/rt_EX.funct {-height 17 -radix unsigned}} /system_tb/DUT/CPU/DP/HU/rt_EX
-add wave -noupdate -group {Hazard Unit} -group rtype -radix unsigned /system_tb/DUT/CPU/DP/HU/rt_MEM
-add wave -noupdate -group {Hazard Unit} -expand -group itype -radix unsigned -childformat {{/system_tb/DUT/CPU/DP/HU/it_ID.opcode -radix unsigned} {/system_tb/DUT/CPU/DP/HU/it_ID.rs -radix unsigned} {/system_tb/DUT/CPU/DP/HU/it_ID.rt -radix unsigned} {/system_tb/DUT/CPU/DP/HU/it_ID.imm -radix unsigned}} -expand -subitemconfig {/system_tb/DUT/CPU/DP/HU/it_ID.opcode {-height 17 -radix unsigned} /system_tb/DUT/CPU/DP/HU/it_ID.rs {-height 17 -radix unsigned} /system_tb/DUT/CPU/DP/HU/it_ID.rt {-height 17 -radix unsigned} /system_tb/DUT/CPU/DP/HU/it_ID.imm {-height 17 -radix unsigned}} /system_tb/DUT/CPU/DP/HU/it_ID
-add wave -noupdate -group {Hazard Unit} -expand -group itype -radix unsigned -childformat {{/system_tb/DUT/CPU/DP/HU/it_EX.opcode -radix unsigned} {/system_tb/DUT/CPU/DP/HU/it_EX.rs -radix unsigned} {/system_tb/DUT/CPU/DP/HU/it_EX.rt -radix unsigned} {/system_tb/DUT/CPU/DP/HU/it_EX.imm -radix unsigned}} -expand -subitemconfig {/system_tb/DUT/CPU/DP/HU/it_EX.opcode {-height 17 -radix unsigned} /system_tb/DUT/CPU/DP/HU/it_EX.rs {-height 17 -radix unsigned} /system_tb/DUT/CPU/DP/HU/it_EX.rt {-height 17 -radix unsigned} /system_tb/DUT/CPU/DP/HU/it_EX.imm {-height 17 -radix unsigned}} /system_tb/DUT/CPU/DP/HU/it_EX
-add wave -noupdate -group {Hazard Unit} -expand -group itype -radix unsigned /system_tb/DUT/CPU/DP/HU/it_MEM
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/instr_ID
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/instr_EX
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/instr_MEM
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/flush_ID
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/flush_EX
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/flush_MEM
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/enable_ID
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/enable_EX
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/enable_MEM
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/RegWr_EX
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/memWr_EX
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/RegWr_MEM
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/memWr_MEM
+add wave -noupdate -expand -group {Hazard Unit} -expand -group rtype -radix unsigned -childformat {{/system_tb/DUT/CPU/DP/HU/rt_ID.opcode -radix unsigned} {/system_tb/DUT/CPU/DP/HU/rt_ID.rs -radix unsigned} {/system_tb/DUT/CPU/DP/HU/rt_ID.rt -radix unsigned} {/system_tb/DUT/CPU/DP/HU/rt_ID.rd -radix unsigned} {/system_tb/DUT/CPU/DP/HU/rt_ID.shamt -radix unsigned} {/system_tb/DUT/CPU/DP/HU/rt_ID.funct -radix unsigned}} -expand -subitemconfig {/system_tb/DUT/CPU/DP/HU/rt_ID.opcode {-height 17 -radix unsigned} /system_tb/DUT/CPU/DP/HU/rt_ID.rs {-height 17 -radix unsigned} /system_tb/DUT/CPU/DP/HU/rt_ID.rt {-height 17 -radix unsigned} /system_tb/DUT/CPU/DP/HU/rt_ID.rd {-height 17 -radix unsigned} /system_tb/DUT/CPU/DP/HU/rt_ID.shamt {-height 17 -radix unsigned} /system_tb/DUT/CPU/DP/HU/rt_ID.funct {-height 17 -radix unsigned}} /system_tb/DUT/CPU/DP/HU/rt_ID
+add wave -noupdate -expand -group {Hazard Unit} -expand -group rtype -radix unsigned -childformat {{/system_tb/DUT/CPU/DP/HU/rt_EX.opcode -radix unsigned} {/system_tb/DUT/CPU/DP/HU/rt_EX.rs -radix unsigned} {/system_tb/DUT/CPU/DP/HU/rt_EX.rt -radix unsigned} {/system_tb/DUT/CPU/DP/HU/rt_EX.rd -radix unsigned} {/system_tb/DUT/CPU/DP/HU/rt_EX.shamt -radix unsigned} {/system_tb/DUT/CPU/DP/HU/rt_EX.funct -radix unsigned}} -expand -subitemconfig {/system_tb/DUT/CPU/DP/HU/rt_EX.opcode {-height 17 -radix unsigned} /system_tb/DUT/CPU/DP/HU/rt_EX.rs {-height 17 -radix unsigned} /system_tb/DUT/CPU/DP/HU/rt_EX.rt {-height 17 -radix unsigned} /system_tb/DUT/CPU/DP/HU/rt_EX.rd {-height 17 -radix unsigned} /system_tb/DUT/CPU/DP/HU/rt_EX.shamt {-height 17 -radix unsigned} /system_tb/DUT/CPU/DP/HU/rt_EX.funct {-height 17 -radix unsigned}} /system_tb/DUT/CPU/DP/HU/rt_EX
+add wave -noupdate -expand -group {Hazard Unit} -expand -group rtype -radix unsigned /system_tb/DUT/CPU/DP/HU/rt_MEM
+add wave -noupdate -expand -group {Hazard Unit} -group itype -radix unsigned -childformat {{/system_tb/DUT/CPU/DP/HU/it_ID.opcode -radix unsigned} {/system_tb/DUT/CPU/DP/HU/it_ID.rs -radix unsigned} {/system_tb/DUT/CPU/DP/HU/it_ID.rt -radix unsigned} {/system_tb/DUT/CPU/DP/HU/it_ID.imm -radix unsigned}} -expand -subitemconfig {/system_tb/DUT/CPU/DP/HU/it_ID.opcode {-height 17 -radix unsigned} /system_tb/DUT/CPU/DP/HU/it_ID.rs {-height 17 -radix unsigned} /system_tb/DUT/CPU/DP/HU/it_ID.rt {-height 17 -radix unsigned} /system_tb/DUT/CPU/DP/HU/it_ID.imm {-height 17 -radix unsigned}} /system_tb/DUT/CPU/DP/HU/it_ID
+add wave -noupdate -expand -group {Hazard Unit} -group itype -radix unsigned -childformat {{/system_tb/DUT/CPU/DP/HU/it_EX.opcode -radix unsigned} {/system_tb/DUT/CPU/DP/HU/it_EX.rs -radix unsigned} {/system_tb/DUT/CPU/DP/HU/it_EX.rt -radix unsigned} {/system_tb/DUT/CPU/DP/HU/it_EX.imm -radix unsigned}} -expand -subitemconfig {/system_tb/DUT/CPU/DP/HU/it_EX.opcode {-height 17 -radix unsigned} /system_tb/DUT/CPU/DP/HU/it_EX.rs {-height 17 -radix unsigned} /system_tb/DUT/CPU/DP/HU/it_EX.rt {-height 17 -radix unsigned} /system_tb/DUT/CPU/DP/HU/it_EX.imm {-height 17 -radix unsigned}} /system_tb/DUT/CPU/DP/HU/it_EX
+add wave -noupdate -expand -group {Hazard Unit} -group itype -radix unsigned /system_tb/DUT/CPU/DP/HU/it_MEM
 add wave -noupdate -group {branch predict} -itemcolor White /system_tb/DUT/CPU/DP/BP/zero
 add wave -noupdate -group {branch predict} -itemcolor White /system_tb/DUT/CPU/DP/BP/instr
 add wave -noupdate -group {branch predict} -itemcolor White /system_tb/DUT/CPU/DP/BP/flush_ID
@@ -109,7 +113,7 @@ add wave -noupdate /system_tb/DUT/CPU/DP/deif/PC_Src_EX
 add wave -noupdate /system_tb/DUT/CPU/DP/emif/PC_Src_MEM
 add wave -noupdate /system_tb/DUT/CPU/DP/pc_halt
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {956028 ps} 0}
+WaveRestoreCursors {{Cursor 1} {1064580 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 150
 configure wave -valuecolwidth 100
@@ -125,4 +129,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {201858 ps} {1547582 ps}
+WaveRestoreZoom {696207 ps} {2045250 ps}

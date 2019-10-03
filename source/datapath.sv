@@ -289,7 +289,7 @@ assign final_rt = mwif.instr_WB[20:16];
 ///CHANGED BY JIHAN///I THINK THIS IS RIGHT!!!!
 	logic bp_choose;
 	logic pc_halt, pc_enable, pc_enable_bp;
-	logic npc_enable, npc_enable_bp;
+	//logic npc_enable, npc_enable_bp;
 always_comb
 	begin
 
@@ -326,7 +326,7 @@ end
 	output logic iaddr
 );
 	*/
-	always_ff @(posedge CLK, negedge nRST)
+/*	always_ff @(posedge CLK, negedge nRST)
 	begin
 		if(!nRST)
 		begin
@@ -338,14 +338,14 @@ end
 			pc_enable <= npc_enable;
 		 	pc_enable_bp <= npc_enable_bp;
 		end
-	end
+	end*/
 	assign pc_halt = dpif.halt || pc_enable || pc_enable_bp;
 
 	pc PC(.CLK(CLK), .nRST(nRST),.ihit(dpif.ihit), .halt(pc_halt), .next_addr(next_addr), .iaddr(dpif.imemaddr));
 
-	branch_predictor BP(.zero(emif.zero_MEM), .instr(emif.instr_MEM), .pc_enable(npc_enable_bp), .flush_ID(flush_ID_BP), .flush_EX(flush_EX_BP), .flush_MEM(flush_MEM_BP), .bp_choose(bp_choose));
+	branch_predictor BP(.zero(emif.zero_MEM), .instr(emif.instr_MEM), .pc_enable(pc_enable_bp), .flush_ID(flush_ID_BP), .flush_EX(flush_EX_BP), .flush_MEM(flush_MEM_BP), .bp_choose(bp_choose));
 
-	hazard_unit HU(.instr_ID(fdif.instr_ID), .instr_EX(deif.instr_EX), .instr_MEM(emif.instr_MEM),.RegWr_EX(deif.RegWr_EX),.memWr_EX(deif.memWr_EX), .RegWr_MEM(emif.RegWr_MEM),.memWr_MEM(emif.memWr_MEM), .flush_ID(flush_ID), .flush_EX(flush_EX), .flush_MEM(flush_MEM), .pc_enable(npc_enable), .enable_ID(enable_ID), .enable_EX(enable_EX), .enable_MEM(enable_MEM));
+	hazard_unit HU(.instr_ID(fdif.instr_ID), .instr_EX(deif.instr_EX), .instr_MEM(emif.instr_MEM),.RegWr_EX(deif.RegWr_EX),.memWr_EX(deif.memWr_EX), .RegWr_MEM(emif.RegWr_MEM),.memWr_MEM(emif.memWr_MEM), .flush_ID(flush_ID), .flush_EX(flush_EX), .flush_MEM(flush_MEM), .pc_enable(pc_enable), .enable_ID(enable_ID), .enable_EX(enable_EX), .enable_MEM(enable_MEM));
 
 
 
