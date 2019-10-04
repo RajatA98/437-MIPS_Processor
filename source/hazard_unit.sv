@@ -4,8 +4,8 @@ module hazard_unit
 (
 	input word_t instr_ID, instr_EX, instr_MEM,
 	input logic RegWr_EX, memWr_EX, RegWr_MEM, memWr_MEM,
-	output logic flush_ID, flush_EX, flush_MEM, pc_enable, enable_ID, enable_EX, enable_MEM
-  //output logic [1:0] hazard
+	output logic flush_ID, flush_EX, flush_MEM, pc_enable, enable_ID, enable_EX, enable_MEM,
+  output logic [1:0] hazard
 );
 
 r_t rt_ID, rt_EX, rt_MEM;
@@ -26,7 +26,7 @@ begin
 	enable_EX = 1'b1;
 	enable_MEM = 1'b1;
 	pc_enable = 1'b0;
-  //hazard = 0;
+  hazard = 0;
 	flush_ID = 1'b0;
 	flush_EX = 1'b0;
 	flush_MEM = 1'b0;
@@ -62,7 +62,7 @@ begin
 	begin
 		if((((rt_EX.rd == rt_ID.rs || rt_EX.rd == rt_ID.rt) && (rt_EX.opcode == RTYPE)) || (it_EX.opcode != RTYPE && it_EX.rt == it_ID.rs) || (it_ID.opcode == SW && it_EX.rt == it_ID.rt)))
 		begin
-      //hazard = 1;
+      hazard = 1;
 			pc_enable = 1'b1;
 			enable_ID = 1'b0;
 			flush_EX = 1'b1;
@@ -71,7 +71,7 @@ begin
 			pc_enable = 1'b1;
 			enable_ID = 1'b0;
 			flush_EX = 1'b1;
-      //hazard = 1;
+      hazard = 1;
 		end
 		else if(it_EX.opcode == LW)
 		begin
@@ -90,13 +90,13 @@ begin
 			pc_enable = 1'b1;
 			enable_ID = 1'b0;
 			flush_EX = 1'b1;
-      //hazard = 2;
+      hazard = 2;
 		end
 	else if ((it_MEM.opcode == SW) && ((it_ID.rt == it_MEM.rs) || it_MEM.rt == it_ID.rs)) begin
 			pc_enable = 1'b1;
 			enable_ID = 1'b0;
 			flush_EX = 1'b1;
-      //hazard = 2;
+      hazard = 2;
 		end
 		else if(it_MEM.opcode == LW)
 		begin
