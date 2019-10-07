@@ -31,10 +31,10 @@ always_comb begin
 
           //Determining Asel
           //for rs
-          if (((rt_EX.rs == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) || (it_MEM.opcode != RTYPE && it_MEM.rt != 0 && (rt_EX.rs == it_MEM.rt))) begin
+          if ((it_MEM.opcode != SW && (rt_EX.rs == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) || (it_MEM.opcode != RTYPE && it_MEM.opcode != SW && it_MEM.rt != 0 && (rt_EX.rs == it_MEM.rt))) begin
              Asel = 2'd1; //output port from MEM
           end
-          else if  (((rt_EX.rs == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) || (it_WB.opcode != RTYPE && it_WB.rt != 0 && (rt_EX.rs == it_WB.rt))) begin
+          else if  (( it_WB.opcode != SW &&(rt_EX.rs == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) || (it_WB.opcode != RTYPE && it_WB.opcode != SW && it_WB.rt != 0 && (rt_EX.rs == it_WB.rt))) begin
           //if no hazard in the EX/MEM, then go to MEM/WB
             Asel = 2'd2;
           end
@@ -42,10 +42,10 @@ always_comb begin
 
           //Determining Bsel
           //for rt
-          if (((rt_EX.rt == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) || (it_MEM.opcode != RTYPE && (it_MEM.rt != 0 && rt_EX.rt == it_MEM.rt))) begin
+          if ((it_MEM.opcode != SW && (rt_EX.rt == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) || (it_MEM.opcode != RTYPE && it_MEM.opcode != SW && (it_MEM.rt != 0 && rt_EX.rt == it_MEM.rt))) begin
              Bsel = 2'd1;
           end
-          else if (((rt_EX.rt == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) || (it_WB.opcode != RTYPE && (it_WB.rt != 0 && rt_EX.rt == it_WB.rt)))  begin
+          else if (( it_WB.opcode != SW &&(rt_EX.rt == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) || (it_WB.opcode != RTYPE && it_WB.opcode != SW &&(it_WB.rt != 0 && rt_EX.rt == it_WB.rt)))  begin
              Bsel = 2'd2;
           end
 
@@ -64,7 +64,7 @@ always_comb begin
           //if not in the EX/MEM, then go to MEM/WB
             Asel = 2'd2;
           end
-
+					
           //Determining Bsel
           if (((it_EX.rt == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) || (it_MEM.opcode != RTYPE && it_MEM.rt != 0 && (it_EX.rt == it_MEM.rt))) begin
              Bsel = 2'd1;
@@ -72,7 +72,7 @@ always_comb begin
           else if (((it_EX.rt == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) || (it_WB.opcode != RTYPE && it_WB.rt != 0 && (it_EX.rt == it_WB.rt)))  begin
              Bsel = 2'd2;
           end
-
+					
       end
 
 
@@ -91,7 +91,18 @@ always_comb begin
       end
   end
 
+	if (memtoReg_WB == 1) begin
+          //Determining Asel
+          //just rs
+          if (rt_EX.rs == it_WB.rt) begin
+             Asel = 2'd2; //output port from MEM
+          end
 
+          if (rt_EX.rt == it_WB.rt) begin
+             Bsel = 2'd2; //output port from MEM
+          end
+
+	end
 
 end
 

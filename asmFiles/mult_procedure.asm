@@ -1,6 +1,6 @@
 org 0x0000
 
-#ori $2, $0, 0xFFFC
+#ori $2, $0, 0xFFF8
 #sw $2, 2000($0)
 ori $3,$0,3
 jal push_process
@@ -24,17 +24,17 @@ ori $14, $0, 2000
 
 
 pop_process: 
-	lw $2, 0xFFFC($0)
+	lw $2, 0xFFF8($0)
 	lw $12, 4($2)
 
 	addi $2, $2, 4
-	sw $2, 0xFFFC($0)
+	sw $2, 0xFFF8($0)
 
-	lw $2, 0xFFFC($0)
+	lw $2, 0xFFF8($0)
 	lw $13, 4($2)
 
 	addi $2, $2, 4
-	sw $2, 0xFFFC($0)
+	sw $2, 0xFFF8($0)
 	j mul
 	
 
@@ -47,9 +47,9 @@ mul:
 	addi $10, $10,1
 	bne $10, $13, mul
 #check:
-	lw $2, 0xFFFC($0)
+	lw $2, 0xFFF8($0)
 	beq $2, $14, exit
-	sw $2, 0xFFFC($0)
+	sw $2, 0xFFF8($0)
 
 
 ori $10, $0, 0 
@@ -64,12 +64,12 @@ exit:
 
 	halt
 push_process:
-	lw $2, 0xFFFC($0)
+	lw $2, 0xFFF8($0)
 	addi $2, $2, -4 
 	sw $3,4($2)
-	sw $2, 0xFFFC($0)
+	sw $2, 0xFFF8($0)
 	jr $31
-org 0xFFFC
+org 0xFFF8
 cfw 2000
 	      
 

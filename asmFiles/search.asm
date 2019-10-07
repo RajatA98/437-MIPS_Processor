@@ -13,13 +13,13 @@ start:
   addiu $5, $sp, 12           # search pointer is in $5
 
 loop:
-  lw    $6, 0($5)             # load element at pointer $5
+  lw    $6, 0($5)             # load element at pointer $5 8CA60000 PC - 1c
   subu  $7, $6, $3            # compare loaded element with search var
-  beq   $7, $zero, found      # if matches, go to found
+  beq   $7, $zero, found      # if matches, go to found 10E00004 PC - 24
   addu  $5, $5, $2            # increment pointer
   subu  $4, $4, $1            # subutract search length
-  beq   $4, $zero, notfound   # if end of list, go to not found
-  beq   $0, $zero, loop       # do loop again
+  beq   $4, $zero, notfound   # if end of list, go to not found 10800002 PC - 30
+  beq   $0, $zero, loop       # do loop again 1000FFF9 PC - 34
 found:
   sw    $5, 0($sp)            # store into 0x80
 notfound:

@@ -9,16 +9,16 @@
   ori   $6, $6, 0x0F00
   lw    $15, 0($6)
 
-loop:
+loop:											#14
   lw    $3, 0 ($2)
   lw    $4, 4 ($2)
   addu  $5, $3, $4
   sw    $5, 8 ($2)
   addu  $2, $2, $8
   subu  $15, $15, $1
-  bne   $15, $zero, loop
+  bne   $15, $zero, loop	#2c
 end:
-  halt
+  halt										#30
 
   org 0x80
 
@@ -30,4 +30,4 @@ start:
 # comment to use mmio
 
   org 0x0F00
-  cfw 3
+  cfw 22

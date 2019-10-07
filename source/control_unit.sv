@@ -200,6 +200,7 @@ begin
 			RegWr = 1'b1;
 			EXTop = 2'd2;
 			Wsel = 2'd2;
+			ALU_Src = 1'b1;
 		end
 		LW:
 		begin

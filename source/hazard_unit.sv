@@ -31,7 +31,8 @@ begin
 	flush_EX = 1'b0;
 	flush_MEM = 1'b0;
 	pc_enable = 1'b0;
-
+	if (rt_MEM.opcode == J || rt_MEM.opcode == JAL || (rt_MEM.funct == JR && rt_MEM.opcode == RTYPE))
+	begin
 	casez(rt_MEM.opcode)
 			RTYPE:
 			begin
@@ -41,6 +42,7 @@ begin
 					flush_EX = 1'b1;
 					flush_MEM = 1'b1;
 					pc_enable = 1'b0;
+					hazard = 2'b1;
 				end			
 			end
 			J:
@@ -49,6 +51,7 @@ begin
 				flush_EX = 1'b1;
 				flush_MEM = 1'b1;
 				pc_enable = 1'b0;
+				hazard = 2'b1;
 			end
 			JAL:
 			begin
@@ -56,13 +59,25 @@ begin
 				flush_EX = 1'b1;
 				flush_MEM = 1'b1;
 				pc_enable = 1'b0;
+				hazard = 2'b1;
 			end
 	endcase
- if((RegWr_EX || memWr_EX) && (rt_EX.opcode != J && rt_EX.opcode != JAL && rt_EX.funct != JR))
+	end
+ else if((RegWr_EX || memWr_EX) /*&& (rt_EX.opcode != J && rt_EX.opcode != JAL && rt_EX.funct != JR)*/)
 	begin
-		if((((rt_EX.rd == rt_ID.rs || rt_EX.rd == rt_ID.rt) && (rt_EX.opcode == RTYPE)) || (it_EX.opcode != RTYPE && it_EX.rt == it_ID.rs) || (it_ID.opcode == SW && it_EX.rt == it_ID.rt)))
+		if(it_EX.opcode == LW)
 		begin
-      hazard = 1;
+			if((it_ID.rs == it_EX.rt && it_ID.opcode != RTYPE)  || ((rt_ID.rt == it_EX.rt || rt_ID.rs == it_EX.rt) && rt_ID.opcode == RTYPE))
+			begin
+				pc_enable = 1'b1;
+				enable_ID = 1'b0;
+				flush_EX = 1'b1;
+				hazard = 2'b10;
+			end
+		end
+		else if((((rt_EX.rd == rt_ID.rs || rt_EX.rd == rt_ID.rt) && (rt_EX.opcode == RTYPE)) || (it_EX.opcode != RTYPE && it_EX.rt == it_ID.rs) || (it_ID.opcode == SW && it_EX.rt == it_ID.rt)))
+		begin
+      //hazard = 1;
 			pc_enable = 1'b1;
 			enable_ID = 1'b0;
 			flush_EX = 1'b1;
@@ -71,42 +86,55 @@ begin
 			pc_enable = 1'b1;
 			enable_ID = 1'b0;
 			flush_EX = 1'b1;
-      hazard = 1;
+      //hazard = 1;
 		end
-		else if(it_EX.opcode == LW)
+		/*else if(it_EX.opcode == LW)
 		begin
 			if((it_ID.rs == it_EX.rt && it_ID.opcode != RTYPE)  || ((rt_ID.rt == it_EX.rt || rt_ID.rs == it_EX.rt) && rt_ID.opcode == RTYPE))
 			begin
 				pc_enable = 1'b1;
 				enable_ID = 1'b0;
 				flush_EX = 1'b1;
+				hazard = 2'b10;
 			end
-		end
+		end*/
 	end
-	else if((RegWr_MEM || memWr_MEM) && (rt_MEM.opcode != J && rt_MEM.opcode != JAL && rt_MEM.funct != JR))
+	else if((RegWr_MEM || memWr_MEM) /*&& (rt_MEM.opcode != J && rt_MEM.opcode != JAL && rt_MEM.funct != JR)*/)
 	begin
-		if((((rt_MEM.rd == rt_ID.rs || rt_MEM.rd == rt_ID.rt) && (rt_MEM.opcode == RTYPE)) || (it_MEM.opcode != RTYPE && it_MEM.rt == it_ID.rs) || (it_ID.opcode == SW && it_MEM.rt == it_ID.rt)))
-		begin
-			pc_enable = 1'b1;
-			enable_ID = 1'b0;
-			flush_EX = 1'b1;
-      hazard = 2;
-		end
-	else if ((it_MEM.opcode == SW) && ((it_ID.rt == it_MEM.rs) || it_MEM.rt == it_ID.rs)) begin
-			pc_enable = 1'b1;
-			enable_ID = 1'b0;
-			flush_EX = 1'b1;
-      hazard = 2;
-		end
-		else if(it_MEM.opcode == LW)
+		
+		if(it_MEM.opcode == LW)
 		begin
 			if((it_ID.rs == it_MEM.rt && it_ID.opcode != RTYPE)  || ((rt_ID.rt == it_MEM.rt || rt_ID.rs == it_MEM.rt) && rt_ID.opcode == RTYPE))
 			begin
 				pc_enable = 1'b1;
 				enable_ID = 1'b0;
 				flush_EX = 1'b1;
+				hazard = 2'b11;
 			end
 		end
+		else if((((rt_MEM.rd == rt_ID.rs || rt_MEM.rd == rt_ID.rt) && (rt_MEM.opcode == RTYPE)) || (it_MEM.opcode != RTYPE && it_MEM.rt == it_ID.rs) || (it_ID.opcode == SW && it_MEM.rt == it_ID.rt)))
+		begin
+			pc_enable = 1'b1;
+			enable_ID = 1'b0;
+			flush_EX = 1'b1;
+      //hazard = 2;
+		end
+	else if ((it_MEM.opcode == SW) && ((it_ID.rt == it_MEM.rs) || it_MEM.rt == it_ID.rs)) begin
+			pc_enable = 1'b1;
+			enable_ID = 1'b0;
+			flush_EX = 1'b1;
+      //hazard = 2;
+		end
+		/*else if(it_MEM.opcode == LW)
+		begin
+			if((it_ID.rs == it_MEM.rt && it_ID.opcode != RTYPE)  || ((rt_ID.rt == it_MEM.rt || rt_ID.rs == it_MEM.rt) && rt_ID.opcode == RTYPE))
+			begin
+				pc_enable = 1'b1;
+				enable_ID = 1'b0;
+				flush_EX = 1'b1;
+				hazard = 2'b10;
+			end
+		end*/
 	end
 
 
