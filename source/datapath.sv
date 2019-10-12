@@ -62,7 +62,7 @@ memory_wb MW(CLK, nRST, mwif);
 
 //fetch decode latch signal input assignments
 assign fdif.imemload = dpif.imemload;
-assign fdif.flush = dpif.halt || ((flush_ID /*|| flush_ID_BP*/) && hazard_enable) || (flush_ID_fw && fw_enable);
+assign fdif.flush = emif.halt_MEM || ((flush_ID /*|| flush_ID_BP*/) && hazard_enable) || (flush_ID_fw && fw_enable);
 assign fdif.enable = hazard_enable ? (dpif.ihit || dpif.dhit) && (enable_ID) : (dpif.ihit || dpif.dhit);
 assign fdif.imemaddr = dpif.imemaddr;
 //assign fdif.next_addr = next_addr;
@@ -134,7 +134,7 @@ assign imm16 = it.imm;
 //assign outputs of control unit to inputs of ID/EX latch
 //JIHAN
 assign deif.enable = hazard_enable ? (dpif.ihit || dpif.dhit) && (enable_EX) : (dpif.ihit || dpif.dhit); //check
-assign deif.flush =  dpif.halt || ((flush_EX) && hazard_enable)|| (flush_EX_fw && fw_enable);
+assign deif.flush =  emif.halt_MEM || ((flush_EX) && hazard_enable)|| (flush_EX_fw && fw_enable);
 assign deif.memtoReg = memtoReg;
 assign deif.memWr = memWr;
 assign deif.ALU_Src = ALU_Src;
@@ -307,7 +307,7 @@ assign jump_addr_EX =  {deif.imemaddr_EX[31:28], deif.instr_EX[25:0] << 2};
 
 
 //connecting signals to input of EX/MEM latch
-  assign emif.flush = dpif.halt || ((flush_MEM) && hazard_enable) || (flush_MEM_fw && fw_enable);
+  assign emif.flush = emif.halt_MEM || ((flush_MEM) && hazard_enable) || (flush_MEM_fw && fw_enable);
   assign emif.enable = hazard_enable ? (dpif.ihit || dpif.dhit) && (enable_MEM) : (dpif.ihit || dpif.dhit);
   assign emif.RegWr_EX = deif.RegWr_EX;
   assign emif.RegDst_EX = deif.RegDst_EX;
@@ -502,7 +502,7 @@ end
 
 	end
 	
-	assign pc_halt = dpif.halt || ((pc_enable) && hazard_enable);
+	assign pc_halt = dpif.halt || ((pc_enable) && hazard_enable) || emif.halt_MEM;
 
 	pc PC(.CLK(CLK), .nRST(nRST),.ihit(dpif.ihit), .halt(pc_halt), .next_addr(next_addr), .iaddr(dpif.imemaddr));
 
