@@ -31,6 +31,7 @@ begin
 	flush_EX = 1'b0;
 	flush_MEM = 1'b0;
 	pc_enable = 1'b0;
+
 	if (rt_MEM.opcode == J || rt_MEM.opcode == JAL || (rt_MEM.funct == JR && rt_MEM.opcode == RTYPE))
 	begin
 	casez(rt_MEM.opcode)
@@ -62,7 +63,7 @@ begin
 				hazard = 2'b1;
 			end
 	endcase
-	end
+end
  else if((RegWr_EX || memWr_EX) /*&& (rt_EX.opcode != J && rt_EX.opcode != JAL && rt_EX.funct != JR)*/)
 	begin
 		if(it_EX.opcode == LW)

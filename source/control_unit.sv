@@ -61,7 +61,7 @@ begin
 				JR:
 				begin
 					PC_Src = 2'd3;
-					RegDst = 2'b10;
+					//RegDst = 2'b10;
 				end
 				ADD:
 				begin
@@ -135,7 +135,7 @@ begin
 			RegDst = 2'd2;
 			RegWr = 1'b1;
 			Wsel = 2'd1;
-
+			ALU_Src = 1'b1; //jihan changed this
 		end
 		BEQ:
 		begin

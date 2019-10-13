@@ -355,7 +355,6 @@ logic n_dmemWEN,  n_dmemREN;
 			n_dmemREN = 0;
 		end
 	end
-
 	always_ff @(posedge CLK, negedge nRST)
 	begin
 		if (!nRST)
