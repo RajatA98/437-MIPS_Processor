@@ -57,14 +57,20 @@ interface datapath_cache_if;
     output  dhit, dmemload, flushed
   );
 
-	
+
 	modport dcache_tb (
 		input  dhit, dmemload, flushed,
 		output   halt, dmemREN, dmemWEN,
             datomic, dmemstore, dmemaddr
 	);
-		
-		
+
+  modport icache_tb (
+    input   ihit, imemload,
+    output  imemREN, imemaddr
+  );
+
+
+
 endinterface
 
 `endif //DATAPATH_CACHE_IF_VH

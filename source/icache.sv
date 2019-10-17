@@ -72,7 +72,7 @@ begin
 	n_frames = frames;
 	case(state)
 		LOOKUP:
-		begin	
+		begin
 			if(addr.tag == frames[addr.idx].tag && frames[addr.idx].valid)
 			begin
 				dcif.ihit = 1'b1;
@@ -86,7 +86,7 @@ begin
 		end
 		MISS:
 		begin
-			
+
 			if(dcif.iwait)
 				n_state = MISS;
 			else
@@ -96,6 +96,6 @@ begin
 		end
 	endcase
 end
-			
-endmodule		
-	
+
+endmodule
+
