@@ -165,13 +165,12 @@ program test(
 		dcif.dmemaddr = {26'd0,3'd7,1'b1,2'b0}; //addr 3C  1D
 		dcif.dmemaddr = {26'd1,3'd7,1'b0,2'b0}; //addr 78  1E
 		dcif.dmemaddr = {26'd1,3'd7,1'b1,2'b0}; //addr 7C  1F
-		dcif.dmemREN = 1'b0;
+		
 		word_t i;
 		i = 32'd0;
 		while(i < 32'd32)
 		begin
-			if (!cif0.dwait)
-			begin	
+			@(negedge cif0.dwait);	
 				if(i != cif0.dload)
 				begin
 					$display("Incorrect Output durring %s iteration %d",tb_test_case, i)
@@ -180,10 +179,9 @@ program test(
 				begin
 					$display("Correct Output durring %s iteration %d",tb_test_case, i)
 				end
-			end
 				i	= i + 1;
 		end
-			
+		dcif.dmemREN = 1'b0;
 		
 		
 
@@ -193,25 +191,115 @@ program test(
 		tb_test_num = tb_test_num + 1;
 		tb_test_case ="Test Associativity";
 
+		dcif.dmemWEN = 1'b1;
+		dcif.dmemstore = 32'd1;
+		dcif.dmemaddr = {26'hA,3'd0,1'b0,2'b0};
+		dcif.dmemstore = 32'd2;
+		dcif.dmemaddr = {26'hB,3'd0,1'b0,2'b0};
+		dcif.dmemstore = 32'd3;
+		dcif.dmemaddr = {26'hC,3'd0,1'b0,2'b0};
+		repeat (3) @(posedge dcif.dhit);
+		
+		dcif.dmemWEN = 1'b0;
+		dcif.dmemREN = 1'b1;
+		dcif.dmemaddr = {26'hC,3'd0,1'b0,2'b0};
+		if(dcif.dhit && dcif.dmemload == 32'd3)
+		begin
+			$display("%s Passed!", tb_test_case);
+		end
+		else
+		begin
+			$display("%s Failed!", tb_test_case);
+		end
+		dcif.dmemaddr = {26'hB,3'd0,1'b0,2'b0};
+		if(dcif.dhit && dcif.dmemload == 32'd2)
+		begin
+			$display("%s Passed!", tb_test_case);
+		end
+		else
+		begin
+			$display("%s Failed!", tb_test_case );
+		end
+		#(PERIOD)
+		dcif.dmemREN = 1'b0;
 		
 	
-		//******************************************************************
-		// Test Case 3: Flushing
-		//******************************************************************
-		tb_test_num = tb_test_num + 1;
-		tb_test_case ="Test Flushing";
+		
+
 	
 		//******************************************************************
 		// Test Case 4: Read and Write to same tag different blocks
 		//******************************************************************
 		tb_test_num = tb_test_num + 1;
 		tb_test_case ="Read and Write to same tag different blocks";
+		
+		dcif.dmemWEN = 1'b1;
+		dcif.dmemstore = 32'd1;
+		dcif.dmemaddr = {26'd0,3'd0,1'b0,2'b0};
+		dcif.dmemstore = 32'd2;
+		dcif.dmemaddr = {26'd0,3'd0,1'b0,2'b0};
+		dcif.dmemstore = 32'd3;
+		dcif.dmemaddr = {26'd0,3'd0,1'b1,2'b0};
+		dcif.dmemstore = 32'd4;
+		dcif.dmemaddr = {26'd0,3'd0,1'b1,2'b0};
+		repeat (4) @(posedge dcif.dhit);
+		dcif.dmemWEN = 1'b0;
+		dcif.dmemREN = 1'b1;
+		dcif.dmemaddr = {26'd0,3'd0,1'b0,2'b0};
+		if(dcif.dhit && dcif.dmemload == 32'd1)
+		begin
+			$display("%s Passed!", tb_test_case);
+		end
+		else
+		begin
+			$display("%s Failed!", tb_test_case);
+		end
+		dcif.dmemaddr = {26'd0,3'd0,1'b0,2'b0};
+		if(dcif.dhit && dcif.dmemload == 32'd2)
+		begin
+			$display("%s Passed!", tb_test_case);
+		end
+		else
+		begin
+			$display("%s Failed!", tb_test_case);
+		end
+		dcif.dmemaddr = {26'd0,3'd0,1'b1,2'b0};
+		if(dcif.dhit && dcif.dmemload == 32'd3)
+		begin
+			$display("%s Passed!", tb_test_case);
+		end
+		else
+		begin
+			$display("%s Failed!", tb_test_case);
+		end
+		dcif.dmemaddr = {26'd0,3'd0,1'b1,2'b0};
+		if(dcif.dhit && dcif.dmemload == 32'd4)
+		begin
+			$display("%s Passed!", tb_test_case);
+		end
+		else
+		begin
+			$display("%s Failed!", tb_test_case);
+		end
+		dcif.dmemREN = 1'b0;
 
 		//******************************************************************
 		// Test Case 5: Capacity Misses
 		//******************************************************************
 		tb_test_num = tb_test_num + 1;
 		tb_test_case ="Test Capacity Misses";
+		dcif.dmemWEN = 1'b1;
+		dcif.dmemstore = 32'd1;
+		dcif.dmemaddr = {26'd10,3'd0,1'b0,2'b0};
+		@(negedge cif0.dwait);	
+		if(32'd1 == cif0.dstore && cif0.dWEN)
+		begin
+			$display("Correct Output durring %s",tb_test_case)
+		end
+		else
+		begin
+			$display("Incorrect Output durring %s",tb_test_case)
+		end
 	
 
 		//******************************************************************
@@ -219,13 +307,103 @@ program test(
 		//******************************************************************
 		tb_test_num = tb_test_num + 1;
 		tb_test_case ="Test Conflict Misses";
+		dcif.dmemWEN = 1'b1;
+		dcif.dmemstore = 32'd2;
+		dcif.dmemaddr = {26'd11,3'd1,1'b0,2'b0};
+		@(negedge cif0.dwait);	
+		if(32'd1 == cif0.dstore && cif0.dWEN)
+		begin
+			$display("Correct Output durring %s",tb_test_case)
+		end
+		else
+		begin
+			$display("Incorrect Output durring %s",tb_test_case)
+		end
+	
+		//******************************************************************
+		// Test Case 7: Writeback specification
+		//******************************************************************
+		tb_test_num = tb_test_num + 1;
+		tb_test_case ="Test Writeback Specification";
+		dcif.dmemWEN = 1'b1;
+		dcif.dmemstore = 32'd1;
+		dcif.dmemaddr = {26'd12,3'd0,1'b0,2'b0};
+		@(negedge cif0.dwait);	
+		if(32'd1 == cif0.dstore && cif0.dWEN)
+		begin
+			$display("Correct Output durring %s",tb_test_case)
+		end
+		else
+		begin
+			$display("Incorrect Output durring %s",tb_test_case)
+		end
+		dcif.dmemstore = 32'd2;
+		dcif.dmemaddr = {26'd12,3'd0,1'b0,2'b0};
+		@(negedge cif0.dwait);	
+		if(32'd2 == cif0.dstore && cif0.dWEN)
+		begin
+			$display("Correct Output durring %s",tb_test_case)
+		end
+		else
+		begin
+			$display("Incorrect Output durring %s",tb_test_case)
+		end
+		dcif.dmemstore = 32'd3;
+		dcif.dmemaddr = {26'd12,3'd0,1'b0,2'b0};
+		if(dcif.dhit)
+		begin
+			$display("Correct Output durring %s",tb_test_case)
+		end
+		else
+		begin
+			$display("Incorrect Output durring %s",tb_test_case)
+		end
+		dcif.dmemWEN = 1'b0;
 
 
 		
+		//******************************************************************
+		// Test Case 8: Toggles
+		//******************************************************************
+		tb_test_num = tb_test_num + 1;
+		tb_test_case ="Test Writeback Specification";
+		
+		dcif.dmemstore = 32'hffffffff;
+		dcif.dmemaddr = {26'd12,3'd0,1'b0,2'b0};
 
 
 
+	//******************************************************************
+		// Test Case 3: Flushing
+		//******************************************************************
+		tb_test_num = tb_test_num + 1;
+		tb_test_case ="Test Flushing";
+		reset_dut();
+		dcif.dmemWEN = 1'b1;
+		dcif.dmemstore = 32'd1;
+		dcif.dmemaddr = {26'd0,3'd0,1'b0,2'b0};
+		dcif.dmemstore = 32'd2;
+		dcif.dmemaddr = {26'd0,3'd0,1'b0,2'b0};
+		dcif.dmemstore = 32'd3;
+		dcif.dmemaddr = {26'd0,3'd0,1'b0,2'b0};
+		dcif.dmemstore = 32'd4;
+		dcif.dmemaddr = {26'd0,3'd0,1'b0,2'b0};
+		repeat (4) @(posedge dcif.dhit);
+		dcif.dmemWEN = 1'b0;
+		dcif.halt = 1'b1;
+		@(negedge cif0.dwait);
+		if(cif0.dstore != 32'd3)
+		begin
+			 $display("%s Failed!", tb_test_case);
+		end
+		@(negedge cif0.dwait);
+		if(cif0.dstore != 32'd4)
+		begin
+			 $display("%s Failed!", tb_test_case);
+		end
+		@(posedge dcif.flushed)
+			
+		$display("%s Passed!", tb_test_case);
 
-
-
+		dcif.halt = 1'b0;
 
