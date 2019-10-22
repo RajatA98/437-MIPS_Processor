@@ -63,7 +63,7 @@ memory_wb MW(CLK, nRST, mwif);
 //fetch decode latch signal input assignments
 assign fdif.imemload = dpif.imemload;
 assign fdif.flush = emif.halt_MEM || ((flush_ID /*|| flush_ID_BP*/) && hazard_enable) || (flush_ID_fw && fw_enable);
-assign fdif.enable = hazard_enable ? (dpif.ihit || dpif.dhit) && (enable_ID) : (dpif.ihit || dpif.dhit) ;
+assign fdif.enable = hazard_enable ? (dpif.ihit || dpif.dhit) && (enable_ID) : (dpif.ihit || dpif.dhit);
 assign fdif.imemaddr = dpif.imemaddr;
 //assign fdif.next_addr = next_addr;
 
@@ -82,26 +82,11 @@ opcode_t opcode;
 funct_t funct;
 logic [15:0] imm16;
 r_t rt_fd;
-i_t it, it_fd;
+i_t it;
 assign rt_fd = fdif.instr_ID;
-assign it_fd = fdif.instr_ID;
 assign opcode = rt_fd.opcode;
 assign funct = rt_fd.funct;
 assign imm16 = it.imm;
-
-
-r_t rt_ex;
-i_t it_ex;
-assign rt_ex = deif.instr_EX;
-assign it_ex = deif.instr_EX;
-
-r_t rt_mem;
-i_t it_mem;
-assign rt_mem = emif.instr_MEM;
-assign it_mem = emif.instr_MEM;
-
-
-
 
 
 	/*
@@ -227,11 +212,10 @@ end
 
 	register_file RF(CLK, nRST, rfif);	word_t next_addr;
 
-
-
-
 word_t branch_addr;
 assign branch_addr = (branch_extender << 2) + (dpif.imemaddr + 4);
+
+	
 	
 	logic not_taken;
 
@@ -240,7 +224,10 @@ assign branch_addr = (branch_extender << 2) + (dpif.imemaddr + 4);
 	//pc_enable_bp;
 	
 always_comb
-	begin    
+	begin
+
+
+    
 	 if (emif.PC_Src_MEM == 2'd2) begin
 			//j_temp = dpif.imemaddr + 4;
 			//for jump
@@ -257,12 +244,12 @@ always_comb
 			next_addr = emif.busA_MEM;
 			fdif.next_addr = emif.busA_MEM;
 		end
-		else if (not_taken) begin
+		else if ((bp_choose && hazard_enable) || not_taken) begin
       //for branch
-      next_addr = fdif.imemaddr_ID + 4;
-			fdif.next_addr = fdif.imemaddr_ID + 4;
+      next_addr = emif.imemaddr_MEM + 4;
+			fdif.next_addr = emif.imemaddr_MEM + 4;
 		end
-		else if ((it_b.opcode == BEQ || it_b.opcode == BNE) && ((it_fd.opcode != BNE && it_fd.opcode != BEQ))) begin
+		else if (it_b.opcode == BEQ || it_b.opcode == BNE) begin
       //for branch
       next_addr = branch_addr;
 			fdif.next_addr = branch_addr;
@@ -384,7 +371,7 @@ logic n_dmemWEN,  n_dmemREN;
 
 //assigning inputs to MEM/WB latch
 assign mwif.flush = dpif.halt;
-assign mwif.enable = dpif.ihit || dpif.dhit; //check again
+assign mwif.enable = dpif.ihit ||dpif.dhit; //check again
 assign mwif.memtoReg_MEM = emif.memtoReg_MEM;
 assign mwif.Output_Port_MEM = emif.Output_Port_MEM;
 assign mwif.RegDst_MEM = emif.RegDst_MEM;
@@ -480,96 +467,40 @@ end
 );
 	*/
 
-logic [1:0] fw_branch_rs, fw_branch_rt;
-////forwarding unit specific to branches 
-	always_comb
-	begin
-		fw_branch_rs = 0; //default value
-		fw_branch_rt = 0;
-		
-		if (it_fd.opcode == BNE || it_fd.opcode == BEQ) begin
-				//for rs
-				if ((it_fd.rs == rt_ex.rd && rt_ex.opcode == RTYPE) || (it_fd.rs == rt_ex.rt && it_ex.opcode != RTYPE && deif.memtoReg_EX == 0)) begin //dependency on EX
-						fw_branch_rs = 1; //rs from EX
-				end
-				else if ((it_fd.rs == rt_mem.rd && rt_mem.opcode == RTYPE) || (it_fd.rs == rt_ex.rt && it_mem.opcode != RTYPE && emif.memtoReg_MEM == 0)) begin //dependency on MEM
-						fw_branch_rs = 2; //rs from MEM
-				end
 
-				//for rt 
-				if ((it_fd.rt == rt_ex.rd && rt_ex.opcode == RTYPE) || (it_fd.rt == rt_ex.rt && it_ex.opcode != RTYPE && deif.memtoReg_EX == 0)) begin //dependency on EX
-						fw_branch_rt = 1; //rs from EX
-				end
-				else if ((it_fd.rt == rt_mem.rd && rt_mem.opcode == RTYPE) || (it_fd.rt == rt_ex.rt && it_mem.opcode != RTYPE && emif.memtoReg_MEM == 0)) begin //dependency on MEM
-						fw_branch_rt = 2; //rs from MEM
-				end
-
-		end
-	end
-
-
-
-
-word_t miniA, miniB;
-
-always_comb begin
-		miniA = rfif.rdat1;
-		miniB = rfif.rdat2;
-
-		if (fw_branch_rs == 1) begin
-				miniA = aluif.Output_Port;
-		end
-		else if (fw_branch_rs == 2) begin
-				miniA = emif.Output_Port_MEM;
-		end
-
-		if (fw_branch_rt == 1) begin
-				miniB = aluif.Output_Port;
-		end
-		else if (fw_branch_rt == 2) begin
-				miniB = emif.Output_Port_MEM;
-		end
-
-end
 
 	always_comb
 	begin
 			flush_EX_fw = 1'b0;
 			flush_ID_fw = 1'b0;
 			flush_MEM_fw = 1'b0;
-			not_taken = 1'b0; //taken
+			not_taken = 1'b0;
 
-		if (it_fd.opcode == BEQ)
+		if (emif.instr_MEM[31:26] == BEQ)
 		begin
-			flush_EX_fw = 1'b1;
-
-			if((miniA - miniB) != 0)
+			if(emif.zero_MEM != 1)
 			begin
-				
+				flush_EX_fw = 1'b1;
 				flush_ID_fw = 1'b1;
-				//flush_MEM_fw = 1'b1;
+				flush_MEM_fw = 1'b1;
 				not_taken = 1'b1;
 				
 			end
 		end
 
-		else if (it_fd.opcode  == BNE)
+		else if (emif.instr_MEM[31:26]  == BNE)
 		begin
-			flush_EX_fw = 1'b1;
-			if((miniA - miniB) == 0)
+			if(emif.zero_MEM == 1)
 			begin
-				
+				flush_EX_fw = 1'b1;
 				flush_ID_fw = 1'b1;
-				//flush_MEM_fw = 1'b1;
+				flush_MEM_fw = 1'b1;
 				not_taken = 1'b1;
 			end
 		end
 
 	end
-
-
-
-
+	
 	assign pc_halt = dpif.halt || ((pc_enable) && hazard_enable) || emif.halt_MEM;
 
 	pc PC(.CLK(CLK), .nRST(nRST),.ihit(dpif.ihit), .halt(pc_halt), .next_addr(next_addr), .iaddr(dpif.imemaddr));

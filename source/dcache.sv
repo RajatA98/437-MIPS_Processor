@@ -28,18 +28,19 @@ module dcache(
   assign set_a = frame_a[addr.idx];
   assign set_b = frame_b[addr.idx];
 
-typedef enum logic [3:0] {IDLE, STOP, MISS, MISS2, WBACK, WBACK2, UPDATE,
-DIRTY, FLUSH_A, NEXT_FLUSH_A, FLUSH_COUNT_A, FLUSH_B, NEXT_FLUSH_B, FLUSH_COUNT_B} dcache_state_t;
+typedef enum logic [3:0] {IDLE, STOP, MISS, MISS2, WBACK, WBACK2, HIT_COUNT, FLUSH_A, NEXT_FLUSH_A, FLUSH_COUNT_A, FLUSH_B, NEXT_FLUSH_B, FLUSH_COUNT_B} dcache_state_t;
 dcache_state_t dcache_state, next_state;
 
 //to indicate which one is recently used
 logic [7:0] used_a, used_b, n_used_a, n_used_b;
-word_t [1:0] data_out;
 
 //Comparing tags of set with address tag
-logic match_a, match_b, hit, miss, lru_enable, dirty, next_a, next_b;
+logic match_a, match_b, hit, miss, lru_enable, dirty, next_a, next_b, valid_a, valid_b;
 assign match_a = (addr.tag == set_a.tag) ? 1 : 0;
 assign match_b = (addr.tag == set_b.tag) ? 1 : 0;
+assign valid_a = (set_a.valid && match_a) ? 1 : 0;
+assign valid_b = (set_b.valid && match_b) ? 1 : 0;
+
 
 //Clock to update most recently used (avoid combinational loop?) and to update caches
 always_ff @ (posedge CLK, negedge nRST) begin
@@ -111,15 +112,15 @@ always_comb begin
     dirty = 0;
     hit_count = '0;
 
-    if (dmemREN) begin
-    if ((set_a.valid && match_a) && (set_b.valid && !match_b)) begin //only first set is valid
+   if (ddif.dmemWEN) begin
+    if ((valid_a) && (!valid_b)) begin //only first set is valid
         n_used_a[addr.idx] = 1;
         n_used_b[addr.idx] = 0;
         hit = 1;
         dirty = set_a.dirty;
         hit_count = hit_count + 1;
     end
-    else if ((set_a.valid && !match_a) && (set_b.valid && match_b)) begin //only second set is valid
+    else if ((!valid_a) && (valid_b)) begin //only second set is valid
         n_used_a[addr.idx] = 0;
         n_used_b[addr.idx] = 1;
         hit = 1;
@@ -127,7 +128,7 @@ always_comb begin
         hit_count = hit_count + 1;
 
     end
-    else if ((set_a.valid && match_a) && (set_b.valid && match_b)) begin //both are valid
+    else if ((valid_a) && (valid_b)) begin //both are valid
         hit = 1;
         hit_count = hit_count + 1;
         if (!used_a[addr.idx] && used_b[addr.idx]) begin //set a is least recently used
@@ -146,63 +147,7 @@ always_comb begin
            dirty = set_a.dirty;
         end
     end
-    else if ((set_a.valid && !match_a) && (set_b.valid && !match_b)) begin //none are valid
-        miss = 1;
-        hit_count = hit_count - 1;
-        if (!used_a[addr.idx] && used_b[addr.idx]) begin //set a is least recently used
-           n_used_a[addr.idx] = 1;
-           n_used_b[addr.idx] = 0;
-           dirty = set_a.dirty;
-        end
-        else if (!used_b[addr.idx] && used_a[addr.idx]) begin  //set b is least recently used
-           n_used_a[addr.idx] = 0;
-           n_used_b[addr.idx] = 1;
-           dirty = set_b.dirty;
-        end
-        else if (!used_a[addr.idx]  && !used_b[addr.idx]) begin //both sets were never used - default to use set a
-           n_used_a[addr.idx] = 1;
-           n_used_b[addr.idx] = 0;
-           dirty = set_a.dirty;
-        end
-
-    end
-   end
-   else if (dmemWEN) begin
-    if ((match_a) && (!match_b)) begin //only first set is valid
-        n_used_a[addr.idx] = 1;
-        n_used_b[addr.idx] = 0;
-        hit = 1;
-        dirty = set_a.dirty;
-        hit_count = hit_count + 1;
-    end
-    else if ((!match_a) && (match_b)) begin //only second set is valid
-        n_used_a[addr.idx] = 0;
-        n_used_b[addr.idx] = 1;
-        hit = 1;
-        dirty = set_b.dirty;
-        hit_count = hit_count + 1;
-
-    end
-    else if ((match_a) && (match_b)) begin //both are valid
-        hit = 1;
-        hit_count = hit_count + 1;
-        if (!used_a[addr.idx] && used_b[addr.idx]) begin //set a is least recently used
-           n_used_a[addr.idx] = 1;
-           n_used_b[addr.idx] = 0;
-           dirty = set_a.dirty;
-        end
-        else if (!used_b[addr.idx] && used_a[addr.idx]) begin  //set b is least recently used
-           n_used_a[addr.idx] = 0;
-           n_used_b[addr.idx] = 1;
-           dirty = set_b.dirty;
-        end
-        else if (!used_a[addr.idx]  && !used_b[addr.idx]) begin //both sets were never used - default to use set a
-           n_used_a[addr.idx] = 1;
-           n_used_b[addr.idx] = 0;
-           dirty = set_a.dirty;
-        end
-    end
-    else if ((!match_a) && (!match_b)) begin //none are valid
+    else if ((!valid_a) && (!valid_b)) begin //none are valid // in here we want to keep LRU the same?????
         miss = 1;
         hit_count = hit_count - 1;
         if (!used_a[addr.idx] && used_b[addr.idx]) begin //set a is least recently used
@@ -224,22 +169,84 @@ always_comb begin
     end
 
    end
+
+    else if (ddif.dmemREN) begin
+    if (valid_a && !valid_b) begin //only first set is valid
+        n_used_a[addr.idx] = 1;
+        n_used_b[addr.idx] = 0;
+        hit = 1;
+        dirty = set_a.dirty;
+        hit_count = hit_count + 1;
+    end
+    else if (valid_b && !valid_a)begin //only second set is valid
+        n_used_a[addr.idx] = 0;
+        n_used_b[addr.idx] = 1;
+        hit = 1;
+        dirty = set_b.dirty;
+        hit_count = hit_count + 1;
+
+    end
+    else if (valid_a && valid_b)begin //both are valid
+        hit = 1;
+        hit_count = hit_count + 1;
+        if (!used_a[addr.idx] && used_b[addr.idx]) begin //set a is least recently used
+           n_used_a[addr.idx] = 1;
+           n_used_b[addr.idx] = 0;
+           dirty = set_a.dirty;
+        end
+        else if (!used_b[addr.idx] && used_a[addr.idx]) begin  //set b is least recently used
+           n_used_a[addr.idx] = 0;
+           n_used_b[addr.idx] = 1;
+           dirty = set_b.dirty;
+        end
+        else if (!used_a[addr.idx]  && !used_b[addr.idx]) begin //both sets were never used - default to use set a
+           n_used_a[addr.idx] = 1;
+           n_used_b[addr.idx] = 0;
+           dirty = set_a.dirty;
+        end
+    end
+    else if (!valid_a && !valid_b) begin //none are valid
+        miss = 1;
+        hit_count = hit_count - 1;
+        if (!used_a[addr.idx] && used_b[addr.idx]) begin //set a is least recently used
+           n_used_a[addr.idx] = 1;
+           n_used_b[addr.idx] = 0;
+           dirty = set_a.dirty;
+        end
+        else if (!used_b[addr.idx] && used_a[addr.idx]) begin  //set b is least recently used
+           n_used_a[addr.idx] = 0;
+           n_used_b[addr.idx] = 1;
+           dirty = set_b.dirty;
+        end
+        else if (!used_a[addr.idx]  && !used_b[addr.idx]) begin //both sets were never used - default to use set a
+           n_used_a[addr.idx] = 1;
+           n_used_b[addr.idx] = 0;
+           dirty = set_a.dirty;
+        end
+
+    end
+   end
+
 end
 
 //D-Cache Controller State Machine
 
-
+logic [3:0] flush_count_a, flush_count_b, next_flush_count_a, next_flush_count_b;
 //State Register
 always_ff @ (posedge CLK, negedge nRST) begin
     if (!nRST) begin
       dcache_state <= IDLE;
+      flush_count_a <= '0;
+      flush_count_b <= '0;
     end
     else begin
       dcache_state <= next_state;
+      flush_count_a <= next_flush_count_a;
+      flush_count_b <= next_flush_count_b;
     end
 end
 
-logic [2:0] flush_count_a, flush_count_b;
+
 
 //Next State Logic
 always_comb begin
@@ -247,12 +254,12 @@ always_comb begin
    case(dcache_state)
    IDLE: begin
       if (ddif.halt) begin
-         next_state = FLUSH_A;
+         next_state = HIT_COUNT;
       end
-      else if ((ddif.dmemREN || ddif.dmemWEN) && miss && dirty) begin //miss but no dirty bit
+      else if ((ddif.dmemREN || ddif.dmemWEN) && miss && !dirty) begin //miss but no dirty bit
         next_state = MISS;
       end
-      else if (((ddif.dmemREN && miss) || ddif.dmemWEN) && dirty) begin
+      else if (((ddif.dmemREN && miss) || (ddif.dmemWEN && miss)) && dirty) begin
         next_state = WBACK;
       end
       else begin
@@ -281,7 +288,7 @@ always_comb begin
         next_state = MISS2;
      end
      else if (!dmif.dwait) begin
-        next_state = UPDATE;
+        next_state = IDLE;
      end
    end
    WBACK: begin
@@ -297,61 +304,57 @@ always_comb begin
         next_state = WBACK2;
      end
      else if (!dmif.dwait) begin
-       next_state = DIRTY;
+       next_state = MISS;
      end
    end
-   DIRTY: begin
-     if (ddif.dmemWEN && hit) begin
-        next_state = IDLE;
+   HIT_COUNT: begin
+     if (dmif.dwait) begin
+        next_state = HIT_COUNT;
      end
-     else if (miss) begin
-        next_state = MISS;
+     else if (!dmif.dwait) begin
+       next_state = FLUSH_A;
      end
-
-   end
-   UPDATE: begin
-        next_state = IDLE;
    end
    FLUSH_A: begin
-      if (dmif.dwait) begin
+      if (dmif.dwait && next_a ) begin
         next_state = FLUSH_A;
       end
       else if (!dmif.dwait && next_a)  begin
         next_state = NEXT_FLUSH_A;
       end
-      else if (!dmif.dwait && !next_a) begin
+      else if (!next_a) begin
         next_state = FLUSH_COUNT_A;
       end
    end
    FLUSH_B: begin
-      if (dmif.dwait) begin
+      if (dmif.dwait && next_b) begin
           next_state = FLUSH_B;
       end
       else if (!dmif.dwait && next_b)  begin
         next_state = NEXT_FLUSH_B;
       end
-      else if (!dmif.dwait && !next_b) begin
+      else if (!next_b) begin
         next_state = FLUSH_COUNT_B;
       end
    end
    FLUSH_COUNT_A: begin
-      if (flush_count_a == 8) begin
+      if (flush_count_a == 7) begin
         next_state = FLUSH_B;
       end
-      else if (flush_count_a != 8) begin
+      else if (flush_count_a != 7) begin
         next_state = FLUSH_A;
       end
    end
    FLUSH_COUNT_B: begin
-      if (flush_count_b == 8) begin
+      if (flush_count_b == 7) begin
         next_state = STOP;
       end
-      else if (flush_count_b != 8) begin
+      else if (flush_count_b != 7) begin
         next_state = FLUSH_B;
       end
    end
    NEXT_FLUSH_A: begin
-      if (!dmif.dwait) begin
+      if (dmif.dwait) begin
           next_state = NEXT_FLUSH_A;
       end
       else if (!dmif.dwait) begin
@@ -359,7 +362,7 @@ always_comb begin
       end
    end
    NEXT_FLUSH_B: begin
-      if (!dmif.dwait) begin
+      if (dmif.dwait) begin
           next_state = NEXT_FLUSH_B;
       end
       else if (!dmif.dwait) begin
@@ -384,11 +387,11 @@ always_comb begin
    next_frame_b = frame_b;
    ddif.dmemload = '0; //maybe not
    dmif.daddr = ddif.dmemaddr;
-   dmif.store = '0; //unsure
-   dmif.addr = '0; //unsure
+   dmif.dstore = '0; //unsure
+   dmif.daddr = '0; //unsure
    lru_enable = 0;
-   flush_count_a = '0;
-   flush_count_b = '0;
+   next_flush_count_a = flush_count_a;
+   next_flush_count_b = flush_count_b;
    next_a = 0;
    next_b = 0;
 
@@ -396,27 +399,29 @@ always_comb begin
    IDLE: begin //basically where you check tags and stuff // in this state, LRU has not been updated yet
       lru_enable = 1;
       ddif.dhit = 0;
-      if (ddif.dmemREN && hit) begin //read hit
+
+     if (ddif.dmemWEN && hit) begin //write hit
           ddif.dhit = 1;
-          if (!used_a[addr.idx]) begin
-            ddif.dmemload =  frame_a[addr.idx].data[addr.blkoff];
-          end
-          else if (!used_b[addr.idx]) begin
-            ddif.dmemload = frame_b[addr.idx].data[addr.blkoff];
-          end
-      end
-      else if (ddif.dmemWEN && hit && dirty) begin //write hit, no dirty
-          ddif.dhit = 1;
-          if (!used_a[addr.idx]) begin
+          if (n_used_a[addr.idx]) begin
             next_frame_a[addr.idx].data[addr.blkoff] = ddif.dmemstore;
             next_frame_a[addr.idx].dirty = 1;
           end
-          else if (!used_b[addr.idx]) begin
+          else if (n_used_b[addr.idx]) begin
             next_frame_b[addr.idx].data[addr.blkoff] = ddif.dmemstore;
             next_frame_b[addr.idx].dirty = 1;
           end
       end
-   end
+
+      else if (ddif.dmemREN && hit) begin //read hit
+          ddif.dhit = 1;
+          if (n_used_a[addr.idx]) begin
+            ddif.dmemload =  frame_a[addr.idx].data[addr.blkoff];
+          end
+          else if (n_used_b[addr.idx]) begin
+            ddif.dmemload = frame_b[addr.idx].data[addr.blkoff];
+          end
+      end
+    end
 
    FLUSH_A: begin //look through all sets of to flush to memory
       dmif.dWEN = 0;
@@ -437,7 +442,7 @@ always_comb begin
    end
 
    FLUSH_COUNT_A: begin
-        flush_count_a = flush_count_a + 1;
+        next_flush_count_a = flush_count_a + 1;
    end
 
    FLUSH_B: begin
@@ -460,12 +465,12 @@ always_comb begin
    end
 
    FLUSH_COUNT_B: begin
-        flush_count_b = flush_count_b + 1;
+        next_flush_count_b = flush_count_b + 1;
    end
 
    STOP: begin
      ddif.flushed = 1;
-     dmif.dmemWEN = 1;
+     dmif.dWEN = 1;
      dmif.dstore = hit_count;
      dmif.daddr = 'h3100;
    end
@@ -488,14 +493,16 @@ always_comb begin
       dmif.dREN = 1;
       dmif.daddr =  {ddif.dmemaddr[31:3],3'b100}; //second block
 
-     if (!dmif.dwait) begin //is this right?
-        if (used_a) begin //frame a is chosen
-           next_frame_a[addr.idx].data[1] = dmif.dload;
-        end
-        else if (used_b) begin //frame b is chosen
-           next_frame_b[addr.idx].data[1] = dmif.dload;
-        end
-     end
+      //updating cache - tag and valid
+      if (used_a) begin //frame a is chosen
+        next_frame_a[addr.idx].tag = addr.tag;
+        next_frame_a[addr.idx].valid = 1;
+      end
+      else if (used_b) begin //frame b is chosen
+        next_frame_b[addr.idx].tag = addr.tag;
+        next_frame_b[addr.idx].valid = 1;
+      end
+
    end
    WBACK: begin
       dmif.dWEN = 1;
@@ -518,26 +525,22 @@ always_comb begin
         dmif.dstore = frame_b[addr.idx].data[1];
         dmif.daddr = {frame_b[addr.idx].tag,addr.idx,3'b100}; //second block
       end
-   end
-   UPDATE: begin
-      //updating cache - tag and valid
-      if (used_a) begin //frame a is chosen
-        next_frame_a[addr.idx].tag = addr.tag;
-        next_frame_a[addr.idx].valid = 1;
-      end
-      else if (used_b) begin //frame b is chosen
-        next_frame_b[addr.idx].tag = addr.tag;
-        next_frame_b[addr.idx].valid = 1;
-      end
-   end
-   DIRTY: begin
+
       if (used_a) begin //frame a is chosen
         next_frame_a[addr.idx].dirty = 0;
       end
       else if (used_b) begin //frame b is chosen
         next_frame_b[addr.idx].dirty = 0;
-      end
+			end
+
    end
+
+   HIT_COUNT: begin
+      dmif.dWEN = 1;
+			dmif.daddr = 'h3100;
+			dmif.dstore = hit_count;
+   end
+
 
    endcase
 

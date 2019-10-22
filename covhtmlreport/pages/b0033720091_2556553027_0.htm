@@ -28,34 +28,34 @@
     '</tr></table>');
   //-->
   </script>
-  <div class="covered"><a name="cvg986"/><hr/><table>
-  <tr l="65" lnk="__HDL_srcfile_5.htm#65" z="  assign ramif.ramload = (rstate == ACCESS) ? q : BAD;" c="G" p="100.00"/><tr/>
-  <tr cr="c" t="I" l="65" lnk="__HDL_srcfile_5.htm#65" z="  assign ramif.ramload = (rstate == ACCESS) ? q : BAD;" h="16413" c="g"/>
-  <tr cr="c" t="E" l="65" lnk="__HDL_srcfile_5.htm#65" z="  assign ramif.ramload = (rstate == ACCESS) ? q : BAD;" h="16405" c="g"/>
+  <div class="covered"><a name="cvg1159"/><hr/><table>
+  <tr l="65" lnk="__HDL_srcfile_6.htm#65" z="  assign ramif.ramload = (rstate == ACCESS) ? q : BAD;" c="G" p="100.00"/><tr/>
+  <tr cr="c" t="I" l="65" lnk="__HDL_srcfile_6.htm#65" z="  assign ramif.ramload = (rstate == ACCESS) ? q : BAD;" h="49" c="g"/>
+  <tr cr="c" t="E" l="65" lnk="__HDL_srcfile_6.htm#65" z="  assign ramif.ramload = (rstate == ACCESS) ? q : BAD;" h="26" c="g"/>
   </table>
-  </div><div class="covered"><a name="cvg987"/><hr/><table>
-  <tr l="66" lnk="__HDL_srcfile_5.htm#66" z="  assign wren = (rstate == ACCESS) ? ramif.ramWEN : 0;" c="G" p="100.00"/><tr/>
-  <tr cr="c" t="I" l="66" lnk="__HDL_srcfile_5.htm#66" z="  assign wren = (rstate == ACCESS) ? ramif.ramWEN : 0;" h="16408" c="g"/>
-  <tr cr="c" t="E" l="66" lnk="__HDL_srcfile_5.htm#66" z="  assign wren = (rstate == ACCESS) ? ramif.ramWEN : 0;" h="16408" c="g"/>
+  </div><div class="covered"><a name="cvg1160"/><hr/><table>
+  <tr l="66" lnk="__HDL_srcfile_6.htm#66" z="  assign wren = (rstate == ACCESS) ? ramif.ramWEN : 0;" c="G" p="100.00"/><tr/>
+  <tr cr="c" t="I" l="66" lnk="__HDL_srcfile_6.htm#66" z="  assign wren = (rstate == ACCESS) ? ramif.ramWEN : 0;" h="28" c="g"/>
+  <tr cr="c" t="E" l="66" lnk="__HDL_srcfile_6.htm#66" z="  assign wren = (rstate == ACCESS) ? ramif.ramWEN : 0;" h="26" c="g"/>
   </table>
-  </div><div><a name="cvg988"/><hr/><table>
-  <tr l="71" lnk="__HDL_srcfile_5.htm#71" z="    if (!nRST)" c="Y" p="75.00"/><tr/>
-  <tr cr="c" t="I" l="71" lnk="__HDL_srcfile_5.htm#71" z="    if (!nRST)" h="9" c="g"/>
-  <tr cr="c" t="T" l="77" lnk="__HDL_srcfile_5.htm#77" z="    else if (" h="16403" c="g"/>
-  <tr cr="m" t="T" l="87" lnk="__HDL_srcfile_5.htm#87" z="    else if ((ramif.ramREN || ramif.ramWEN) &amp;&amp; count &lt; LAT)" h="0" c="r"/>
-  <tr cr="c" t="A" l="71" lnk="__HDL_srcfile_5.htm#71" z="    if (!nRST)" h="49164" c="g"/>
+  </div><div><a name="cvg1161"/><hr/><table>
+  <tr l="71" lnk="__HDL_srcfile_6.htm#71" z="    if (!nRST)" c="Y" p="75.00"/><tr/>
+  <tr cr="c" t="I" l="71" lnk="__HDL_srcfile_6.htm#71" z="    if (!nRST)" h="6" c="g"/>
+  <tr cr="c" t="T" l="77" lnk="__HDL_srcfile_6.htm#77" z="    else if (" h="466" c="g"/>
+  <tr cr="m" t="T" l="87" lnk="__HDL_srcfile_6.htm#87" z="    else if ((ramif.ramREN || ramif.ramWEN) &amp;&amp; count &lt; LAT)" h="0" c="r"/>
+  <tr cr="c" t="A" l="71" lnk="__HDL_srcfile_6.htm#71" z="    if (!nRST)" h="30" c="g"/>
   </table>
-  </div><div class="covered"><a name="cvg989"/><hr/><table>
-  <tr l="95" lnk="__HDL_srcfile_5.htm#95" z="    casez({ramif.ramWEN,ramif.ramREN,nRST})" c="G" p="100.00"/><tr/>
-  <tr cr="c" t="T" l="96" lnk="__HDL_srcfile_5.htm#96" z="      3'b00z:   rstate = FREE;" h="15" c="g"/>
-  <tr cr="c" t="T" l="97" lnk="__HDL_srcfile_5.htm#97" z="      3'b011," h="32782" c="g"/>
-  <tr cr="c" t="T" l="98" lnk="__HDL_srcfile_5.htm#98" z="      3'b101:   rstate = BUSY;" h="9" c="g"/>
-  <tr cr="e" t="T" l="99" lnk="__HDL_srcfile_5.htm#99" z="      default:  rstate = ERROR;" h="E-Hit"/>
+  </div><div><a name="cvg1162"/><hr/><table>
+  <tr l="95" lnk="__HDL_srcfile_6.htm#95" z="    casez({ramif.ramWEN,ramif.ramREN,nRST})" c="Y" p="66.66"/><tr/>
+  <tr cr="c" t="T" l="96" lnk="__HDL_srcfile_6.htm#96" z="      3'b00z:   rstate = FREE;" h="5" c="g"/>
+  <tr cr="c" t="T" l="97" lnk="__HDL_srcfile_6.htm#97" z="      3'b011," h="45" c="g"/>
+  <tr cr="m" t="T" l="98" lnk="__HDL_srcfile_6.htm#98" z="      3'b101:   rstate = BUSY;" h="0" c="r"/>
+  <tr cr="e" t="T" l="99" lnk="__HDL_srcfile_6.htm#99" z="      default:  rstate = ERROR;" h="E-Hit"/>
   </table>
-  </div><div class="covered"><a name="cvg990"/><hr/><table>
-  <tr l="101" lnk="__HDL_srcfile_5.htm#101" z="    if (!nRST || ((addr == ramif.ramaddr) &amp;&amp; ((ramif.ramREN || ..." c="G" p="100.00"/><tr/>
-  <tr cr="c" t="I" l="101" lnk="__HDL_srcfile_5.htm#101" z="    if (!nRST || ((addr == ramif.ramaddr) &amp;&amp; ((ramif.ramREN || ..." h="16402" c="g"/>
-  <tr cr="c" t="A" l="101" lnk="__HDL_srcfile_5.htm#101" z="    if (!nRST || ((addr == ramif.ramaddr) &amp;&amp; ((ramif.ramREN || ..." h="16407" c="g"/>
+  </div><div class="covered"><a name="cvg1163"/><hr/><table>
+  <tr l="101" lnk="__HDL_srcfile_6.htm#101" z="    if (!nRST || ((addr == ramif.ramaddr) &amp;&amp; ((ramif.ramREN || ..." c="G" p="100.00"/><tr/>
+  <tr cr="c" t="I" l="101" lnk="__HDL_srcfile_6.htm#101" z="    if (!nRST || ((addr == ramif.ramaddr) &amp;&amp; ((ramif.ramREN || ..." h="28" c="g"/>
+  <tr cr="c" t="A" l="101" lnk="__HDL_srcfile_6.htm#101" z="    if (!nRST || ((addr == ramif.ramaddr) &amp;&amp; ((ramif.ramREN || ..." h="27" c="g"/>
   </table>
   </div><script type="text/javascript" src="../scripts/buildbranchpage.js"></script>
   <!-- make sure jumps to last few line nos work -->

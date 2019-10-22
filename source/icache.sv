@@ -70,6 +70,8 @@ begin
 	cif.iaddr = dcif.imemaddr;
 	n_state = state;
 	n_frames = frames;
+	dcif.ihit = 1'b0;
+	dcif.imemload = '0;
 	case(state)
 		LOOKUP:
 		begin
@@ -87,9 +89,10 @@ begin
 		MISS:
 		begin
 
-			if(dcif.iwait)
+			if(cif.iwait)
 				n_state = MISS;
 			else
+				n_frames[addr.idx].tag = addr.tag;
 				n_frames[addr.idx].valid = 1'b1;
 				n_frames[addr.idx].data = cif.iload;
 				n_state = LOOKUP;

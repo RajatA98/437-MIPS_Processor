@@ -369,9 +369,10 @@ logic n_dmemWEN,  n_dmemREN;
 		end
 	end*/
 
+
 //assigning inputs to MEM/WB latch
 assign mwif.flush = dpif.halt;
-assign mwif.enable = dpif.ihit || dpif.dhit; //check again
+assign mwif.enable = dpif.ihit ||dpif.dhit; //check again
 assign mwif.memtoReg_MEM = emif.memtoReg_MEM;
 assign mwif.Output_Port_MEM = emif.Output_Port_MEM;
 assign mwif.RegDst_MEM = emif.RegDst_MEM;

@@ -3,17 +3,17 @@ quietly WaveActivateNextPane {} 0
 add wave -noupdate /system_tb/CLK
 add wave -noupdate /system_tb/DUT/CPUCLK
 add wave -noupdate /system_tb/nRST
-add wave -noupdate -expand -group {Datapath Signals} -color Blue /system_tb/DUT/CPU/DP/dpif/halt
-add wave -noupdate -expand -group {Datapath Signals} -color Blue /system_tb/DUT/CPU/DP/dpif/ihit
-add wave -noupdate -expand -group {Datapath Signals} /system_tb/DUT/CPU/DP/dpif/imemREN
-add wave -noupdate -expand -group {Datapath Signals} -color Blue /system_tb/DUT/CPU/DP/dpif/imemload
-add wave -noupdate -expand -group {Datapath Signals} -color Blue /system_tb/DUT/CPU/DP/dpif/imemaddr
-add wave -noupdate -expand -group {Datapath Signals} -color Blue /system_tb/DUT/CPU/DP/dpif/dhit
-add wave -noupdate -expand -group {Datapath Signals} -color Blue /system_tb/DUT/CPU/DP/dpif/dmemREN
-add wave -noupdate -expand -group {Datapath Signals} -color Blue /system_tb/DUT/CPU/DP/dpif/dmemWEN
-add wave -noupdate -expand -group {Datapath Signals} -color Blue /system_tb/DUT/CPU/DP/dpif/dmemload
-add wave -noupdate -expand -group {Datapath Signals} -color Blue /system_tb/DUT/CPU/DP/dpif/dmemstore
-add wave -noupdate -expand -group {Datapath Signals} -color Blue /system_tb/DUT/CPU/DP/dpif/dmemaddr
+add wave -noupdate -expand -group {Datapath Signals} -color Cyan /system_tb/DUT/CPU/DP/dpif/halt
+add wave -noupdate -expand -group {Datapath Signals} -color Magenta /system_tb/DUT/CPU/DP/dpif/ihit
+add wave -noupdate -expand -group {Datapath Signals} -color Magenta /system_tb/DUT/CPU/DP/dpif/dhit
+add wave -noupdate -expand -group {Datapath Signals} -color Cyan /system_tb/DUT/CPU/DP/dpif/imemREN
+add wave -noupdate -expand -group {Datapath Signals} -color Cyan /system_tb/DUT/CPU/DP/dpif/imemload
+add wave -noupdate -expand -group {Datapath Signals} -color Cyan /system_tb/DUT/CPU/DP/dpif/imemaddr
+add wave -noupdate -expand -group {Datapath Signals} -color Cyan /system_tb/DUT/CPU/DP/dpif/dmemREN
+add wave -noupdate -expand -group {Datapath Signals} -color Cyan /system_tb/DUT/CPU/DP/dpif/dmemWEN
+add wave -noupdate -expand -group {Datapath Signals} -color Cyan /system_tb/DUT/CPU/DP/dpif/dmemload
+add wave -noupdate -expand -group {Datapath Signals} -color Cyan /system_tb/DUT/CPU/DP/dpif/dmemstore
+add wave -noupdate -expand -group {Datapath Signals} -color Cyan /system_tb/DUT/CPU/DP/dpif/dmemaddr
 add wave -noupdate -divider registers
 add wave -noupdate -color Salmon -expand -subitemconfig {{/system_tb/DUT/CPU/DP/RF/reg_file[31]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[30]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[29]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[28]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[27]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[26]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[25]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[24]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[23]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[22]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[21]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[20]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[19]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[18]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[17]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[16]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[15]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[14]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[13]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[12]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[11]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[10]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[9]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[8]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[7]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[6]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[5]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[4]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[3]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[2]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[1]} {-color Salmon -height 17} {/system_tb/DUT/CPU/DP/RF/reg_file[0]} {-color Salmon -height 17}} /system_tb/DUT/CPU/DP/RF/reg_file
 add wave -noupdate /system_tb/DUT/CPU/DP/RF/n_reg_file
@@ -83,10 +83,10 @@ add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/instr_I
 add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/instr_EX
 add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/instr_MEM
 add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/flush_ID
-add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/flush_EX
-add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/flush_MEM
 add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/enable_ID
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/flush_EX
 add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/enable_EX
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/flush_MEM
 add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/enable_MEM
 add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/RegWr_EX
 add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/memWr_EX
@@ -94,7 +94,7 @@ add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/RegWr_M
 add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/HU/memWr_MEM
 add wave -noupdate -expand -group {Hazard Unit} -expand -group rtype -radix unsigned -childformat {{/system_tb/DUT/CPU/DP/HU/rt_ID.opcode -radix unsigned} {/system_tb/DUT/CPU/DP/HU/rt_ID.rs -radix unsigned} {/system_tb/DUT/CPU/DP/HU/rt_ID.rt -radix unsigned} {/system_tb/DUT/CPU/DP/HU/rt_ID.rd -radix unsigned} {/system_tb/DUT/CPU/DP/HU/rt_ID.shamt -radix unsigned} {/system_tb/DUT/CPU/DP/HU/rt_ID.funct -radix unsigned}} -expand -subitemconfig {/system_tb/DUT/CPU/DP/HU/rt_ID.opcode {-height 17 -radix unsigned} /system_tb/DUT/CPU/DP/HU/rt_ID.rs {-height 17 -radix unsigned} /system_tb/DUT/CPU/DP/HU/rt_ID.rt {-height 17 -radix unsigned} /system_tb/DUT/CPU/DP/HU/rt_ID.rd {-height 17 -radix unsigned} /system_tb/DUT/CPU/DP/HU/rt_ID.shamt {-height 17 -radix unsigned} /system_tb/DUT/CPU/DP/HU/rt_ID.funct {-height 17 -radix unsigned}} /system_tb/DUT/CPU/DP/HU/rt_ID
 add wave -noupdate -expand -group {Hazard Unit} -expand -group rtype -radix unsigned -childformat {{/system_tb/DUT/CPU/DP/HU/rt_EX.opcode -radix unsigned} {/system_tb/DUT/CPU/DP/HU/rt_EX.rs -radix unsigned} {/system_tb/DUT/CPU/DP/HU/rt_EX.rt -radix unsigned} {/system_tb/DUT/CPU/DP/HU/rt_EX.rd -radix unsigned} {/system_tb/DUT/CPU/DP/HU/rt_EX.shamt -radix unsigned} {/system_tb/DUT/CPU/DP/HU/rt_EX.funct -radix unsigned}} -expand -subitemconfig {/system_tb/DUT/CPU/DP/HU/rt_EX.opcode {-height 17 -radix unsigned} /system_tb/DUT/CPU/DP/HU/rt_EX.rs {-height 17 -radix unsigned} /system_tb/DUT/CPU/DP/HU/rt_EX.rt {-height 17 -radix unsigned} /system_tb/DUT/CPU/DP/HU/rt_EX.rd {-height 17 -radix unsigned} /system_tb/DUT/CPU/DP/HU/rt_EX.shamt {-height 17 -radix unsigned} /system_tb/DUT/CPU/DP/HU/rt_EX.funct {-height 17 -radix unsigned}} /system_tb/DUT/CPU/DP/HU/rt_EX
-add wave -noupdate -expand -group {Hazard Unit} -expand -group rtype -radix unsigned /system_tb/DUT/CPU/DP/HU/rt_MEM
+add wave -noupdate -expand -group {Hazard Unit} -expand -group rtype -radix unsigned -childformat {{/system_tb/DUT/CPU/DP/HU/rt_MEM.opcode -radix unsigned} {/system_tb/DUT/CPU/DP/HU/rt_MEM.rs -radix unsigned} {/system_tb/DUT/CPU/DP/HU/rt_MEM.rt -radix unsigned} {/system_tb/DUT/CPU/DP/HU/rt_MEM.rd -radix unsigned} {/system_tb/DUT/CPU/DP/HU/rt_MEM.shamt -radix unsigned} {/system_tb/DUT/CPU/DP/HU/rt_MEM.funct -radix unsigned}} -expand -subitemconfig {/system_tb/DUT/CPU/DP/HU/rt_MEM.opcode {-radix unsigned} /system_tb/DUT/CPU/DP/HU/rt_MEM.rs {-radix unsigned} /system_tb/DUT/CPU/DP/HU/rt_MEM.rt {-radix unsigned} /system_tb/DUT/CPU/DP/HU/rt_MEM.rd {-radix unsigned} /system_tb/DUT/CPU/DP/HU/rt_MEM.shamt {-radix unsigned} /system_tb/DUT/CPU/DP/HU/rt_MEM.funct {-radix unsigned}} /system_tb/DUT/CPU/DP/HU/rt_MEM
 add wave -noupdate -expand -group {Hazard Unit} -group itype -radix unsigned -childformat {{/system_tb/DUT/CPU/DP/HU/it_ID.opcode -radix unsigned} {/system_tb/DUT/CPU/DP/HU/it_ID.rs -radix unsigned} {/system_tb/DUT/CPU/DP/HU/it_ID.rt -radix unsigned} {/system_tb/DUT/CPU/DP/HU/it_ID.imm -radix unsigned}} -expand -subitemconfig {/system_tb/DUT/CPU/DP/HU/it_ID.opcode {-height 17 -radix unsigned} /system_tb/DUT/CPU/DP/HU/it_ID.rs {-height 17 -radix unsigned} /system_tb/DUT/CPU/DP/HU/it_ID.rt {-height 17 -radix unsigned} /system_tb/DUT/CPU/DP/HU/it_ID.imm {-height 17 -radix unsigned}} /system_tb/DUT/CPU/DP/HU/it_ID
 add wave -noupdate -expand -group {Hazard Unit} -group itype -radix unsigned -childformat {{/system_tb/DUT/CPU/DP/HU/it_EX.opcode -radix unsigned} {/system_tb/DUT/CPU/DP/HU/it_EX.rs -radix unsigned} {/system_tb/DUT/CPU/DP/HU/it_EX.rt -radix unsigned} {/system_tb/DUT/CPU/DP/HU/it_EX.imm -radix unsigned}} -expand -subitemconfig {/system_tb/DUT/CPU/DP/HU/it_EX.opcode {-height 17 -radix unsigned} /system_tb/DUT/CPU/DP/HU/it_EX.rs {-height 17 -radix unsigned} /system_tb/DUT/CPU/DP/HU/it_EX.rt {-height 17 -radix unsigned} /system_tb/DUT/CPU/DP/HU/it_EX.imm {-height 17 -radix unsigned}} /system_tb/DUT/CPU/DP/HU/it_EX
 add wave -noupdate -expand -group {Hazard Unit} -group itype -radix unsigned /system_tb/DUT/CPU/DP/HU/it_MEM
@@ -141,8 +141,17 @@ add wave -noupdate /system_tb/DUT/CPU/DP/flush_ID_fw
 add wave -noupdate /system_tb/DUT/CPU/DP/flush_EX_fw
 add wave -noupdate /system_tb/DUT/CPU/DP/not_taken
 add wave -noupdate /system_tb/DUT/CPU/DP/deif/imemaddr_EX
+add wave -noupdate -expand -group {Dcache signals} -color {Orange Red} /system_tb/DUT/CPU/CM/DCACHE/dcache_state
+add wave -noupdate -expand -group {Dcache signals} -color {Orange Red} /system_tb/DUT/CPU/CM/DCACHE/hit
+add wave -noupdate -expand -group {Dcache signals} -color {Orange Red} /system_tb/DUT/CPU/CM/DCACHE/miss
+add wave -noupdate -expand -group {Dcache signals} -expand -group {dp connections} -color {Orange Red} /system_tb/DUT/CPU/CM/dcif/dhit
+add wave -noupdate -expand -group {Dcache signals} -expand -group {dp connections} -color {Orange Red} /system_tb/DUT/CPU/CM/dcif/flushed
+add wave -noupdate -expand -group {Dcache signals} -expand -group {dp connections} -color {Orange Red} /system_tb/DUT/CPU/CM/dcif/dmemload
+add wave -noupdate -expand -group {Dcache signals} -expand -group {dp connections} -color {Orange Red} /system_tb/DUT/CPU/CM/dcif/dmemstore
+add wave -noupdate -expand -group {Dcache signals} -expand -group {dp connections} -color {Orange Red} /system_tb/DUT/CPU/CM/dcif/dmemaddr
+add wave -noupdate -expand -group {Dcache signals} -expand -group {memory connections} -color {Orange Red} /system_tb/DUT/CPU/CM/cif/dwait
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {4130428 ps} 0}
+WaveRestoreCursors {{Cursor 1} {738719 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 187
 configure wave -valuecolwidth 127
@@ -158,4 +167,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {3757819 ps} {5053632 ps}
+WaveRestoreZoom {98 ns} {1566 ns}
