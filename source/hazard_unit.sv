@@ -110,7 +110,7 @@ end
 				pc_enable = 1'b1;
 				enable_ID = 1'b0;
 				flush_EX = 1'b1;
-				hazard = 2'b11;
+				//hazard = 2'b11;
 			end
 		end
 		else if((((rt_MEM.rd == rt_ID.rs || rt_MEM.rd == rt_ID.rt) && (rt_MEM.opcode == RTYPE)) || (it_MEM.opcode != RTYPE && it_MEM.rt == it_ID.rs) || (it_ID.opcode == SW && it_MEM.rt == it_ID.rt)))

@@ -7,10 +7,10 @@ ori $4, $0, 3
 sw $2, 0xF000($3)
 
 loop:
-	lw $5, 0xF000($3)
+	lw $5,0xF000($3)
 	addi $4, $4,-1
 	
-	sw $2, 0xF000($3)
-	addi $3, $3, 4
+	#sw $2, 0x000A($3)
+	#addi $3, $3, 4
 	bne $4,$0, loop 
 halt

@@ -1,11 +1,15 @@
 `include "cpu_types_pkg.vh"
-import cpu_types_pkg::*;
+`include "caches_if.vh"
+`include "datapath_cache_if.vh"
+
 module icache
 (
 	input logic CLK, nRST,
 	datapath_cache_if.icache dcif,
 	caches_if.icache cif
 );
+
+import cpu_types_pkg::*;
 
 icachef_t addr;
 
@@ -75,7 +79,7 @@ begin
 	case(state)
 		LOOKUP:
 		begin
-			if(addr.tag == frames[addr.idx].tag && frames[addr.idx].valid)
+			if(addr.tag == frames[addr.idx].tag && frames[addr.idx].valid && !cif.iwait)
 			begin
 				dcif.ihit = 1'b1;
 				dcif.imemload = frames[addr.idx].data;
@@ -90,12 +94,16 @@ begin
 		begin
 
 			if(cif.iwait)
+			begin
 				n_state = MISS;
+			end
 			else
+			begin
 				n_frames[addr.idx].tag = addr.tag;
 				n_frames[addr.idx].valid = 1'b1;
 				n_frames[addr.idx].data = cif.iload;
 				n_state = LOOKUP;
+			end
 		end
 	endcase
 end

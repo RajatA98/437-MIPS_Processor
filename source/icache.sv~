@@ -83,7 +83,6 @@ begin
 			end
 			else
 			begin
-				//n_frames[addr.idx].tag = addr.tag;
 				n_state = MISS;
 			end
 		end
@@ -91,12 +90,16 @@ begin
 		begin
 
 			if(cif.iwait)
+			begin
 				n_state = MISS;
+			end
 			else
+			begin
 				n_frames[addr.idx].tag = addr.tag;
 				n_frames[addr.idx].valid = 1'b1;
 				n_frames[addr.idx].data = cif.iload;
 				n_state = LOOKUP;
+			end
 		end
 	endcase
 end

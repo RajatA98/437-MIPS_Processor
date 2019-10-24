@@ -60,10 +60,95 @@ decode_execute DE(CLK, nRST, deif);
 execute_memory EM(CLK, nRST, dpif.dhit, emif);
 memory_wb MW(CLK, nRST, mwif);
 
+logic d_request, d_flush, ihit_flag, dhit_flag, nihit_flag, ndhit_flag;
+assign d_request = emif.memtoReg_MEM || emif.memWr_MEM;
+
+always_comb
+begin
+	nihit_flag = ihit_flag;
+	ndhit_flag = dhit_flag;	
+	
+	if(fdif.enable && deif.enable && emif.enable && mwif.enable)
+	begin
+		nihit_flag = 1'b0;
+	end
+	else if(dpif.ihit || ihit_flag)
+	begin
+		nihit_flag = 1'b1;
+	end
+	
+	
+	if (fdif.enable && deif.enable && emif.enable && mwif.enable)
+	begin
+		ndhit_flag = 1'b0;
+	end
+	else if (dpif.dhit || dhit_flag)
+	begin
+		ndhit_flag = 1'b1;
+	end
+
+end
+
+always_ff @(posedge CLK, negedge nRST)
+begin
+	if(!nRST)
+	begin
+		ihit_flag <= 1'b0;
+		dhit_flag <= 1'b0;
+	end
+	else
+	begin
+		ihit_flag <= nihit_flag;
+		dhit_flag <= ndhit_flag;
+	end
+end
+	
+
+
+
+
 //fetch decode latch signal input assignments
 assign fdif.imemload = dpif.imemload;
-assign fdif.flush = emif.halt_MEM || ((flush_ID /*|| flush_ID_BP*/) && hazard_enable) || (flush_ID_fw && fw_enable);
-assign fdif.enable = hazard_enable ? (dpif.ihit || dpif.dhit) && (enable_ID) : (dpif.ihit || dpif.dhit);
+assign fdif.flush = emif.halt_MEM || ((flush_ID /*|| flush_ID_BP*/) && hazard_enable) || (flush_ID_fw && fw_enable) || d_flush;
+
+
+//enable block fdif
+always_comb
+begin
+	d_flush = 1'b0;
+	if (hazard_enable) begin
+		if (dpif.ihit) begin
+		fdif.enable = (((dpif.dhit && d_request) || (!dpif.dhit && !d_request))&& enable_ID);
+		end
+		else begin
+		fdif.enable = (!dpif.ihit && dpif.dhit) && enable_ID;
+		end
+		
+	end
+
+	else if (dpif.ihit) begin
+		fdif.enable = ((dpif.dhit && d_request) || (!dpif.dhit && !d_request));
+	end
+
+	else begin
+		fdif.enable = dpif.dhit;
+		d_flush = 1'b1;
+	end
+end
+
+
+
+///keeping this so we remember
+/*else if(d_request)
+	begin
+		fdif.enable = ihit_flag && dhit_flag;
+	end
+	else if (dpif.ihit) begin
+		fdif.enable = ((dpif.dhit && d_request) || (!dpif.dhit && !d_request));
+	end*/
+
+
+
 assign fdif.imemaddr = dpif.imemaddr;
 //assign fdif.next_addr = next_addr;
 
@@ -78,6 +163,7 @@ end
 
 
 ////SIGNALS FOR CPU TRACKER
+
 opcode_t opcode;
 funct_t funct;
 logic [15:0] imm16;
@@ -133,7 +219,29 @@ assign imm16 = it.imm;
 
 //assign outputs of control unit to inputs of ID/EX latch
 //JIHAN
-assign deif.enable = hazard_enable ? (dpif.ihit || dpif.dhit) && (enable_EX) : (dpif.ihit || dpif.dhit); //check
+//enable block deif
+
+always_comb
+begin
+	if (hazard_enable) begin
+		if (dpif.ihit) begin
+		deif.enable = (((dpif.dhit && d_request) || (!dpif.dhit && !d_request)) && enable_EX);
+	end
+	else begin
+		deif.enable = (!dpif.ihit && dpif.dhit) && enable_EX;
+	end
+		
+	end
+	else if (dpif.ihit) begin
+		deif.enable = ((dpif.dhit && d_request) || (!dpif.dhit && !d_request));
+	end
+	else begin
+		deif.enable = (!dpif.ihit && dpif.dhit);
+	end
+end
+
+
+//assign deif.enable = hazard_enable ? (dpif.ihit || dpif.dhit) && (enable_EX) : (dpif.ihit || dpif.dhit); //check
 assign deif.flush =  emif.halt_MEM || ((flush_EX) && hazard_enable)|| (flush_EX_fw && fw_enable);
 assign deif.memtoReg = memtoReg;
 assign deif.memWr = memWr;
@@ -142,6 +250,7 @@ assign deif.EXTop = EXTop;
 assign deif.halt = temp_halt;
 assign deif.PC_Src = PC_Src;
 assign deif.RegDst = RegDst;
+
 assign deif.RegWr = RegWr;
 assign deif.Wsel = Wsel;
 assign deif.busA = rfif.rdat1;
@@ -307,8 +416,32 @@ assign jump_addr_EX =  {deif.imemaddr_EX[31:28], deif.instr_EX[25:0] << 2};
 
 
 //connecting signals to input of EX/MEM latch
+//enable block emif
+
+always_comb
+begin
+	
+	if (hazard_enable) begin
+		if (dpif.ihit) begin
+		emif.enable = (((dpif.dhit && d_request) || (!dpif.dhit && !d_request)) && enable_MEM);
+	end
+	else begin
+		emif.enable = (!dpif.ihit && dpif.dhit) && enable_MEM;
+	end
+		
+	end
+	else if (dpif.ihit) begin
+		emif.enable = ((dpif.dhit && d_request) || (!dpif.dhit && !d_request));
+	end
+	else begin
+		emif.enable = (!dpif.ihit && dpif.dhit);
+	end
+end
+
+
+
   assign emif.flush = emif.halt_MEM || ((flush_MEM) && hazard_enable) || (flush_MEM_fw && fw_enable);
-  assign emif.enable = hazard_enable ? (dpif.ihit || dpif.dhit) && (enable_MEM) : (dpif.ihit || dpif.dhit);
+  //assign emif.enable = hazard_enable ? (dpif.ihit || dpif.dhit) && (enable_MEM) : (dpif.ihit || dpif.dhit);
   assign emif.RegWr_EX = deif.RegWr_EX;
   assign emif.RegDst_EX = deif.RegDst_EX;
   assign emif.memtoReg_EX = deif.memtoReg_EX;
@@ -339,9 +472,25 @@ assign jump_addr_EX =  {deif.imemaddr_EX[31:28], deif.instr_EX[25:0] << 2};
 	assign dpif.dmemaddr = emif.Output_Port_MEM;
 
 ///replacement for request unit?????
+/*logic n_dmemWEN, n_dmemREN;
 
-assign dpif.dmemWEN =emif.memWr_MEM;
-assign dpif.dmemREN =emif.memtoReg_MEM;
+always_ff@(posedge CLK, negedge nRST)
+begin
+	if(!nRST)
+	begin
+		dpif.dmemWEN <= 1'b0;
+		dpif.dmemREN <= 1'b0;
+	end
+	else
+	begin
+		dpif.dmemWEN <= n_dmemWEN;
+		dpif.dmemREN <= n_dmemREN;
+	end
+end
+
+*/
+assign dpif.dmemWEN = /*dpif.dhit? 1'b0 : */emif.memWr_MEM;
+assign dpif.dmemREN = /*dpif.dhit? 1'b0 : */emif.memtoReg_MEM;
 
 /*
 logic n_dmemWEN,  n_dmemREN;
@@ -371,8 +520,22 @@ logic n_dmemWEN,  n_dmemREN;
 
 
 //assigning inputs to MEM/WB latch
+//enable block mwif
+always_comb
+begin
+	if (dpif.ihit) begin
+		mwif.enable = ((dpif.dhit && d_request) || (!dpif.dhit && !d_request));
+	end
+	else
+	begin
+			mwif.enable = !dpif.ihit && dpif.dhit;
+	end
+end
+
+
+
 assign mwif.flush = dpif.halt;
-assign mwif.enable = dpif.ihit ||dpif.dhit; //check again
+//assign mwif.enable = dpif.ihit ||dpif.dhit; //check again
 assign mwif.memtoReg_MEM = emif.memtoReg_MEM;
 assign mwif.Output_Port_MEM = emif.Output_Port_MEM;
 assign mwif.RegDst_MEM = emif.RegDst_MEM;
@@ -502,7 +665,18 @@ end
 
 	end
 	
-	assign pc_halt = dpif.halt || ((pc_enable) && hazard_enable) || emif.halt_MEM;
+
+//pc_halt block
+always_comb begin
+		if (emif.memtoReg_MEM || emif.memWr_MEM) begin
+				pc_halt = dpif.halt || ((pc_enable) && hazard_enable) || emif.halt_MEM || !(dpif.dhit && dpif.ihit);
+		end
+		else begin
+				pc_halt = dpif.halt || ((pc_enable) && hazard_enable) || emif.halt_MEM;
+		end
+
+end
+
 
 	pc PC(.CLK(CLK), .nRST(nRST),.ihit(dpif.ihit), .halt(pc_halt), .next_addr(next_addr), .iaddr(dpif.imemaddr));
 

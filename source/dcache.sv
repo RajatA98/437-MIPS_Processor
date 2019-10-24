@@ -11,7 +11,8 @@ module dcache(
 
   import cpu_types_pkg::*;
 
-  word_t hit_count;
+  word_t hit_count, n_hit_count, prev_dmemaddr, current_dmemaddr, miss_cnt, n_miss_cnt;
+	logic prev_dhit;
 
   //Cache Frames
   dcache_frame frame_a [7:0];
@@ -22,6 +23,9 @@ module dcache(
   //parsing address input
   dcachef_t addr;
   assign addr = ddif.dmemaddr;
+	assign prev_dmemaddr = ddif.dmemaddr;
+
+	//assign prev_dhit = ddif.dhit;
 
   //getting the right set (really only used for reads)
   dcache_frame set_a, set_b;
@@ -29,22 +33,36 @@ module dcache(
   assign set_b = frame_b[addr.idx];
 
 typedef enum logic [3:0] {IDLE, STOP, MISS, MISS2, WBACK, WBACK2, HIT_COUNT, FLUSH_A, NEXT_FLUSH_A, FLUSH_COUNT_A, FLUSH_B, NEXT_FLUSH_B, FLUSH_COUNT_B} dcache_state_t;
-dcache_state_t dcache_state, next_state;
+dcache_state_t dcache_state, next_state, prev_state;
 
 //to indicate which one is recently used
 logic [7:0] used_a, used_b, n_used_a, n_used_b;
 
 //Comparing tags of set with address tag
-logic match_a, match_b, hit, miss, lru_enable, dirty, next_a, next_b, valid_a, valid_b;
+logic match_a, match_b, hit, miss, lru_enable, hitcnt_enable, dirty, next_a, next_b, valid_a, valid_b;
 assign match_a = (addr.tag == set_a.tag) ? 1 : 0;
 assign match_b = (addr.tag == set_b.tag) ? 1 : 0;
 assign valid_a = (set_a.valid && match_a) ? 1 : 0;
 assign valid_b = (set_b.valid && match_b) ? 1 : 0;
 
+	//checking dmemaddr
+	always_ff @ (posedge CLK, negedge nRST) begin
+    if (!nRST) begin
+			current_dmemaddr <= '0;
+			prev_dhit <= 0;
+			//c_enable <= 0;
+    end
+    else begin
+  		current_dmemaddr <= prev_dmemaddr;
+			prev_dhit <= ddif.dhit;
+			//c_enable <= n_enable;
+    end
+	end
+
 
 //Clock to update most recently used (avoid combinational loop?) and to update caches
 always_ff @ (posedge CLK, negedge nRST) begin
-    if (!nRST || dcache_state == STOP) begin
+    if (!nRST) begin
       used_a <= '0;
       used_b <= '0;
     end
@@ -58,10 +76,22 @@ always_ff @ (posedge CLK, negedge nRST) begin
     end
 end
 
+//hit count registers
+always_ff @ (posedge CLK, negedge nRST) begin
+    if (!nRST) begin
+			hit_count <= '0;
+			miss_cnt <= '0;
+    end
+    else begin
+			hit_count <= n_hit_count;
+			miss_cnt <= n_miss_cnt;
+    end
+end
+
 
 //Frame Registers
 always_ff @ (posedge CLK, negedge nRST) begin
-    if (!nRST || dcache_state == STOP) begin
+    if (!nRST) begin
       frame_a[0] <= '0;
       frame_a[1] <= '0;
       frame_a[2] <= '0;
@@ -98,7 +128,6 @@ always_ff @ (posedge CLK, negedge nRST) begin
       frame_b[5] <= next_frame_b[5];
       frame_b[6] <= next_frame_b[6];
       frame_b[7] <= next_frame_b[7];
-
     end
 end
 
@@ -110,7 +139,6 @@ always_comb begin
     hit = 0;
     miss = 0;
     dirty = 0;
-    hit_count = '0;
 
    if (ddif.dmemWEN) begin
     if ((valid_a) && (!valid_b)) begin //only first set is valid
@@ -118,19 +146,19 @@ always_comb begin
         n_used_b[addr.idx] = 0;
         hit = 1;
         dirty = set_a.dirty;
-        hit_count = hit_count + 1;
+        //n_hit_count = hit_count + 1;
     end
     else if ((!valid_a) && (valid_b)) begin //only second set is valid
         n_used_a[addr.idx] = 0;
         n_used_b[addr.idx] = 1;
         hit = 1;
         dirty = set_b.dirty;
-        hit_count = hit_count + 1;
+        //n_hit_count = hit_count + 1;
 
     end
     else if ((valid_a) && (valid_b)) begin //both are valid
         hit = 1;
-        hit_count = hit_count + 1;
+        //n_hit_count = hit_count + 1;
         if (!used_a[addr.idx] && used_b[addr.idx]) begin //set a is least recently used
            n_used_a[addr.idx] = 1;
            n_used_b[addr.idx] = 0;
@@ -149,7 +177,7 @@ always_comb begin
     end
     else if ((!valid_a) && (!valid_b)) begin //none are valid // in here we want to keep LRU the same?????
         miss = 1;
-        hit_count = hit_count - 1;
+       // n_hit_count = hit_count - 1;
         if (!used_a[addr.idx] && used_b[addr.idx]) begin //set a is least recently used
            n_used_a[addr.idx] = 1;
            n_used_b[addr.idx] = 0;
@@ -176,19 +204,19 @@ always_comb begin
         n_used_b[addr.idx] = 0;
         hit = 1;
         dirty = set_a.dirty;
-        hit_count = hit_count + 1;
+        //n_hit_count = hit_count + 1;
     end
     else if (valid_b && !valid_a)begin //only second set is valid
         n_used_a[addr.idx] = 0;
         n_used_b[addr.idx] = 1;
         hit = 1;
         dirty = set_b.dirty;
-        hit_count = hit_count + 1;
+        //n_hit_count = hit_count + 1;
 
     end
     else if (valid_a && valid_b)begin //both are valid
         hit = 1;
-        hit_count = hit_count + 1;
+        //n_hit_count = hit_count + 1;
         if (!used_a[addr.idx] && used_b[addr.idx]) begin //set a is least recently used
            n_used_a[addr.idx] = 1;
            n_used_b[addr.idx] = 0;
@@ -207,7 +235,7 @@ always_comb begin
     end
     else if (!valid_a && !valid_b) begin //none are valid
         miss = 1;
-        hit_count = hit_count - 1;
+        //n_hit_count = hit_count - 1;
         if (!used_a[addr.idx] && used_b[addr.idx]) begin //set a is least recently used
            n_used_a[addr.idx] = 1;
            n_used_b[addr.idx] = 0;
@@ -231,18 +259,20 @@ end
 
 //D-Cache Controller State Machine
 
-logic [3:0] flush_count_a, flush_count_b, next_flush_count_a, next_flush_count_b;
+logic [2:0] flush_count_a, flush_count_b, next_flush_count_a, next_flush_count_b;
 //State Register
 always_ff @ (posedge CLK, negedge nRST) begin
     if (!nRST) begin
       dcache_state <= IDLE;
       flush_count_a <= '0;
       flush_count_b <= '0;
+			prev_state <= IDLE;
     end
     else begin
       dcache_state <= next_state;
       flush_count_a <= next_flush_count_a;
       flush_count_b <= next_flush_count_b;
+			prev_state <= dcache_state;
     end
 end
 
@@ -250,7 +280,8 @@ end
 
 //Next State Logic
 always_comb begin
-
+	 	 n_miss_cnt = miss_cnt;
+     next_state = dcache_state;
    case(dcache_state)
    IDLE: begin
       if (ddif.halt) begin
@@ -281,6 +312,7 @@ always_comb begin
      end
      else if (!dmif.dwait) begin
         next_state = MISS2;
+				n_miss_cnt = miss_cnt + 1;
      end
    end
    MISS2: begin
@@ -369,10 +401,29 @@ always_comb begin
           next_state = FLUSH_COUNT_B;
       end
    end
-
-   default: next_state = dcache_state;
    endcase
 end
+
+
+//Hit count block
+/*always_comb begin
+	n_hit_count = hit_count;
+	if (dcache_state == IDLE) begin
+		if (ddif.dhit == 0) begin
+				if (prev_dhit == 1) begin
+				end
+		end
+		else begin
+				//if (prev_state == IDLE) begin
+						//n_hit_count = hit_count - 1;
+				//end
+		end
+
+	end
+end*/
+
+
+
 
 
 //Output Logic (Remember to include mux to choose which set to write to)
@@ -394,6 +445,9 @@ always_comb begin
    next_flush_count_b = flush_count_b;
    next_a = 0;
    next_b = 0;
+	 hitcnt_enable = 0;
+   n_hit_count = hit_count;
+	
 
    case(dcache_state)
    IDLE: begin //basically where you check tags and stuff // in this state, LRU has not been updated yet
@@ -402,6 +456,7 @@ always_comb begin
 
      if (ddif.dmemWEN && hit) begin //write hit
           ddif.dhit = 1;
+					n_hit_count = hit_count + 1;
           if (n_used_a[addr.idx]) begin
             next_frame_a[addr.idx].data[addr.blkoff] = ddif.dmemstore;
             next_frame_a[addr.idx].dirty = 1;
@@ -414,6 +469,7 @@ always_comb begin
 
       else if (ddif.dmemREN && hit) begin //read hit
           ddif.dhit = 1;
+					n_hit_count = hit_count + 1;
           if (n_used_a[addr.idx]) begin
             ddif.dmemload =  frame_a[addr.idx].data[addr.blkoff];
           end
@@ -421,6 +477,43 @@ always_comb begin
             ddif.dmemload = frame_b[addr.idx].data[addr.blkoff];
           end
       end
+
+		////hit count enable block 
+		 /*if (ddif.dhit == 1) begin
+				if (prev_dhit != current_dhit) begin
+					hitcnt_enable = 1;
+					//n_enable = 1;
+				end
+				else if ((prev_dhit == current_dhit) && (prev_dmemaddr == current_dmemaddr)) begin
+					 	hitcnt_enable = 0;
+						/* //Weird patching job commented out, going back to previous way
+						if (c_enable == 0) begin
+								hitcnt_enable = 1;
+								n_enable  = 1;							
+						end
+						else begin
+					 			hitcnt_enable = 0;
+								n_enable = 0;
+						end*/
+				/*end
+				else if ((prev_dhit == current_dhit) && (prev_dmemaddr != current_dmemaddr)) begin
+					 hitcnt_enable = 1;
+					 //n_enable = 1;
+				end
+		 end
+		 else begin
+			 if (prev_dmemaddr == current_dmemaddr) begin
+				hitcnt_enable = 0;
+				//n_enable = 0;
+			 end
+			 else begin
+				hitcnt_enable = 1;
+				//n_enable = 0;
+			 end		 
+
+			end*/
+
+
     end
 
    FLUSH_A: begin //look through all sets of to flush to memory
@@ -460,7 +553,7 @@ always_comb begin
 
    NEXT_FLUSH_B: begin
           dmif.dWEN = 1;
-          dmif.daddr = {frame_b[flush_count_b].tag, flush_count_b,1'b1,2'b0};
+          dmif.daddr = {frame_b[flush_count_b].tag, flush_count_b,1'b1, 2'b0};
           dmif.dstore = frame_b[flush_count_b].data[1];
    end
 
@@ -492,6 +585,17 @@ always_comb begin
    MISS2: begin
       dmif.dREN = 1;
       dmif.daddr =  {ddif.dmemaddr[31:3],3'b100}; //second block
+
+
+     if (!dmif.dwait) begin //is this right?
+        if (used_a) begin //frame a is chosen
+           next_frame_a[addr.idx].data[1] = dmif.dload;
+        end
+        else if (used_b) begin //frame b is chosen
+           next_frame_b[addr.idx].data[1] = dmif.dload;
+        end
+     end
+
 
       //updating cache - tag and valid
       if (used_a) begin //frame a is chosen
@@ -538,7 +642,7 @@ always_comb begin
    HIT_COUNT: begin
       dmif.dWEN = 1;
 			dmif.daddr = 'h3100;
-			dmif.dstore = hit_count;
+			dmif.dstore = (hit_count - miss_cnt);
    end
 
 

@@ -369,6 +369,7 @@ logic n_dmemWEN,  n_dmemREN;
 		end
 	end*/
 
+
 //assigning inputs to MEM/WB latch
 assign mwif.flush = dpif.halt;
 assign mwif.enable = dpif.ihit ||dpif.dhit; //check again
@@ -501,7 +502,18 @@ end
 
 	end
 	
-	assign pc_halt = dpif.halt || ((pc_enable) && hazard_enable) || emif.halt_MEM;
+
+//pc_halt block
+always_comb begin
+		if (emif.memtoReg_MEM || emif.memWr_MEM) begin
+				pc_halt = dpif.halt || ((pc_enable) && hazard_enable) || emif.halt_MEM || (dpif.dhit && dpif.ihit);
+		end
+		else begin
+				pc_halt = dpif.halt || ((pc_enable) && hazard_enable) || emif.halt_MEM;
+		end
+
+end
+
 
 	pc PC(.CLK(CLK), .nRST(nRST),.ihit(dpif.ihit), .halt(pc_halt), .next_addr(next_addr), .iaddr(dpif.imemaddr));
 
