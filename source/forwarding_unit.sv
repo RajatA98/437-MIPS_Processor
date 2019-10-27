@@ -91,7 +91,7 @@ always_comb begin
       end
   end
 
-	if (memtoReg_WB == 1) begin
+	else if (memtoReg_WB == 1) begin
           //Determining Asel
           //just rs
           if (rt_EX.rs == it_WB.rt) begin

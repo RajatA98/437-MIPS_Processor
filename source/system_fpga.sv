@@ -53,12 +53,12 @@ module system_fpga (
   end
 
   // system
-  system SYS(CLOCK_50,nRST,syif);
+  system SYS(CLOCK_50,nRST,SW, LEDR, syif);
   // signals we should not use
   assign syif.WEN = 0;
   assign syif.store = 0;
 
-  assign LEDR[15:0] = SW[15:0];
+  //assign LEDR[15:0] = SW[15:0];
 
   // map board to system
   assign LEDG[8] = syif.halt;

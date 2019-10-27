@@ -29,12 +29,14 @@ module system_tb;
   // interface
   system_if syif();
 
+	logic [17:0] SW, LEDR;
+
   // test program
-  test                                PROG (CLK,nRST,syif);
+  test                                PROG (CLK,nRST, syif);
 
   // dut
 `ifndef MAPPED
-  system                              DUT (CLK,nRST,syif);
+  system                              DUT (CLK,nRST, syif);
  
   // NOTE: All of these signals MUST be passed all the way through
   // to the write back stage and sampled in the WRITEBACK stage.

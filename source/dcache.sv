@@ -32,7 +32,7 @@ module dcache(
   assign set_a = frame_a[addr.idx];
   assign set_b = frame_b[addr.idx];
 
-typedef enum logic [3:0] {IDLE, STOP, MISS, MISS2, WBACK, WBACK2, HIT_COUNT, FLUSH_A, NEXT_FLUSH_A, FLUSH_COUNT_A, FLUSH_B, NEXT_FLUSH_B, FLUSH_COUNT_B} dcache_state_t;
+typedef enum logic [3:0] {IDLE, STOP, MISS, MISS2, WBACK, WBACK2, HIT_COUNT, FLUSH_A, NEXT_FLUSH_A, FLUSH_B, NEXT_FLUSH_B} dcache_state_t;
 dcache_state_t dcache_state, next_state, prev_state;
 
 //to indicate which one is recently used
@@ -280,6 +280,8 @@ end
 
 //Next State Logic
 always_comb begin
+		 next_flush_count_a = flush_count_a;
+		 next_flush_count_b = flush_count_b;
 	 	 n_miss_cnt = miss_cnt;
      next_state = dcache_state;
    case(dcache_state)
@@ -348,14 +350,22 @@ always_comb begin
      end
    end
    FLUSH_A: begin
-      if (dmif.dwait && next_a ) begin
+      if (dmif.dwait && next_a) begin
         next_state = FLUSH_A;
       end
       else if (!dmif.dwait && next_a)  begin
         next_state = NEXT_FLUSH_A;
       end
       else if (!next_a) begin
-        next_state = FLUSH_COUNT_A;
+
+		    if (flush_count_a == 7) begin
+		      next_state = FLUSH_B;
+		    end
+		    else if (flush_count_a != 7) begin
+		      next_state = FLUSH_A;
+          next_flush_count_a = flush_count_a + 1;
+		    end
+
       end
    end
    FLUSH_B: begin
@@ -366,10 +376,16 @@ always_comb begin
         next_state = NEXT_FLUSH_B;
       end
       else if (!next_b) begin
-        next_state = FLUSH_COUNT_B;
+				  if (flush_count_b == 7) begin
+				    next_state = STOP;
+				  end
+				  else if (flush_count_b != 7) begin
+				    next_state = FLUSH_B;
+        		next_flush_count_b = flush_count_b + 1;
+				  end
       end
    end
-   FLUSH_COUNT_A: begin
+   /*FLUSH_COUNT_A: begin
       if (flush_count_a == 7) begin
         next_state = FLUSH_B;
       end
@@ -384,13 +400,22 @@ always_comb begin
       else if (flush_count_b != 7) begin
         next_state = FLUSH_B;
       end
-   end
+   end*/
+
    NEXT_FLUSH_A: begin
       if (dmif.dwait) begin
           next_state = NEXT_FLUSH_A;
       end
+
       else if (!dmif.dwait) begin
-          next_state = FLUSH_COUNT_A;
+		    if (flush_count_a == 7) begin
+		      next_state = FLUSH_B;
+		    end
+		    else if (flush_count_a != 7) begin
+		      next_state = FLUSH_A;
+          next_flush_count_a = flush_count_a + 1;
+		    end
+
       end
    end
    NEXT_FLUSH_B: begin
@@ -398,7 +423,13 @@ always_comb begin
           next_state = NEXT_FLUSH_B;
       end
       else if (!dmif.dwait) begin
-          next_state = FLUSH_COUNT_B;
+				  if (flush_count_b == 7) begin
+				    next_state = STOP;
+				  end
+				  else if (flush_count_b != 7) begin
+				    next_state = FLUSH_B;
+        		next_flush_count_b = flush_count_b + 1;
+				  end
       end
    end
    endcase
@@ -441,8 +472,6 @@ always_comb begin
    dmif.dstore = '0; //unsure
    dmif.daddr = '0; //unsure
    lru_enable = 0;
-   next_flush_count_a = flush_count_a;
-   next_flush_count_b = flush_count_b;
    next_a = 0;
    next_b = 0;
 	 hitcnt_enable = 0;
@@ -534,9 +563,9 @@ always_comb begin
           dmif.dstore = frame_a[flush_count_a].data[1];
    end
 
-   FLUSH_COUNT_A: begin
+   /*FLUSH_COUNT_A: begin
         next_flush_count_a = flush_count_a + 1;
-   end
+   end*/
 
    FLUSH_B: begin
       dmif.dWEN = 0;
@@ -557,9 +586,9 @@ always_comb begin
           dmif.dstore = frame_b[flush_count_b].data[1];
    end
 
-   FLUSH_COUNT_B: begin
+   /*FLUSH_COUNT_B: begin
         next_flush_count_b = flush_count_b + 1;
-   end
+   end*/
 
    STOP: begin
      ddif.flushed = 1;
@@ -573,10 +602,10 @@ always_comb begin
      dmif.daddr = {ddif.dmemaddr[31:3],3'b000}; //first block
 
      if (!dmif.dwait) begin //is this right?
-        if (used_a) begin //frame a is chosen
+        if (used_a[addr.idx]) begin //frame a is chosen
            next_frame_a[addr.idx].data[0] = dmif.dload;
         end
-        else if (used_b) begin //frame b is chosen
+        else if (used_b[addr.idx]) begin //frame b is chosen
            next_frame_b[addr.idx].data[0] = dmif.dload;
         end
      end
@@ -588,21 +617,21 @@ always_comb begin
 
 
      if (!dmif.dwait) begin //is this right?
-        if (used_a) begin //frame a is chosen
+        if (used_a[addr.idx]) begin //frame a is chosen
            next_frame_a[addr.idx].data[1] = dmif.dload;
         end
-        else if (used_b) begin //frame b is chosen
+        else if (used_b[addr.idx]) begin //frame b is chosen
            next_frame_b[addr.idx].data[1] = dmif.dload;
         end
      end
 
 
       //updating cache - tag and valid
-      if (used_a) begin //frame a is chosen
+      if (used_a[addr.idx]) begin //frame a is chosen
         next_frame_a[addr.idx].tag = addr.tag;
         next_frame_a[addr.idx].valid = 1;
       end
-      else if (used_b) begin //frame b is chosen
+      else if (used_b[addr.idx]) begin //frame b is chosen
         next_frame_b[addr.idx].tag = addr.tag;
         next_frame_b[addr.idx].valid = 1;
       end
@@ -610,30 +639,30 @@ always_comb begin
    end
    WBACK: begin
       dmif.dWEN = 1;
-      if (used_a) begin //frame a i3100s chosen
+      if (used_a[addr.idx]) begin //frame a is chosen
         dmif.dstore = frame_a[addr.idx].data[0];
         dmif.daddr = {frame_a[addr.idx].tag,addr.idx,3'b000}; //first block
       end
-      else if (used_b) begin //frame b is chosen
+      else if (used_b[addr.idx]) begin //frame b is chosen
         dmif.dstore = frame_b[addr.idx].data[0];
         dmif.daddr = {frame_b[addr.idx].tag,addr.idx,3'b000}; //first block
       end
    end
    WBACK2: begin
       dmif.dWEN = 1;
-      if (used_a) begin //frame a is chosen
+      if (used_a[addr.idx]) begin //frame a is chosen
         dmif.dstore = frame_a[addr.idx].data[1];
         dmif.daddr = {frame_a[addr.idx].tag,addr.idx,3'b100}; //second block
       end
-      else if (used_b) begin //frame b is chosen
+      else if (used_b[addr.idx]) begin //frame b is chosen
         dmif.dstore = frame_b[addr.idx].data[1];
         dmif.daddr = {frame_b[addr.idx].tag,addr.idx,3'b100}; //second block
       end
 
-      if (used_a) begin //frame a is chosen
+      if (used_a[addr.idx]) begin //frame a is chosen
         next_frame_a[addr.idx].dirty = 0;
       end
-      else if (used_b) begin //frame b is chosen
+      else if (used_b[addr.idx]) begin //frame b is chosen
         next_frame_b[addr.idx].dirty = 0;
 			end
 

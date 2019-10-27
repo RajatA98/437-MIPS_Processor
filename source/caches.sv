@@ -23,10 +23,46 @@ module caches (
   word_t instr;
   word_t daddr;
 
+	/*word_t MMIO;
+
+	assign MMIO = 'hF00;
+
+	assign dcif2.halt = dcif.halt;
+	assign dcif2.dmemREN = (dcif.dmemaddr == MMIO)? 1'b0 : dcif.dmemREN; 
+	assign dcif2.dmemWEN = (dcif.dmemaddr == MMIO)? 1'b0 : dcif.dmemWEN; 
+	assign dcif2.datomic = dcif.datomic;
+	assign dcif2.dmemstore = dcif.dmemstore;
+	assign dcif2.dmemaddr = dcif.dmemaddr;
+	
+	assign dcif.dhit = ((dcif2.dmemaddr == MMIO) && (dcif.dmemREN || dcif.dmemWEN))? 1'b1 : dcif2.dhit;
+	assign dcif.dmemload =  ((dcif2.dmemaddr == MMIO) && (dcif.dmemREN))? SW[17:0] : dcif2.dmemload; 
+	assign dcif.flushed = dcif2.flushed;
+
+	always_ff @(posedge CLK, negedge nRST)
+	begin
+		if(!nRST)
+		begin
+			LEDR <= '0;
+		end
+		else
+		begin
+			if ((dcif2.dmemaddr == MMIO) && dcif.dmemWEN)
+			begin
+				LEDR <= dcif2.dmemstore[17:0];
+
+			end
+			else
+			begin
+				LEDR <= LEDR;
+			end
+		end
+	end*/
+	
+
   // icache
   icache  ICACHE(CLK, nRST, dcif, cif);
   // dcache
-  dcache  DCACHE(CLK, nRST, dcif.dcache, cif.dcache);
+  dcache  DCACHE(CLK, nRST, dcif, cif);
 
   // single cycle instr saver (for memory ops)
   /*always_ff @(posedge CLK)

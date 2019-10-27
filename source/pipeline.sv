@@ -17,6 +17,7 @@ parameter PC0 = 0;
 
   // bus interface
   datapath_cache_if         dcif ();
+  datapath_cache_if         dcif2 ();
   // coherence interface
   caches_if                 cif0();
   // cif1 will not be used, but ccif expects it as an input
