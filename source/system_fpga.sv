@@ -53,7 +53,7 @@ module system_fpga (
   end
 
   // system
-  system SYS(CLOCK_50,nRST,SW, LEDR, syif);
+  system SYS(CLOCK_50,nRST,syif);
   // signals we should not use
   assign syif.WEN = 0;
   assign syif.store = 0;
