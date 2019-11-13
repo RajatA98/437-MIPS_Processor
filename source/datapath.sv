@@ -638,7 +638,7 @@ end
 );
 	*/
 
-
+///Branch Predictor
 
 	always_comb
 	begin
@@ -649,7 +649,7 @@ end
 
 		if (emif.instr_MEM[31:26] == BEQ)
 		begin
-			if(emif.zero_MEM != 1)
+			if(emif.zero_MEM != 1) //beq not taken
 			begin
 				flush_EX_fw = 1'b1;
 				flush_ID_fw = 1'b1;
