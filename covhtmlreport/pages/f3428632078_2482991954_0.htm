@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+  <title>Questa Coverage Report</title>
+  <!-- original name: _work.dcacheContentFrame5.htm -->
+  <link rel="StyleSheet" media="print"  href="../css/ucdb2htmlP.css"/>
+  <link rel="StyleSheet" media="screen" href="../css/ucdb2html.css"/>
+  <link rel="StyleSheet" media="screen" href="../css/ucdb2html_newlook.css"/>
+  <script type="text/javascript" src="../scripts/jquery.js"></script>
+  <script type="text/javascript" src="../scripts/showhide.js"></script>
+  
+</head>
+<body id="ucdb2html_detail" onload="showLast()">
+  <h1><span class="strip">Questa</span> State-machine Coverage Report</h1>
+  <h3>Scope: /<a href="z3428632078_2482991954_0.htm">work.dcache</a></h3>
+  <!-- use script block so buttons vanish when JavaScript is disabled -->
+  <script type="text/javascript">
+  <!--
+  document.write(
+    '<table class="buttons" cellspacing="2" cellpadding="2"><tr>' +
+       '<td id="showAll" width="100" onclick="showAll()" class="button_on" ' +
+           'title="Display all coverage scopes and bins.">Show All</td>' +
+       '<td id="showCov" width="100" onclick="showCov()" class="button_off" ' +
+           'title="Display only covered scopes and bins.">Show Covered</td>' +
+       '<td id="showMis" width="100" onclick="showMis()" class="button_off" ' +
+           'title="Display only uncovered scopes and bins.">Show Missing</td>' +
+    '</tr></table>');
+  //-->
+  </script>
+  
+<script>
+<!--
+  var pa_scope=0;
+-->
+</script>
+<div><a name="cvg3410"/><hr/><table>
+  <tr lnk="__HDL_srcfile_8.htm#307" z="dcache_state" c="Y" p="89.53"/>
+  <tr/>
+  <tr cr="c" s="1" z="IDLE" h="887" c="g"/>
+  <tr cr="c" z="IDLE -> IDLE" h="835" c="g"/>
+  <tr cr="c" z="IDLE -> WBACK" h="10" c="g"/>
+  <tr cr="c" z="IDLE -> MISS" h="22" c="g"/>
+  <tr cr="c" z="IDLE -> SNOOP_WB1" h="2" c="g"/>
+  <tr cr="c" z="IDLE -> FLUSH_A" h="18" c="g"/>
+  <tr cr="c" s="1" z="WBACK" h="32" c="g"/>
+  <tr cr="c" z="WBACK -> WBACK" h="22" c="g"/>
+  <tr cr="c" z="WBACK -> WBACK2" h="10" c="g"/>
+  <tr cr="m" z="WBACK -> SNOOP_WB1" h="0" c="r"/>
+  <tr cr="m" z="WBACK -> IDLE" h="0" c="r"/>
+  <tr cr="c" s="1" z="MISS" h="203" c="g"/>
+  <tr cr="c" z="MISS -> MISS" h="171" c="g"/>
+  <tr cr="c" z="MISS -> MISS2" h="31" c="g"/>
+  <tr cr="m" z="MISS -> SNOOP_WB1" h="0" c="r"/>
+  <tr cr="c" z="MISS -> IDLE" h="1" c="g"/>
+  <tr cr="c" s="1" z="SNOOP_WB1" h="9" c="g"/>
+  <tr cr="c" z="SNOOP_WB1 -> SNOOP_WB2" h="4" c="g"/>
+  <tr cr="c" z="SNOOP_WB1 -> SNOOP_WB1" h="4" c="g"/>
+  <tr cr="c" z="SNOOP_WB1 -> IDLE" h="1" c="g"/>
+  <tr cr="c" s="1" z="FLUSH_A" h="96" c="g"/>
+  <tr cr="c" z="FLUSH_A -> FLUSH_A" h="72" c="g"/>
+  <tr cr="c" z="FLUSH_A -> FLUSH_B" h="10" c="g"/>
+  <tr cr="c" z="FLUSH_A -> NEXT_FLUSH_A" h="6" c="g"/>
+  <tr cr="c" z="FLUSH_A -> SNOOP_WB1" h="2" c="g"/>
+  <tr cr="c" z="FLUSH_A -> IDLE" h="6" c="g"/>
+  <tr cr="c" s="1" z="STOP" h="131160" c="g"/>
+  <tr cr="c" z="STOP -> STOP" h="131154" c="g"/>
+  <tr cr="c" z="STOP -> IDLE" h="4" c="g"/>
+  <tr cr="c" s="1" z="MISS2" h="61" c="g"/>
+  <tr cr="c" z="MISS2 -> MISS2" h="30" c="g"/>
+  <tr cr="c" z="MISS2 -> IDLE" h="31" c="g"/>
+  <tr cr="c" s="1" z="WBACK2" h="20" c="g"/>
+  <tr cr="c" z="WBACK2 -> WBACK2" h="10" c="g"/>
+  <tr cr="c" z="WBACK2 -> MISS" h="10" c="g"/>
+  <tr cr="m" z="WBACK2 -> IDLE" h="0" c="r"/>
+  <tr cr="c" s="1" z="FLUSH_B" h="76" c="g"/>
+  <tr cr="c" z="FLUSH_B -> FLUSH_B" h="62" c="g"/>
+  <tr cr="c" z="FLUSH_B -> STOP" h="6" c="g"/>
+  <tr cr="c" z="FLUSH_B -> NEXT_FLUSH_B" h="4" c="g"/>
+  <tr cr="c" z="FLUSH_B -> SNOOP_WB1" h="1" c="g"/>
+  <tr cr="c" z="FLUSH_B -> IDLE" h="3" c="g"/>
+  <tr cr="c" s="1" z="NEXT_FLUSH_A" h="12" c="g"/>
+  <tr cr="c" z="NEXT_FLUSH_A -> NEXT_FLUSH_A" h="6" c="g"/>
+  <tr cr="c" z="NEXT_FLUSH_A -> FLUSH_A" h="6" c="g"/>
+  <tr cr="m" z="NEXT_FLUSH_A -> FLUSH_B" h="0" c="r"/>
+  <tr cr="m" z="NEXT_FLUSH_A -> IDLE" h="0" c="r"/>
+  <tr cr="c" s="1" z="NEXT_FLUSH_B" h="8" c="g"/>
+  <tr cr="c" z="NEXT_FLUSH_B -> NEXT_FLUSH_B" h="4" c="g"/>
+  <tr cr="c" z="NEXT_FLUSH_B -> FLUSH_B" h="4" c="g"/>
+  <tr cr="m" z="NEXT_FLUSH_B -> STOP" h="0" c="r"/>
+  <tr cr="m" z="NEXT_FLUSH_B -> IDLE" h="0" c="r"/>
+  <tr cr="c" s="1" z="SNOOP_WB2" h="4" c="g"/>
+  <tr cr="c" z="SNOOP_WB2 -> IDLE" h="4" c="g"/>
+  <tr cr="m" z="SNOOP_WB2 -> SNOOP_WB2" h="0" c="r"/>
+  </table>
+  </div><script type="text/javascript" src="../scripts/buildfsmpage.js"></script>
+  <!-- make sure jumps to last few line nos work -->
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+  
+</body>
+</html>

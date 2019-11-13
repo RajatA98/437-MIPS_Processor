@@ -70,7 +70,7 @@ end
 
 always_comb
 begin
-	cif.iREN = dcif.imemREN;
+	cif.iREN = 1'b0;
 	cif.iaddr = dcif.imemaddr;
 	n_state = state;
 	n_frames = frames;
@@ -79,7 +79,7 @@ begin
 	case(state)
 		LOOKUP:
 		begin
-			if(addr.tag == frames[addr.idx].tag && frames[addr.idx].valid && !cif.iwait)
+			if(addr.tag == frames[addr.idx].tag && frames[addr.idx].valid)
 			begin
 				dcif.ihit = 1'b1;
 				dcif.imemload = frames[addr.idx].data;
@@ -92,7 +92,7 @@ begin
 		end
 		MISS:
 		begin
-
+			cif.iREN = 1'b1;
 			if(cif.iwait)
 			begin
 				n_state = MISS;

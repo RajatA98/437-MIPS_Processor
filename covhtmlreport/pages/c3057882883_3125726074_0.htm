@@ -1,0 +1,204 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+  <title>Questa Coverage Report</title>
+  <!-- original name: _work.hazard_unitContentFrame4.htm -->
+  <link rel="StyleSheet" media="print"  href="../css/ucdb2htmlP.css"/>
+  <link rel="StyleSheet" media="screen" href="../css/ucdb2html.css"/>
+  <link rel="StyleSheet" media="screen" href="../css/ucdb2html_newlook.css"/>
+  <script type="text/javascript" src="../scripts/jquery.js"></script>
+  <script type="text/javascript" src="../scripts/showhide.js"></script>
+  
+</head>
+<body id="ucdb2html_detail" onload="showLast()">
+  <h1><span class="strip">Questa</span> Condition Coverage Report</h1>
+  <h3>Scope: /<a href="z3057882883_3125726074_0.htm">work.hazard_unit</a></h3>
+  <!-- use script block so buttons vanish when JavaScript is disabled -->
+  <script type="text/javascript">
+  <!--
+  document.write(
+    '<table class="buttons" cellspacing="2" cellpadding="2"><tr>' +
+       '<td id="showAll" width="100" onclick="showAll()" class="button_on" ' +
+           'title="Display all coverage scopes and bins.">Show All</td>' +
+       '<td id="showCov" width="100" onclick="showCov()" class="button_off" ' +
+           'title="Display only covered scopes and bins.">Show Covered</td>' +
+       '<td id="showMis" width="100" onclick="showMis()" class="button_off" ' +
+           'title="Display only uncovered scopes and bins.">Show Missing</td>' +
+    '</tr></table>');
+  //-->
+  </script>
+  <div class="missing"><a name="cvg16296"/><hr/><table>
+  <tr s="3" x="FC" lnk="__HDL_srcfile_25.htm#35" z="((rt_MEM.opcode == J) || (rt_MEM.opcode == JAL) || ((rt_MEM.funct == JR) && (rt_MEM.opcode == RTYPE)))" c="R" p="0.00" d="0" F="1"/>
+  <tr/>
+  <tr z="(rt_MEM.opcode == J)" c="r" r="'_1' not hit" i="Hit '_1'"/>
+  <tr z="(rt_MEM.opcode == JAL)" c="r" r="'_1' not hit" i="Hit '_1'"/>
+  <tr z="(rt_MEM.funct == JR)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(rt_MEM.opcode == RTYPE)" c="r" r="'_1' not hit" i="Hit '_1'"/>
+  <tr/>
+  <tr n="1" z="(rt_MEM.opcode == J)_0" h1="2" t="c" c1="~((rt_MEM.opcode == JAL) || ((rt_MEM.funct == JR) && (rt_MEM.opcode == RTYPE)))"/>
+  <tr n="2" z="(rt_MEM.opcode == J)_1" h1="0" t="c" c1="~((rt_MEM.opcode == JAL) || ((rt_MEM.funct == JR) && (rt_MEM.opcode == RTYPE)))"/>
+  <tr n="3" z="(rt_MEM.opcode == JAL)_0" h1="2" t="c" c1="(~(rt_MEM.opcode == J) && ~((rt_MEM.funct == JR) && (rt_MEM.opcode == RTYPE)))"/>
+  <tr n="4" z="(rt_MEM.opcode == JAL)_1" h1="0" t="c" c1="(~(rt_MEM.opcode == J) && ~((rt_MEM.funct == JR) && (rt_MEM.opcode == RTYPE)))"/>
+  <tr n="5" z="(rt_MEM.funct == JR)_0" h1="0" t="c" c1="(~(rt_MEM.opcode == J) && ~(rt_MEM.opcode == JAL) && (rt_MEM.opcode == RTYPE))"/>
+  <tr n="6" z="(rt_MEM.funct == JR)_1" h1="0" t="c" c1="(~(rt_MEM.opcode == J) && ~(rt_MEM.opcode == JAL) && (rt_MEM.opcode == RTYPE))"/>
+  <tr n="7" z="(rt_MEM.opcode == RTYPE)_0" h1="1" t="c" c1="(~(rt_MEM.opcode == J) && ~(rt_MEM.opcode == JAL) && (rt_MEM.funct == JR))"/>
+  <tr n="8" z="(rt_MEM.opcode == RTYPE)_1" h1="0" t="c" c1="(~(rt_MEM.opcode == J) && ~(rt_MEM.opcode == JAL) && (rt_MEM.funct == JR))"/>
+  </table>
+</div><div class="covered"><a name="cvg16298"/><hr/><table>
+  <tr s="3" x="FC" lnk="__HDL_srcfile_25.htm#67" z="(RegWr_EX || memWr_EX)" c="G" p="100.00" d="0" F="1"/>
+  <tr/>
+  <tr z="RegWr_EX" c="g" r="" i=""/>
+  <tr z="memWr_EX" c="g" r="" i=""/>
+  <tr/>
+  <tr n="1" z="RegWr_EX_0" h1="2" t="c" c1="~memWr_EX"/>
+  <tr n="2" z="RegWr_EX_1" h1="2" t="c" c1="~memWr_EX"/>
+  <tr n="3" z="memWr_EX_0" h1="2" t="c" c1="~RegWr_EX"/>
+  <tr n="4" z="memWr_EX_1" h1="2" t="c" c1="~RegWr_EX"/>
+  </table>
+</div><div class="missing"><a name="cvg16300"/><hr/><table>
+  <tr s="3" x="FC" lnk="__HDL_srcfile_25.htm#71" z="(((it_ID.rs == it_EX.rt) && (it_ID.opcode != RTYPE)) || (((rt_ID.rt == it_EX.rt) || (rt_ID.rs == it_EX.rt)) && (rt_ID.opcode == RTYPE)))" c="R" p="0.00" d="0" F="1"/>
+  <tr/>
+  <tr z="(it_ID.rs == it_EX.rt)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(it_ID.opcode != RTYPE)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(rt_ID.rt == it_EX.rt)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(rt_ID.rs == it_EX.rt)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(rt_ID.opcode == RTYPE)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr/>
+  <tr n="1" z="(it_ID.rs == it_EX.rt)_0" h1="0" t="c" c1="(~(((rt_ID.rt == it_EX.rt) || (rt_ID.rs == it_EX.rt)) && (rt_ID.opcode == RTYPE)) && (it_ID.opcode != RTYPE))"/>
+  <tr n="2" z="(it_ID.rs == it_EX.rt)_1" h1="0" t="c" c1="(~(((rt_ID.rt == it_EX.rt) || (rt_ID.rs == it_EX.rt)) && (rt_ID.opcode == RTYPE)) && (it_ID.opcode != RTYPE))"/>
+  <tr n="3" z="(it_ID.opcode != RTYPE)_0" h1="0" t="c" c1="(~(((rt_ID.rt == it_EX.rt) || (rt_ID.rs == it_EX.rt)) && (rt_ID.opcode == RTYPE)) && (it_ID.rs == it_EX.rt))"/>
+  <tr n="4" z="(it_ID.opcode != RTYPE)_1" h1="0" t="c" c1="(~(((rt_ID.rt == it_EX.rt) || (rt_ID.rs == it_EX.rt)) && (rt_ID.opcode == RTYPE)) && (it_ID.rs == it_EX.rt))"/>
+  <tr n="5" z="(rt_ID.rt == it_EX.rt)_0" h1="0" t="c" c1="(~((it_ID.rs == it_EX.rt) && (it_ID.opcode != RTYPE)) && (rt_ID.opcode == RTYPE) && ~(rt_ID.rs == it_EX.rt))"/>
+  <tr n="6" z="(rt_ID.rt == it_EX.rt)_1" h1="0" t="c" c1="(~((it_ID.rs == it_EX.rt) && (it_ID.opcode != RTYPE)) && (rt_ID.opcode == RTYPE) && ~(rt_ID.rs == it_EX.rt))"/>
+  <tr n="7" z="(rt_ID.rs == it_EX.rt)_0" h1="0" t="c" c1="(~((it_ID.rs == it_EX.rt) && (it_ID.opcode != RTYPE)) && (rt_ID.opcode == RTYPE) && ~(rt_ID.rt == it_EX.rt))"/>
+  <tr n="8" z="(rt_ID.rs == it_EX.rt)_1" h1="0" t="c" c1="(~((it_ID.rs == it_EX.rt) && (it_ID.opcode != RTYPE)) && (rt_ID.opcode == RTYPE) && ~(rt_ID.rt == it_EX.rt))"/>
+  <tr n="9" z="(rt_ID.opcode == RTYPE)_0" h1="0" t="c" c1="(~((it_ID.rs == it_EX.rt) && (it_ID.opcode != RTYPE)) && ((rt_ID.rt == it_EX.rt) || (rt_ID.rs == it_EX.rt)))"/>
+  <tr n="10" z="(rt_ID.opcode == RTYPE)_1" h1="0" t="c" c1="(~((it_ID.rs == it_EX.rt) && (it_ID.opcode != RTYPE)) && ((rt_ID.rt == it_EX.rt) || (rt_ID.rs == it_EX.rt)))"/>
+  </table>
+</div><div class="missing"><a name="cvg16302"/><hr/><table>
+  <tr s="3" x="FC" lnk="__HDL_srcfile_25.htm#79" z="((((rt_EX.rd == rt_ID.rs) || (rt_EX.rd == rt_ID.rt)) && (rt_EX.opcode == RTYPE)) || ((it_EX.opcode != RTYPE) && (it_EX.rt == it_ID.rs)) || ((it_ID.opcode == SW) && (it_EX.rt == it_ID.rt)))" c="R" p="0.00" d="0" F="1"/>
+  <tr/>
+  <tr z="(rt_EX.rd == rt_ID.rs)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(rt_EX.rd == rt_ID.rt)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(rt_EX.opcode == RTYPE)" c="r" r="'_1' not hit" i="Hit '_1'"/>
+  <tr z="(it_EX.opcode != RTYPE)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(it_EX.rt == it_ID.rs)" c="r" r="'_1' not hit" i="Hit '_1'"/>
+  <tr z="(it_ID.opcode == SW)" c="r" r="'_0' not hit" i="Hit '_0'"/>
+  <tr z="(it_EX.rt == it_ID.rt)" c="r" r="'_0' not hit" i="Hit '_0'"/>
+  <tr/>
+  <tr n="1" z="(rt_EX.rd == rt_ID.rs)_0" h1="0" t="c" c1="(~(((it_EX.opcode != RTYPE) && (it_EX.rt == it_ID.rs)) || ((it_ID.opcode == SW) && (it_EX.rt == it_ID.rt))) && (rt_EX.opcode == RTYPE) && ~(rt_EX.rd == rt_ID.rt))"/>
+  <tr n="2" z="(rt_EX.rd == rt_ID.rs)_1" h1="0" t="c" c1="(~(((it_EX.opcode != RTYPE) && (it_EX.rt == it_ID.rs)) || ((it_ID.opcode == SW) && (it_EX.rt == it_ID.rt))) && (rt_EX.opcode == RTYPE) && ~(rt_EX.rd == rt_ID.rt))"/>
+  <tr n="3" z="(rt_EX.rd == rt_ID.rt)_0" h1="0" t="c" c1="(~(((it_EX.opcode != RTYPE) && (it_EX.rt == it_ID.rs)) || ((it_ID.opcode == SW) && (it_EX.rt == it_ID.rt))) && (rt_EX.opcode == RTYPE) && ~(rt_EX.rd == rt_ID.rs))"/>
+  <tr n="4" z="(rt_EX.rd == rt_ID.rt)_1" h1="0" t="c" c1="(~(((it_EX.opcode != RTYPE) && (it_EX.rt == it_ID.rs)) || ((it_ID.opcode == SW) && (it_EX.rt == it_ID.rt))) && (rt_EX.opcode == RTYPE) && ~(rt_EX.rd == rt_ID.rs))"/>
+  <tr n="5" z="(rt_EX.opcode == RTYPE)_0" h1="2" t="c" c1="(~(((it_EX.opcode != RTYPE) && (it_EX.rt == it_ID.rs)) || ((it_ID.opcode == SW) && (it_EX.rt == it_ID.rt))) && ((rt_EX.rd == rt_ID.rs) || (rt_EX.rd == rt_ID.rt)))"/>
+  <tr n="6" z="(rt_EX.opcode == RTYPE)_1" h1="0" t="c" c1="(~(((it_EX.opcode != RTYPE) && (it_EX.rt == it_ID.rs)) || ((it_ID.opcode == SW) && (it_EX.rt == it_ID.rt))) && ((rt_EX.rd == rt_ID.rs) || (rt_EX.rd == rt_ID.rt)))"/>
+  <tr n="7" z="(it_EX.opcode != RTYPE)_0" h1="0" t="c" c1="(~(((rt_EX.rd == rt_ID.rs) || (rt_EX.rd == rt_ID.rt)) && (rt_EX.opcode == RTYPE)) && ~((it_ID.opcode == SW) && (it_EX.rt == it_ID.rt)) && (it_EX.rt == it_ID.rs))"/>
+  <tr n="8" z="(it_EX.opcode != RTYPE)_1" h1="0" t="c" c1="(~(((rt_EX.rd == rt_ID.rs) || (rt_EX.rd == rt_ID.rt)) && (rt_EX.opcode == RTYPE)) && ~((it_ID.opcode == SW) && (it_EX.rt == it_ID.rt)) && (it_EX.rt == it_ID.rs))"/>
+  <tr n="9" z="(it_EX.rt == it_ID.rs)_0" h1="2" t="c" c1="(~(((rt_EX.rd == rt_ID.rs) || (rt_EX.rd == rt_ID.rt)) && (rt_EX.opcode == RTYPE)) && ~((it_ID.opcode == SW) && (it_EX.rt == it_ID.rt)) && (it_EX.opcode != RTYPE))"/>
+  <tr n="10" z="(it_EX.rt == it_ID.rs)_1" h1="0" t="c" c1="(~(((rt_EX.rd == rt_ID.rs) || (rt_EX.rd == rt_ID.rt)) && (rt_EX.opcode == RTYPE)) && ~((it_ID.opcode == SW) && (it_EX.rt == it_ID.rt)) && (it_EX.opcode != RTYPE))"/>
+  <tr n="11" z="(it_ID.opcode == SW)_0" h1="0" t="c" c1="(~(((rt_EX.rd == rt_ID.rs) || (rt_EX.rd == rt_ID.rt)) && (rt_EX.opcode == RTYPE)) && ~((it_EX.opcode != RTYPE) && (it_EX.rt == it_ID.rs)) && (it_EX.rt == it_ID.rt))"/>
+  <tr n="12" z="(it_ID.opcode == SW)_1" h1="2" t="c" c1="(~(((rt_EX.rd == rt_ID.rs) || (rt_EX.rd == rt_ID.rt)) && (rt_EX.opcode == RTYPE)) && ~((it_EX.opcode != RTYPE) && (it_EX.rt == it_ID.rs)) && (it_EX.rt == it_ID.rt))"/>
+  <tr n="13" z="(it_EX.rt == it_ID.rt)_0" h1="0" t="c" c1="(~(((rt_EX.rd == rt_ID.rs) || (rt_EX.rd == rt_ID.rt)) && (rt_EX.opcode == RTYPE)) && ~((it_EX.opcode != RTYPE) && (it_EX.rt == it_ID.rs)) && (it_ID.opcode == SW))"/>
+  <tr n="14" z="(it_EX.rt == it_ID.rt)_1" h1="2" t="c" c1="(~(((rt_EX.rd == rt_ID.rs) || (rt_EX.rd == rt_ID.rt)) && (rt_EX.opcode == RTYPE)) && ~((it_EX.opcode != RTYPE) && (it_EX.rt == it_ID.rs)) && (it_ID.opcode == SW))"/>
+  </table>
+</div><div class="missing"><a name="cvg16304"/><hr/><table>
+  <tr s="3" x="FC" lnk="__HDL_srcfile_25.htm#86" z="((it_EX.opcode == SW) && ((it_ID.rt == it_EX.rs) || (it_EX.rt == it_ID.rs)))" c="R" p="0.00" d="0" F="1"/>
+  <tr/>
+  <tr z="(it_EX.opcode == SW)" c="r" r="'_0' not hit" i="Hit '_0'"/>
+  <tr z="(it_ID.rt == it_EX.rs)" c="r" r="'_1' not hit" i="Hit '_1'"/>
+  <tr z="(it_EX.rt == it_ID.rs)" c="r" r="'_1' not hit" i="Hit '_1'"/>
+  <tr/>
+  <tr n="1" z="(it_EX.opcode == SW)_0" h1="0" t="c" c1="((it_ID.rt == it_EX.rs) || (it_EX.rt == it_ID.rs))"/>
+  <tr n="2" z="(it_EX.opcode == SW)_1" h1="2" t="c" c1="((it_ID.rt == it_EX.rs) || (it_EX.rt == it_ID.rs))"/>
+  <tr n="3" z="(it_ID.rt == it_EX.rs)_0" h1="2" t="c" c1="((it_EX.opcode == SW) && ~(it_EX.rt == it_ID.rs))"/>
+  <tr n="4" z="(it_ID.rt == it_EX.rs)_1" h1="0" t="c" c1="((it_EX.opcode == SW) && ~(it_EX.rt == it_ID.rs))"/>
+  <tr n="5" z="(it_EX.rt == it_ID.rs)_0" h1="2" t="c" c1="((it_EX.opcode == SW) && ~(it_ID.rt == it_EX.rs))"/>
+  <tr n="6" z="(it_EX.rt == it_ID.rs)_1" h1="0" t="c" c1="((it_EX.opcode == SW) && ~(it_ID.rt == it_EX.rs))"/>
+  </table>
+</div><div class="covered"><a name="cvg16306"/><hr/><table>
+  <tr s="3" x="FC" lnk="__HDL_srcfile_25.htm#103" z="(RegWr_MEM || memWr_MEM)" c="G" p="100.00" d="0" F="1"/>
+  <tr/>
+  <tr z="RegWr_MEM" c="g" r="" i=""/>
+  <tr z="memWr_MEM" c="g" r="" i=""/>
+  <tr/>
+  <tr n="1" z="RegWr_MEM_0" h1="2" t="c" c1="~memWr_MEM"/>
+  <tr n="2" z="RegWr_MEM_1" h1="2" t="c" c1="~memWr_MEM"/>
+  <tr n="3" z="memWr_MEM_0" h1="2" t="c" c1="~RegWr_MEM"/>
+  <tr n="4" z="memWr_MEM_1" h1="2" t="c" c1="~RegWr_MEM"/>
+  </table>
+</div><div class="missing"><a name="cvg16308"/><hr/><table>
+  <tr s="3" x="FC" lnk="__HDL_srcfile_25.htm#108" z="(((it_ID.rs == it_MEM.rt) && (it_ID.opcode != RTYPE)) || (((rt_ID.rt == it_MEM.rt) || (rt_ID.rs == it_MEM.rt)) && (rt_ID.opcode == RTYPE)))" c="R" p="0.00" d="0" F="1"/>
+  <tr/>
+  <tr z="(it_ID.rs == it_MEM.rt)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(it_ID.opcode != RTYPE)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(rt_ID.rt == it_MEM.rt)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(rt_ID.rs == it_MEM.rt)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(rt_ID.opcode == RTYPE)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr/>
+  <tr n="1" z="(it_ID.rs == it_MEM.rt)_0" h1="0" t="c" c1="(~(((rt_ID.rt == it_MEM.rt) || (rt_ID.rs == it_MEM.rt)) && (rt_ID.opcode == RTYPE)) && (it_ID.opcode != RTYPE))"/>
+  <tr n="2" z="(it_ID.rs == it_MEM.rt)_1" h1="0" t="c" c1="(~(((rt_ID.rt == it_MEM.rt) || (rt_ID.rs == it_MEM.rt)) && (rt_ID.opcode == RTYPE)) && (it_ID.opcode != RTYPE))"/>
+  <tr n="3" z="(it_ID.opcode != RTYPE)_0" h1="0" t="c" c1="(~(((rt_ID.rt == it_MEM.rt) || (rt_ID.rs == it_MEM.rt)) && (rt_ID.opcode == RTYPE)) && (it_ID.rs == it_MEM.rt))"/>
+  <tr n="4" z="(it_ID.opcode != RTYPE)_1" h1="0" t="c" c1="(~(((rt_ID.rt == it_MEM.rt) || (rt_ID.rs == it_MEM.rt)) && (rt_ID.opcode == RTYPE)) && (it_ID.rs == it_MEM.rt))"/>
+  <tr n="5" z="(rt_ID.rt == it_MEM.rt)_0" h1="0" t="c" c1="(~((it_ID.rs == it_MEM.rt) && (it_ID.opcode != RTYPE)) && (rt_ID.opcode == RTYPE) && ~(rt_ID.rs == it_MEM.rt))"/>
+  <tr n="6" z="(rt_ID.rt == it_MEM.rt)_1" h1="0" t="c" c1="(~((it_ID.rs == it_MEM.rt) && (it_ID.opcode != RTYPE)) && (rt_ID.opcode == RTYPE) && ~(rt_ID.rs == it_MEM.rt))"/>
+  <tr n="7" z="(rt_ID.rs == it_MEM.rt)_0" h1="0" t="c" c1="(~((it_ID.rs == it_MEM.rt) && (it_ID.opcode != RTYPE)) && (rt_ID.opcode == RTYPE) && ~(rt_ID.rt == it_MEM.rt))"/>
+  <tr n="8" z="(rt_ID.rs == it_MEM.rt)_1" h1="0" t="c" c1="(~((it_ID.rs == it_MEM.rt) && (it_ID.opcode != RTYPE)) && (rt_ID.opcode == RTYPE) && ~(rt_ID.rt == it_MEM.rt))"/>
+  <tr n="9" z="(rt_ID.opcode == RTYPE)_0" h1="0" t="c" c1="(~((it_ID.rs == it_MEM.rt) && (it_ID.opcode != RTYPE)) && ((rt_ID.rt == it_MEM.rt) || (rt_ID.rs == it_MEM.rt)))"/>
+  <tr n="10" z="(rt_ID.opcode == RTYPE)_1" h1="0" t="c" c1="(~((it_ID.rs == it_MEM.rt) && (it_ID.opcode != RTYPE)) && ((rt_ID.rt == it_MEM.rt) || (rt_ID.rs == it_MEM.rt)))"/>
+  </table>
+</div><div class="missing"><a name="cvg16310"/><hr/><table>
+  <tr s="3" x="FC" lnk="__HDL_srcfile_25.htm#116" z="((((rt_MEM.rd == rt_ID.rs) || (rt_MEM.rd == rt_ID.rt)) && (rt_MEM.opcode == RTYPE)) || ((it_MEM.opcode != RTYPE) && (it_MEM.rt == it_ID.rs)) || ((it_ID.opcode == SW) && (it_MEM.rt == it_ID.rt)))" c="R" p="0.00" d="0" F="1"/>
+  <tr/>
+  <tr z="(rt_MEM.rd == rt_ID.rs)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(rt_MEM.rd == rt_ID.rt)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(rt_MEM.opcode == RTYPE)" c="r" r="'_1' not hit" i="Hit '_1'"/>
+  <tr z="(it_MEM.opcode != RTYPE)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(it_MEM.rt == it_ID.rs)" c="r" r="'_1' not hit" i="Hit '_1'"/>
+  <tr z="(it_ID.opcode == SW)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(it_MEM.rt == it_ID.rt)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr/>
+  <tr n="1" z="(rt_MEM.rd == rt_ID.rs)_0" h1="0" t="c" c1="(~(((it_MEM.opcode != RTYPE) && (it_MEM.rt == it_ID.rs)) || ((it_ID.opcode == SW) && (it_MEM.rt == it_ID.rt))) && (rt_MEM.opcode == RTYPE) && ~(rt_MEM.rd == rt_ID.rt))"/>
+  <tr n="2" z="(rt_MEM.rd == rt_ID.rs)_1" h1="0" t="c" c1="(~(((it_MEM.opcode != RTYPE) && (it_MEM.rt == it_ID.rs)) || ((it_ID.opcode == SW) && (it_MEM.rt == it_ID.rt))) && (rt_MEM.opcode == RTYPE) && ~(rt_MEM.rd == rt_ID.rt))"/>
+  <tr n="3" z="(rt_MEM.rd == rt_ID.rt)_0" h1="0" t="c" c1="(~(((it_MEM.opcode != RTYPE) && (it_MEM.rt == it_ID.rs)) || ((it_ID.opcode == SW) && (it_MEM.rt == it_ID.rt))) && (rt_MEM.opcode == RTYPE) && ~(rt_MEM.rd == rt_ID.rs))"/>
+  <tr n="4" z="(rt_MEM.rd == rt_ID.rt)_1" h1="0" t="c" c1="(~(((it_MEM.opcode != RTYPE) && (it_MEM.rt == it_ID.rs)) || ((it_ID.opcode == SW) && (it_MEM.rt == it_ID.rt))) && (rt_MEM.opcode == RTYPE) && ~(rt_MEM.rd == rt_ID.rs))"/>
+  <tr n="5" z="(rt_MEM.opcode == RTYPE)_0" h1="2" t="c" c1="(~(((it_MEM.opcode != RTYPE) && (it_MEM.rt == it_ID.rs)) || ((it_ID.opcode == SW) && (it_MEM.rt == it_ID.rt))) && ((rt_MEM.rd == rt_ID.rs) || (rt_MEM.rd == rt_ID.rt)))"/>
+  <tr n="6" z="(rt_MEM.opcode == RTYPE)_1" h1="0" t="c" c1="(~(((it_MEM.opcode != RTYPE) && (it_MEM.rt == it_ID.rs)) || ((it_ID.opcode == SW) && (it_MEM.rt == it_ID.rt))) && ((rt_MEM.rd == rt_ID.rs) || (rt_MEM.rd == rt_ID.rt)))"/>
+  <tr n="7" z="(it_MEM.opcode != RTYPE)_0" h1="0" t="c" c1="(~(((rt_MEM.rd == rt_ID.rs) || (rt_MEM.rd == rt_ID.rt)) && (rt_MEM.opcode == RTYPE)) && ~((it_ID.opcode == SW) && (it_MEM.rt == it_ID.rt)) && (it_MEM.rt == it_ID.rs))"/>
+  <tr n="8" z="(it_MEM.opcode != RTYPE)_1" h1="0" t="c" c1="(~(((rt_MEM.rd == rt_ID.rs) || (rt_MEM.rd == rt_ID.rt)) && (rt_MEM.opcode == RTYPE)) && ~((it_ID.opcode == SW) && (it_MEM.rt == it_ID.rt)) && (it_MEM.rt == it_ID.rs))"/>
+  <tr n="9" z="(it_MEM.rt == it_ID.rs)_0" h1="2" t="c" c1="(~(((rt_MEM.rd == rt_ID.rs) || (rt_MEM.rd == rt_ID.rt)) && (rt_MEM.opcode == RTYPE)) && ~((it_ID.opcode == SW) && (it_MEM.rt == it_ID.rt)) && (it_MEM.opcode != RTYPE))"/>
+  <tr n="10" z="(it_MEM.rt == it_ID.rs)_1" h1="0" t="c" c1="(~(((rt_MEM.rd == rt_ID.rs) || (rt_MEM.rd == rt_ID.rt)) && (rt_MEM.opcode == RTYPE)) && ~((it_ID.opcode == SW) && (it_MEM.rt == it_ID.rt)) && (it_MEM.opcode != RTYPE))"/>
+  <tr n="11" z="(it_ID.opcode == SW)_0" h1="0" t="c" c1="(~(((rt_MEM.rd == rt_ID.rs) || (rt_MEM.rd == rt_ID.rt)) && (rt_MEM.opcode == RTYPE)) && ~((it_MEM.opcode != RTYPE) && (it_MEM.rt == it_ID.rs)) && (it_MEM.rt == it_ID.rt))"/>
+  <tr n="12" z="(it_ID.opcode == SW)_1" h1="0" t="c" c1="(~(((rt_MEM.rd == rt_ID.rs) || (rt_MEM.rd == rt_ID.rt)) && (rt_MEM.opcode == RTYPE)) && ~((it_MEM.opcode != RTYPE) && (it_MEM.rt == it_ID.rs)) && (it_MEM.rt == it_ID.rt))"/>
+  <tr n="13" z="(it_MEM.rt == it_ID.rt)_0" h1="0" t="c" c1="(~(((rt_MEM.rd == rt_ID.rs) || (rt_MEM.rd == rt_ID.rt)) && (rt_MEM.opcode == RTYPE)) && ~((it_MEM.opcode != RTYPE) && (it_MEM.rt == it_ID.rs)) && (it_ID.opcode == SW))"/>
+  <tr n="14" z="(it_MEM.rt == it_ID.rt)_1" h1="0" t="c" c1="(~(((rt_MEM.rd == rt_ID.rs) || (rt_MEM.rd == rt_ID.rt)) && (rt_MEM.opcode == RTYPE)) && ~((it_MEM.opcode != RTYPE) && (it_MEM.rt == it_ID.rs)) && (it_ID.opcode == SW))"/>
+  </table>
+</div><div class="missing"><a name="cvg16312"/><hr/><table>
+  <tr s="3" x="FC" lnk="__HDL_srcfile_25.htm#123" z="((it_MEM.opcode == SW) && ((it_ID.rt == it_MEM.rs) || (it_MEM.rt == it_ID.rs)))" c="R" p="0.00" d="0" F="1"/>
+  <tr/>
+  <tr z="(it_MEM.opcode == SW)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(it_ID.rt == it_MEM.rs)" c="r" r="'_1' not hit" i="Hit '_1'"/>
+  <tr z="(it_MEM.rt == it_ID.rs)" c="r" r="'_1' not hit" i="Hit '_1'"/>
+  <tr/>
+  <tr n="1" z="(it_MEM.opcode == SW)_0" h1="0" t="c" c1="((it_ID.rt == it_MEM.rs) || (it_MEM.rt == it_ID.rs))"/>
+  <tr n="2" z="(it_MEM.opcode == SW)_1" h1="0" t="c" c1="((it_ID.rt == it_MEM.rs) || (it_MEM.rt == it_ID.rs))"/>
+  <tr n="3" z="(it_ID.rt == it_MEM.rs)_0" h1="2" t="c" c1="((it_MEM.opcode == SW) && ~(it_MEM.rt == it_ID.rs))"/>
+  <tr n="4" z="(it_ID.rt == it_MEM.rs)_1" h1="0" t="c" c1="((it_MEM.opcode == SW) && ~(it_MEM.rt == it_ID.rs))"/>
+  <tr n="5" z="(it_MEM.rt == it_ID.rs)_0" h1="2" t="c" c1="((it_MEM.opcode == SW) && ~(it_ID.rt == it_MEM.rs))"/>
+  <tr n="6" z="(it_MEM.rt == it_ID.rs)_1" h1="0" t="c" c1="((it_MEM.opcode == SW) && ~(it_ID.rt == it_MEM.rs))"/>
+  </table>
+</div><script type="text/javascript" src="../scripts/buildecpage.js"></script>
+  <!-- make sure jumps to last few line nos work -->
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+  
+</body>
+</html>

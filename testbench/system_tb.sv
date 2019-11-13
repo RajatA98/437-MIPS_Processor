@@ -42,7 +42,7 @@ module system_tb;
   // to the write back stage and sampled in the WRITEBACK stage.
   // This means more signals that would normally be necessary
   // for correct execution must be passed along to help with debugging.
-  cpu_tracker                         cpu_track0 (
+  /*cpu_tracker                         cpu_track0 (
     // No need to change this
     .CLK(DUT.CPU.DP.CLK),
     // This is the enable signal for the write back stage
@@ -77,7 +77,7 @@ module system_tb;
     .store_dat(DUT.CPU.DP.mwif.busB_WB),
     // The value selected to be written into register during WB stage
     .reg_dat(DUT.CPU.DP.rfif.wdat)
-  );
+  );*/
  
 `else
   system                              DUT (,,,,//for altera debug ports

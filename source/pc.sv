@@ -1,6 +1,9 @@
 `include "cpu_types_pkg.vh"
 import cpu_types_pkg::*;
 module pc
+#(
+	parameter PC_INIT = 0
+)
 (
 	input logic CLK, nRST,
 	//input from cache
@@ -15,7 +18,7 @@ module pc
 	always_ff @(posedge CLK, negedge nRST)
 	begin
 		if(!nRST)
-			iaddr <= 32'b0;
+			iaddr <= PC_INIT;
 		else if(ihit && !halt)
 			iaddr <= next_addr;
 		else 

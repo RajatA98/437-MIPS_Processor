@@ -2,7 +2,7 @@ include/cache_control_if.vh
 include/caches_if.vh
 include/cpu_ram_if.vh
 include/datapath_cache_if.vh
-source/icache.sv
+source/dcache.sv
 source/memory_control.sv
 source/ram.sv
-testbench/icache_tb.sv
+testbench/dcache_tb.sv

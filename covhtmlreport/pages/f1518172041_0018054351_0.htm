@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+  <title>Questa Coverage Report</title>
+  <!-- original name: _system_tb_DUT_CPU_CCContentFrame5.htm -->
+  <link rel="StyleSheet" media="print"  href="../css/ucdb2htmlP.css"/>
+  <link rel="StyleSheet" media="screen" href="../css/ucdb2html.css"/>
+  <link rel="StyleSheet" media="screen" href="../css/ucdb2html_newlook.css"/>
+  <script type="text/javascript" src="../scripts/jquery.js"></script>
+  <script type="text/javascript" src="../scripts/showhide.js"></script>
+  
+</head>
+<body id="ucdb2html_detail" onload="showLast()">
+  <h1><span class="strip">Questa</span> State-machine Coverage Report</h1>
+  <h3>Scope: /<a href="z0484492237_0067245891_0.htm">system_tb</a>/<a href="z1949200214_3609719958_0.htm">DUT</a>/<a href="z3461427539_0039650898_0.htm">CPU</a>/<a href="z1518172041_0018054351_0.htm">CC</a></h3>
+  <!-- use script block so buttons vanish when JavaScript is disabled -->
+  <script type="text/javascript">
+  <!--
+  document.write(
+    '<table class="buttons" cellspacing="2" cellpadding="2"><tr>' +
+       '<td id="showAll" width="100" onclick="showAll()" class="button_on" ' +
+           'title="Display all coverage scopes and bins.">Show All</td>' +
+       '<td id="showCov" width="100" onclick="showCov()" class="button_off" ' +
+           'title="Display only covered scopes and bins.">Show Covered</td>' +
+       '<td id="showMis" width="100" onclick="showMis()" class="button_off" ' +
+           'title="Display only uncovered scopes and bins.">Show Missing</td>' +
+    '</tr></table>');
+  //-->
+  </script>
+  
+<script>
+<!--
+  var pa_scope=0;
+-->
+</script>
+<div><a name="cvg14954"/><hr/><table>
+  <tr lnk="__HDL_srcfile_30.htm#80" z="state" c="Y" p="75.71"/>
+  <tr/>
+  <tr cr="c" s="1" z="IDLE" h="3" c="g"/>
+  <tr cr="c" z="IDLE -> IDLE" h="1" c="g"/>
+  <tr cr="c" z="IDLE -> ARBITRATE" h="1" c="g"/>
+  <tr cr="c" s="1" z="ARBITRATE" h="38" c="g"/>
+  <tr cr="c" z="ARBITRATE -> INSTR" h="30" c="g"/>
+  <tr cr="c" z="ARBITRATE -> SNOOP" h="6" c="g"/>
+  <tr cr="c" z="ARBITRATE -> WB1" h="2" c="g"/>
+  <tr cr="m" z="ARBITRATE -> IDLE" h="0" c="r"/>
+  <tr cr="m" z="ARBITRATE -> ARBITRATE" h="0" c="r"/>
+  <tr cr="c" s="1" z="INSTR" h="32" c="g"/>
+  <tr cr="c" z="INSTR -> INSTR" h="2" c="g"/>
+  <tr cr="c" z="INSTR -> IDLE" h="1" c="g"/>
+  <tr cr="c" z="INSTR -> ARBITRATE" h="29" c="g"/>
+  <tr cr="c" s="1" z="SNOOP" h="7" c="g"/>
+  <tr cr="c" z="SNOOP -> SNOOP" h="1" c="g"/>
+  <tr cr="c" z="SNOOP -> RAM1" h="4" c="g"/>
+  <tr cr="c" z="SNOOP -> SHARED_WB1" h="2" c="g"/>
+  <tr cr="m" z="SNOOP -> IDLE" h="0" c="r"/>
+  <tr cr="c" s="1" z="WB1" h="2" c="g"/>
+  <tr cr="m" z="WB1 -> WB1" h="0" c="r"/>
+  <tr cr="c" z="WB1 -> WB2" h="2" c="g"/>
+  <tr cr="m" z="WB1 -> IDLE" h="0" c="r"/>
+  <tr cr="c" s="1" z="RAM1" h="4" c="g"/>
+  <tr cr="m" z="RAM1 -> RAM1" h="0" c="r"/>
+  <tr cr="c" z="RAM1 -> RAM2" h="4" c="g"/>
+  <tr cr="m" z="RAM1 -> IDLE" h="0" c="r"/>
+  <tr cr="c" s="1" z="SHARED_WB1" h="2" c="g"/>
+  <tr cr="m" z="SHARED_WB1 -> SHARED_WB1" h="0" c="r"/>
+  <tr cr="c" z="SHARED_WB1 -> SHARED_WB2" h="2" c="g"/>
+  <tr cr="m" z="SHARED_WB1 -> IDLE" h="0" c="r"/>
+  <tr cr="c" s="1" z="SHARED_WB2" h="2" c="g"/>
+  <tr cr="m" z="SHARED_WB2 -> SHARED_WB2" h="0" c="r"/>
+  <tr cr="c" z="SHARED_WB2 -> WAIT" h="2" c="g"/>
+  <tr cr="m" z="SHARED_WB2 -> IDLE" h="0" c="r"/>
+  <tr cr="c" s="1" z="WAIT" h="2" c="g"/>
+  <tr cr="m" z="WAIT -> IDLE" h="0" c="r"/>
+  <tr cr="c" z="WAIT -> ARBITRATE" h="2" c="g"/>
+  <tr cr="m" z="WAIT -> WAIT" h="0" c="r"/>
+  <tr cr="c" s="1" z="RAM2" h="4" c="g"/>
+  <tr cr="m" z="RAM2 -> RAM2" h="0" c="r"/>
+  <tr cr="m" z="RAM2 -> IDLE" h="0" c="r"/>
+  <tr cr="c" z="RAM2 -> ARBITRATE" h="4" c="g"/>
+  <tr cr="c" s="1" z="WB2" h="2" c="g"/>
+  <tr cr="m" z="WB2 -> WB2" h="0" c="r"/>
+  <tr cr="m" z="WB2 -> IDLE" h="0" c="r"/>
+  <tr cr="c" z="WB2 -> ARBITRATE" h="2" c="g"/>
+  </table>
+  </div><script type="text/javascript" src="../scripts/buildfsmpage.js"></script>
+  <!-- make sure jumps to last few line nos work -->
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+  
+</body>
+</html>

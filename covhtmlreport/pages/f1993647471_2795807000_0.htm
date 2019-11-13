@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+  <title>Questa Coverage Report</title>
+  <!-- original name: _work.memory_controlContentFrame5.htm -->
+  <link rel="StyleSheet" media="print"  href="../css/ucdb2htmlP.css"/>
+  <link rel="StyleSheet" media="screen" href="../css/ucdb2html.css"/>
+  <link rel="StyleSheet" media="screen" href="../css/ucdb2html_newlook.css"/>
+  <script type="text/javascript" src="../scripts/jquery.js"></script>
+  <script type="text/javascript" src="../scripts/showhide.js"></script>
+  
+</head>
+<body id="ucdb2html_detail" onload="showLast()">
+  <h1><span class="strip">Questa</span> State-machine Coverage Report</h1>
+  <h3>Scope: /<a href="z1993647471_2795807000_0.htm">work.memory_control</a></h3>
+  <!-- use script block so buttons vanish when JavaScript is disabled -->
+  <script type="text/javascript">
+  <!--
+  document.write(
+    '<table class="buttons" cellspacing="2" cellpadding="2"><tr>' +
+       '<td id="showAll" width="100" onclick="showAll()" class="button_on" ' +
+           'title="Display all coverage scopes and bins.">Show All</td>' +
+       '<td id="showCov" width="100" onclick="showCov()" class="button_off" ' +
+           'title="Display only covered scopes and bins.">Show Covered</td>' +
+       '<td id="showMis" width="100" onclick="showMis()" class="button_off" ' +
+           'title="Display only uncovered scopes and bins.">Show Missing</td>' +
+    '</tr></table>');
+  //-->
+  </script>
+  
+<script>
+<!--
+  var pa_scope=0;
+-->
+</script>
+<div><a name="cvg1730"/><hr/><table>
+  <tr lnk="__HDL_srcfile_7.htm#80" z="state" c="Y" p="85.71"/>
+  <tr/>
+  <tr cr="c" s="1" z="IDLE" h="30" c="g"/>
+  <tr cr="c" z="IDLE -> IDLE" h="20" c="g"/>
+  <tr cr="c" z="IDLE -> ARBITRATE" h="10" c="g"/>
+  <tr cr="c" s="1" z="ARBITRATE" h="247" c="g"/>
+  <tr cr="c" z="ARBITRATE -> INSTR" h="184" c="g"/>
+  <tr cr="c" z="ARBITRATE -> SNOOP" h="37" c="g"/>
+  <tr cr="c" z="ARBITRATE -> WB1" h="20" c="g"/>
+  <tr cr="c" z="ARBITRATE -> IDLE" h="6" c="g"/>
+  <tr cr="m" z="ARBITRATE -> ARBITRATE" h="0" c="r"/>
+  <tr cr="c" s="1" z="INSTR" h="184" c="g"/>
+  <tr cr="m" z="INSTR -> INSTR" h="0" c="r"/>
+  <tr cr="c" z="INSTR -> IDLE" h="1" c="g"/>
+  <tr cr="c" z="INSTR -> ARBITRATE" h="183" c="g"/>
+  <tr cr="c" s="1" z="SNOOP" h="65603" c="g"/>
+  <tr cr="c" z="SNOOP -> SNOOP" h="65566" c="g"/>
+  <tr cr="c" z="SNOOP -> RAM1" h="31" c="g"/>
+  <tr cr="c" z="SNOOP -> SHARED_WB1" h="5" c="g"/>
+  <tr cr="m" z="SNOOP -> IDLE" h="0" c="r"/>
+  <tr cr="c" s="1" z="WB1" h="40" c="g"/>
+  <tr cr="c" z="WB1 -> WB1" h="20" c="g"/>
+  <tr cr="c" z="WB1 -> WB2" h="20" c="g"/>
+  <tr cr="m" z="WB1 -> IDLE" h="0" c="r"/>
+  <tr cr="c" s="1" z="RAM1" h="62" c="g"/>
+  <tr cr="c" z="RAM1 -> RAM1" h="31" c="g"/>
+  <tr cr="c" z="RAM1 -> RAM2" h="31" c="g"/>
+  <tr cr="m" z="RAM1 -> IDLE" h="0" c="r"/>
+  <tr cr="c" s="1" z="SHARED_WB1" h="9" c="g"/>
+  <tr cr="c" z="SHARED_WB1 -> SHARED_WB1" h="4" c="g"/>
+  <tr cr="c" z="SHARED_WB1 -> SHARED_WB2" h="4" c="g"/>
+  <tr cr="c" z="SHARED_WB1 -> IDLE" h="1" c="g"/>
+  <tr cr="c" s="1" z="SHARED_WB2" h="4" c="g"/>
+  <tr cr="m" z="SHARED_WB2 -> SHARED_WB2" h="0" c="r"/>
+  <tr cr="c" z="SHARED_WB2 -> WAIT" h="4" c="g"/>
+  <tr cr="m" z="SHARED_WB2 -> IDLE" h="0" c="r"/>
+  <tr cr="c" s="1" z="WAIT" h="4" c="g"/>
+  <tr cr="m" z="WAIT -> IDLE" h="0" c="r"/>
+  <tr cr="c" z="WAIT -> ARBITRATE" h="4" c="g"/>
+  <tr cr="m" z="WAIT -> WAIT" h="0" c="r"/>
+  <tr cr="c" s="1" z="RAM2" h="61" c="g"/>
+  <tr cr="c" z="RAM2 -> RAM2" h="30" c="g"/>
+  <tr cr="c" z="RAM2 -> IDLE" h="1" c="g"/>
+  <tr cr="c" z="RAM2 -> ARBITRATE" h="30" c="g"/>
+  <tr cr="c" s="1" z="WB2" h="40" c="g"/>
+  <tr cr="c" z="WB2 -> WB2" h="20" c="g"/>
+  <tr cr="m" z="WB2 -> IDLE" h="0" c="r"/>
+  <tr cr="c" z="WB2 -> ARBITRATE" h="20" c="g"/>
+  </table>
+  </div><script type="text/javascript" src="../scripts/buildfsmpage.js"></script>
+  <!-- make sure jumps to last few line nos work -->
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+  
+</body>
+</html>

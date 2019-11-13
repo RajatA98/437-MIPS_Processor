@@ -16,8 +16,9 @@ module dcache_tb;
   caches_if                 cif0();
   // cif1 will not be used, but ccif expects it as an input
   caches_if                 cif1();
-  cache_control_if    #(.CPUS(1))       ccif (cif0, cif1);
-	datapath_cache_if dcif();
+  cache_control_if    #(.CPUS(2))       ccif (cif0, cif1);
+	datapath_cache_if dcif0();
+	datapath_cache_if dcif1();
 
 	//caches_if cif();
 	cpu_ram_if rif();
@@ -30,18 +31,19 @@ module dcache_tb;
 	assign rif.ramWEN = ccif.ramWEN;
 	assign cif0.iREN = 1'b1;
 	assign cif0.iaddr = '0;
-	test PROG (CLK, nRST, dcif, ccif);
+	test PROG (CLK, nRST, dcif0, dcif1, ccif);
 	ram RAM(CLK, nRST, rif);
 
   memory_control MCU(CLK, nRST, ccif);
 
-	dcache  DUT(CLK, nRST, dcif, cif0);
+	dcache DC0(CLK, nRST, dcif0, cif0);
+	dcache DC1(CLK, nRST, dcif1, cif1);
 
 endmodule
 program test(
 	input logic CLK,
 	output logic nRST,
-	datapath_cache_if.dcache_tb dcif,
+	datapath_cache_if.dcache_tb dcif0, dcif1,
 	//caches_if.dcache_tb cif,
 	cache_control_if ccif
 );
@@ -122,815 +124,1016 @@ program test(
     reset_dut();
 		#(0.1);
 
-		dcif.halt = 1'b0;
-		dcif.dmemREN = 1'b0;
-		dcif.dmemWEN = 1'b0;
-		dcif.dmemstore = '0;
-		dcif.dmemaddr = '0;
+		dcif0.halt = 1'b0;
+		dcif0.dmemREN = 1'b0;
+		dcif0.dmemWEN = 1'b0;
+		dcif0.dmemstore = '0;
+		dcif0.dmemaddr = '0;
+		dcif1.halt = 1'b0;
+		dcif1.dmemREN = 1'b0;
+		dcif1.dmemWEN = 1'b0;
+		dcif1.dmemstore = '0;
+		dcif1.dmemaddr = '0;
 
-		#(PERIOD)
+		#(PERIOD);
+
+		
 		//******************************************************************
-		// Test Case 1: Compulsory Misses
+		// Test Case 1: I->M M->I
 		//******************************************************************
 
     tb_test_num = tb_test_num + 1;
-		tb_test_case ="Test Compulsory Misses";
-	  i = 32'd0;
-		//load the dcache
-		dcif.dmemREN = 1'b1;
-		dcif.dmemaddr = {26'd0,3'd0,1'b0,2'b0}; //addr 0   0
-		@(negedge cif0.dwait);
-		if(i != cif0.dload)
-		begin
-			$display("Incorrect Output durring %s iteration %d",tb_test_case, i);
-		end
+		tb_test_case ="I->M M->I";
+		dcif0.dmemWEN = 1'b1;
+		dcif0.dmemstore = 32'hF00;
+		dcif0.dmemaddr =  32'h80;
+		@(posedge cif1.ccwait)
+		if(cif1.cctrans)
+			$display("Correct Output during %s", tb_test_case);
 		else
-		begin
-			$display("Correct Output durring %s iteration %d",tb_test_case, i);
-		end
-		@(posedge dcif.dhit);
-    #(PERIOD);
-    dcif.dmemREN = 1'b0;
-    #(PERIOD);
-    dcif.dmemREN = 1'b1;
-		i = i + 1;
-		dcif.dmemaddr = {26'd0,3'd0,1'b1,2'b0}; //addr 4   1
-		@(posedge dcif.dhit);
-    #(PERIOD);
-    dcif.dmemREN = 1'b0;
-    #(PERIOD);
-    dcif.dmemREN = 1'b1;
-
-		i = i + 1;
-		dcif.dmemaddr = {26'd1,3'd0,1'b0,2'b0}; //addr 40  2
-		@(negedge cif0.dwait);
-		if(i != cif0.dload)
-		begin
-			$display("Incorrect Output durring %s iteration %d",tb_test_case, i);
-		end
-		else
-		begin
-			$display("Correct Output durring %s iteration %d",tb_test_case, i);
-		end
-		@(posedge dcif.dhit);
-    #(PERIOD);
-    dcif.dmemREN = 1'b0;
-    #(PERIOD);
-    dcif.dmemREN = 1'b1;
-
-	/*	i = i + 1;
-		dcif.dmemaddr = {26'd1,3'd0,1'b1,2'b0}; //addr 44  3
-		@(negedge cif0.dwait);
-		if(i != cif0.dload)
-		begin
-			$display("Incorrect Output durring %s iteration %d",tb_test_case, i);
-		end
-		else
-		begin
-			$display("Correct Output durring %s iteration %d",tb_test_case, i);
-		end
-		@(posedge dcif.dhit);
-    #(CLK);
-    dcif.dmemREN = 1'b0;
-    #(CLK);
-    dcif.dmemREN = 1'b1;
-
-		i = i + 1;
-		dcif.dmemaddr = {26'd0,3'd1,1'b0,2'b0}; //addr 8   4
-		@(negedge cif0.dwait);
-		if(i != cif0.dload)
-		begin
-			$display("Incorrect Output durring %s iteration %d",tb_test_case, i);
-		end
-		else
-		begin
-			$display("Correct Output durring %s iteration %d",tb_test_case, i);
-		end
-		@(posedge dcif.dhit);
-    #(CLK);
-    dcif.dmemREN = 1'b0;
-    #(CLK);
-    dcif.dmemREN = 1'b1;
-
-		i = i + 1;
-		dcif.dmemaddr = {26'd0,3'd1,1'b1,2'b0}; //addr C   5
-		@(negedge cif0.dwait);
-		if(i != cif0.dload)
-		begin
-			$display("Incorrect Output durring %s iteration %d",tb_test_case, i);
-		end
-		else
-		begin
-			$display("Correct Output durring %s iteration %d",tb_test_case, i);
-		end
-		@(posedge dcif.dhit);
-    #(CLK);
-    dcif.dmemREN = 1'b0;
-    #(CLK);
-    dcif.dmemREN = 1'b1;
-
-		i = i + 1;
-		dcif.dmemaddr = {26'd1,3'd1,1'b0,2'b0}; //addr 48  6
-		@(negedge cif0.dwait);
-		if(i != cif0.dload)
-		begin
-			$display("Incorrect Output durring %s iteration %d",tb_test_case, i);
-		end
-		else
-		begin
-			$display("Correct Output durring %s iteration %d",tb_test_case, i);
-		end
-		@(posedge dcif.dhit);
-    #(CLK);
-    dcif.dmemREN = 1'b0;
-    #(CLK);
-    dcif.dmemREN = 1'b1;
-
-		i = i + 1;
-		dcif.dmemaddr = {26'd1,3'd1,1'b1,2'b0}; //addr 4C  7
-		@(negedge cif0.dwait);
-		if(i != cif0.dload)
-		begin
-			$display("Incorrect Output durring %s iteration %d",tb_test_case, i);
-		end
-		else
-		begin
-			$display("Correct Output durring %s iteration %d",tb_test_case, i);
-		end
-		@(posedge dcif.dhit);
-    #(CLK);
-    dcif.dmemREN = 1'b0;
-    #(CLK);
-    dcif.dmemREN = 1'b1;
-
-		i = i + 1;
-		dcif.dmemaddr = {26'd0,3'd2,1'b0,2'b0}; //addr 10  8
-		@(negedge cif0.dwait);
-		if(i != cif0.dload)
-		begin
-			$display("Incorrect Output durring %s iteration %d",tb_test_case, i);
-		end
-		else
-		begin
-			$display("Correct Output durring %s iteration %d",tb_test_case, i);
-		end
-		@(posedge dcif.dhit);
-    #(CLK);
-    dcif.dmemREN = 1'b0;
-    #(CLK);
-    dcif.dmemREN = 1'b1;
-
-		i = i + 1;
-		dcif.dmemaddr = {26'd0,3'd2,1'b1,2'b0}; //addr 14  9
-		@(negedge cif0.dwait);
-		if(i != cif0.dload)
-		begin
-			$display("Incorrect Output durring %s iteration %d",tb_test_case, i);
-		end
-		else
-		begin
-			$display("Correct Output durring %s iteration %d",tb_test_case, i);
-		end
-		@(posedge dcif.dhit);
-    #(CLK);
-    dcif.dmemREN = 1'b0;
-    #(CLK);
-    dcif.dmemREN = 1'b1;
-
-		i = i + 1;
-		dcif.dmemaddr = {26'd1,3'd2,1'b0,2'b0}; //addr 50  A
-		@(negedge cif0.dwait);
-		if(i != cif0.dload)
-		begin
-			$display("Incorrect Output durring %s iteration %d",tb_test_case, i);
-		end
-		else
-		begin
-			$display("Correct Output durring %s iteration %d",tb_test_case, i);
-		end
-		@(posedge dcif.dhit);
-    #(CLK);
-    dcif.dmemREN = 1'b0;
-    #(CLK);
-    dcif.dmemREN = 1'b1;
-
-		i = i + 1;
-		dcif.dmemaddr = {26'd1,3'd2,1'b1,2'b0}; //addr 54  B
-		@(negedge cif0.dwait);
-		if(i != cif0.dload)
-		begin
-			$display("Incorrect Output durring %s iteration %d",tb_test_case, i);
-		end
-		else
-		begin
-			$display("Correct Output durring %s iteration %d",tb_test_case, i);
-		end
-		@(posedge dcif.dhit);
-    #(CLK);
-    dcif.dmemREN = 1'b0;
-    #(CLK);
-    dcif.dmemREN = 1'b1;
-
-		i = i + 1;
-		dcif.dmemaddr = {26'd0,3'd3,1'b0,2'b0}; //addr 18  C
-		@(negedge cif0.dwait);
-		if(i != cif0.dload)
-		begin
-			$display("Incorrect Output durring %s iteration %d",tb_test_case, i);
-		end
-		else
-		begin
-			$display("Correct Output durring %s iteration %d",tb_test_case, i);
-		end
-		@(posedge dcif.dhit);
-    #(CLK);
-    dcif.dmemREN = 1'b0;
-    #(CLK);
-    dcif.dmemREN = 1'b1;
-
-		i = i + 1;
-		dcif.dmemaddr = {26'd0,3'd3,1'b1,2'b0}; //addr 1C  D
-		@(negedge cif0.dwait);
-		if(i != cif0.dload)
-		begin
-			$display("Incorrect Output durring %s iteration %d",tb_test_case, i);
-		end
-		else
-		begin
-			$display("Correct Output durring %s iteration %d",tb_test_case, i);
-		end
-		@(posedge dcif.dhit);
-    #(CLK);
-    dcif.dmemREN = 1'b0;
-    #(CLK);
-    dcif.dmemREN = 1'b1;
-
-		i = i + 1;
-		dcif.dmemaddr = {26'd1,3'd3,1'b0,2'b0}; //addr 58  E
-		@(negedge cif0.dwait);
-		if(i != cif0.dload)
-		begin
-			$display("Incorrect Output durring %s iteration %d",tb_test_case, i);
-		end
-		else
-		begin
-			$display("Correct Output durring %s iteration %d",tb_test_case, i);
-		end
-		@(posedge dcif.dhit);
-    #(CLK);
-    dcif.dmemREN = 1'b0;
-    #(CLK);
-    dcif.dmemREN = 1'b1;
-
-		i = i + 1;
-		dcif.dmemaddr = {26'd1,3'd3,1'b1,2'b0}; //addr 5C  F
-		@(negedge cif0.dwait);
-		if(i != cif0.dload)
-		begin
-			$display("Incorrect Output durring %s iteration %d",tb_test_case, i);
-		end
-		else
-		begin
-			$display("Correct Output durring %s iteration %d",tb_test_case, i);
-		end
-		@(posedge dcif.dhit);
-		i = i + 1;
-		dcif.dmemaddr = {26'd0,3'd4,1'b0,2'b0}; //addr 20  10
-		@(negedge cif0.dwait);
-		if(i != cif0.dload)
-		begin
-			$display("Incorrect Output durring %s iteration %d",tb_test_case, i);
-		end
-		else
-		begin
-			$display("Correct Output durring %s iteration %d",tb_test_case, i);
-		end
-		@(posedge dcif.dhit);
-    #(CLK);
-    dcif.dmemREN = 1'b0;
-    #(CLK);
-    dcif.dmemREN = 1'b1;
-
-		i = i + 1;
-		dcif.dmemaddr = {26'd0,3'd4,1'b1,2'b0}; //addr 24  11
-		@(negedge cif0.dwait);
-		if(i != cif0.dload)
-		begin
-			$display("Incorrect Output durring %s iteration %d",tb_test_case, i);
-		end
-		else
-		begin
-			$display("Correct Output durring %s iteration %d",tb_test_case, i);
-		end
-		@(posedge dcif.dhit);
-    #(CLK);
-    dcif.dmemREN = 1'b0;
-    #(CLK);
-    dcif.dmemREN = 1'b1;
-
-		i = i + 1;
-		dcif.dmemaddr = {26'd1,3'd4,1'b0,2'b0}; //addr 60  12
-		@(negedge cif0.dwait);
-		if(i != cif0.dload)
-		begin
-			$display("Incorrect Output durring %s iteration %d",tb_test_case, i);
-		end
-		else
-		begin
-			$display("Correct Output durring %s iteration %d",tb_test_case, i);
-		end
-		@(posedge dcif.dhit);
-    #(CLK);
-    dcif.dmemREN = 1'b0;
-    #(CLK);
-    dcif.dmemREN = 1'b1;
-
-		i = i + 1;
-		dcif.dmemaddr = {26'd1,3'd4,1'b1,2'b0}; //addr 64  13
-		@(negedge cif0.dwait);
-		if(i != cif0.dload)
-		begin
-			$display("Incorrect Output durring %s iteration %d",tb_test_case, i);
-		end
-		else
-		begin
-			$display("Correct Output durring %s iteration %d",tb_test_case, i);
-		end
-		@(posedge dcif.dhit);
-    #(CLK);
-    dcif.dmemREN = 1'b0;
-    #(CLK);
-    dcif.dmemREN = 1'b1;
-
-		i = i + 1;
-		dcif.dmemaddr = {26'd0,3'd5,1'b0,2'b0};	//addr 28  14
-		@(negedge cif0.dwait);
-		if(i != cif0.dload)
-		begin
-			$display("Incorrect Output durring %s iteration %d",tb_test_case, i);
-		end
-		else
-		begin
-			$display("Correct Output durring %s iteration %d",tb_test_case, i);
-		end
-		@(posedge dcif.dhit);
-    #(CLK);
-    dcif.dmemREN = 1'b0;
-    #(CLK);
-    dcif.dmemREN = 1'b1;
-
-		i = i + 1;
-		dcif.dmemaddr = {26'd0,3'd5,1'b1,2'b0};	//addr 2C  15
-		@(negedge cif0.dwait);
-		if(i != cif0.dload)
-		begin
-			$display("Incorrect Output durring %s iteration %d",tb_test_case, i);
-		end
-		else
-		begin
-			$display("Correct Output durring %s iteration %d",tb_test_case, i);
-		end
-		@(posedge dcif.dhit);
-    #(CLK);
-    dcif.dmemREN = 1'b0;
-    #(CLK);
-    dcif.dmemREN = 1'b1;
-
-		i = i + 1;
-		dcif.dmemaddr = {26'd1,3'd5,1'b0,2'b0};	//addr 68  16
-		@(negedge cif0.dwait);
-		if(i != cif0.dload)
-		begin
-			$display("Incorrect Output durring %s iteration %d",tb_test_case, i);
-		end
-		else
-		begin
-			$display("Correct Output durring %s iteration %d",tb_test_case, i);
-		end
-		@(posedge dcif.dhit);
-    #(CLK);
-    dcif.dmemREN = 1'b0;
-    #(CLK);
-    dcif.dmemREN = 1'b1;
-
-		i = i + 1;
-		dcif.dmemaddr = {26'd1,3'd5,1'b1,2'b0}; //addr 6C  17
-		@(negedge cif0.dwait);
-		if(i != cif0.dload)
-		begin
-			$display("Incorrect Output durring %s iteration %d",tb_test_case, i);
-		end
-		else
-		begin
-			$display("Correct Output durring %s iteration %d",tb_test_case, i);
-		end
-		@(posedge dcif.dhit);
-    #(CLK);
-    dcif.dmemREN = 1'b0;
-    #(CLK);
-    dcif.dmemREN = 1'b1;
-
-		i = i + 1;
-		dcif.dmemaddr = {26'd0,3'd6,1'b0,2'b0}; //addr 30  18
-		@(negedge cif0.dwait);
-		if(i != cif0.dload)
-		begin
-			$display("Incorrect Output durring %s iteration %d",tb_test_case, i);
-		end
-		else
-		begin
-			$display("Correct Output durring %s iteration %d",tb_test_case, i);
-		end
-		@(posedge dcif.dhit);
-    #(CLK);
-    dcif.dmemREN = 1'b0;
-    #(CLK);
-    dcif.dmemREN = 1'b1;
-
-		i = i + 1;
-		dcif.dmemaddr = {26'd0,3'd6,1'b1,2'b0}; //addr 34  19
-		@(negedge cif0.dwait);
-		if(i != cif0.dload)
-		begin
-			$display("Incorrect Output durring %s iteration %d",tb_test_case, i);
-		end
-		else
-		begin
-			$display("Correct Output durring %s iteration %d",tb_test_case, i);
-		end
-		@(posedge dcif.dhit);
-    #(CLK);
-    dcif.dmemREN = 1'b0;
-    #(CLK);
-    dcif.dmemREN = 1'b1;
-
-		i = i + 1;
-		dcif.dmemaddr = {26'd1,3'd6,1'b0,2'b0};	//addr 70  1A
-		@(negedge cif0.dwait);
-		if(i != cif0.dload)
-		begin
-			$display("Incorrect Output durring %s iteration %d",tb_test_case, i);
-		end
-		else
-		begin
-			$display("Correct Output durring %s iteration %d",tb_test_case, i);
-		end
-		@(posedge dcif.dhit);
-    #(CLK);
-    dcif.dmemREN = 1'b0;
-    #(CLK);
-    dcif.dmemREN = 1'b1;
-
-		i = i + 1;
-		dcif.dmemaddr = {26'd1,3'd6,1'b1,2'b0};	//addr 74  1B
-		@(negedge cif0.dwait);
-		if(i != cif0.dload)
-		begin
-			$display("Incorrect Output durring %s iteration %d",tb_test_case, i);
-		end
-		else
-		begin
-			$display("Correct Output durring %s iteration %d",tb_test_case, i);
-		end
-		@(posedge dcif.dhit);
-    #(CLK);
-    dcif.dmemREN = 1'b0;
-    #(CLK);
-    dcif.dmemREN = 1'b1;
-
-		i = i + 1;
-		dcif.dmemaddr = {26'd0,3'd7,1'b0,2'b0}; //addr 38  1C
-		@(negedge cif0.dwait);
-		if(i != cif0.dload)
-		begin
-			$display("Incorrect Output durring %s iteration %d",tb_test_case, i);
-		end
-		else
-		begin
-			$display("Correct Output durring %s iteration %d",tb_test_case, i);
-		end
-		@(posedge dcif.dhit);
-    #(CLK);
-    dcif.dmemREN = 1'b0;
-    #(CLK);
-    dcif.dmemREN = 1'b1;
-
-		i = i + 1;
-		dcif.dmemaddr = {26'd0,3'd7,1'b1,2'b0}; //addr 3C  1D
-		@(negedge cif0.dwait);
-		if(i != cif0.dload)
-		begin
-			$display("Incorrect Output durring %s iteration %d",tb_test_case, i);
-		end
-		else
-		begin
-			$display("Correct Output durring %s iteration %d",tb_test_case, i);
-		end
-		@(posedge dcif.dhit);
-    #(CLK);
-    dcif.dmemREN = 1'b0;
-    #(CLK);
-    dcif.dmemREN = 1'b1;
-
-		i = i + 1;
-		dcif.dmemaddr = {26'd1,3'd7,1'b0,2'b0}; //addr 78  1E
-		@(negedge cif0.dwait);
-		if(i != cif0.dload)
-		begin
-			$display("Incorrect Output durring %s iteration %d",tb_test_case, i);
-		end
-		else
-		begin
-			$display("Correct Output durring %s iteration %d",tb_test_case, i);
-		end
-		@(posedge dcif.dhit);
-    #(CLK);
-    dcif.dmemREN = 1'b0;
-*/
- 		#(PERIOD)
-
-		//******************************************************************
-		// Test Case 2: Associativity
-		//******************************************************************
-		tb_test_num = tb_test_num + 1;
-		tb_test_case ="Test Associativity";
-    dcif.dmemREN = 1'b1;
-		dcif.dmemWEN = 1'b1;
-		dcif.dmemstore = 32'd1;
-		dcif.dmemaddr = {26'hA,3'd0,1'b0,2'b0};
-		@(posedge dcif.dhit);
-    #(PERIOD);
-		dcif.dmemstore = 32'd2;
-		dcif.dmemaddr = {26'hB,3'd0,1'b0,2'b0};
-		@(posedge dcif.dhit);
-    #(PERIOD);
-		dcif.dmemstore = 32'd3;
-		dcif.dmemaddr = {26'hC,3'd0,1'b0,2'b0};
-		@(posedge dcif.dhit);
-    #(PERIOD);
-
-		dcif.dmemWEN = 1'b0;
-		dcif.dmemREN = 1'b1;
-		dcif.dmemaddr = {26'hC,3'd0,1'b0,2'b0};
-    #(PERIOD);
-		if(dcif.dhit && dcif.dmemload == 32'd3)
-		begin
-			$display("%s Passed!", tb_test_case);
-		end
-		else
-		begin
-			$display("%s Failed!", tb_test_case);
-		end
-
-    #(PERIOD);
-		dcif.dmemaddr = {26'hB,3'd0,1'b0,2'b0};
-    #(PERIOD);
-		if(dcif.dhit && dcif.dmemload == 32'd2)
-		begin
-			$display("%s Passed!", tb_test_case);
-		end
-		else
-		begin
-			$display("%s Failed!", tb_test_case );
-		end
-		#(PERIOD)
-		dcif.dmemREN = 1'b0;
-
-
-
-
-
-		//******************************************************************
-		// Test Case 4: Read and Write to same tag different blocks
-		//******************************************************************
-		tb_test_num = tb_test_num + 1;
-		tb_test_case ="Read and Write to same tag different blocks";
-
-		nRST = 1'b0;
-
-		@(posedge CLK);
-		@(posedge CLK);
-
-		@(negedge CLK);
-
-		nRST = 1;
-
-		@(posedge CLK);
-		@(posedge CLK);	
-
-		dcif.dmemWEN = 1'b1;
-		dcif.dmemstore = 32'd1;
-		dcif.dmemaddr = {26'd0,3'd0,1'b0,2'b0};
-		@(posedge dcif.dhit);
-    #(PERIOD);
-		dcif.dmemstore = 32'd2;
-		dcif.dmemaddr = {26'd0,3'd0,1'b0,2'b0};
-
-    #(PERIOD);
-		dcif.dmemstore = 32'd3;
-		dcif.dmemaddr = {26'd0,3'd0,1'b1,2'b0};
-	#(PERIOD);
-		dcif.dmemstore = 32'd4;
-		dcif.dmemaddr = {26'd0,3'd0,1'b1,2'b0};
-   #(PERIOD);
-		dcif.dmemWEN = 1'b0;
-		dcif.dmemREN = 1'b1;
-		dcif.dmemaddr = {26'd0,3'd0,1'b0,2'b0};
-		#(PERIOD);
-		if(dcif.dhit && dcif.dmemload == 32'd2)
-		begin
-			$display("%s Passed!", tb_test_case);
-		end
-		else
-		begin
-			$display("%s Failed!", tb_test_case);
-		end
-
-		dcif.dmemaddr = {26'd0,3'd0,1'b1,2'b0};
- #(PERIOD);
-
-		if(dcif.dhit && dcif.dmemload == 32'd4)
-		begin
-			$display("%s Passed!", tb_test_case);
-		end
-		else
-		begin
-			$display("%s Failed!", tb_test_case);
-		end
-
-		//******************************************************************
-		// Test Case 5: Capacity Misses
-		//******************************************************************
-		tb_test_num = tb_test_num + 1;
-		tb_test_case ="Test Capacity Misses";
-		dcif.dmemWEN = 1'b1;
-		dcif.dmemstore = 32'd1;
-		dcif.dmemaddr = {26'd10,3'd0,1'b0,2'b0};
-		@(posedge dcif.dhit);
-		if(0 == cif0.dstore && !cif0.dWEN)
-		begin
-			$display("Correct Output durring %s",tb_test_case);
-		end
-		else
-		begin
-			$display("Incorrect Output durring %s",tb_test_case);
-		end
-
-    #(PERIOD);
-		//******************************************************************
-		// Test Case 6: Conflict Misses
-		//******************************************************************
-		tb_test_num = tb_test_num + 1;
-		tb_test_case ="Test Conflict Misses";
-		dcif.dmemWEN = 1'b1;
-		dcif.dmemstore = 32'd2;
-		dcif.dmemaddr = {26'd10,3'd1,1'b0,2'b0};
-		@(posedge dcif.dhit);
-		if(0 == cif0.dstore && !cif0.dWEN)
-		begin
-			$display("Correct Output durring %s",tb_test_case);
-		end
-		else
-		begin
-			$display("Incorrect Output durring %s",tb_test_case);
-		end
-
-		#(PERIOD)
-		//******************************************************************
-		// Test Case 7: Writeback specification
-		//******************************************************************
-		tb_test_num = tb_test_num + 1;
-		tb_test_case ="Test Writeback Specification";
-		dcif.dmemWEN = 1'b1;
-		dcif.dmemstore = 32'd1;
-		dcif.dmemaddr = {26'd12,3'd0,1'b0,2'b0};
-		/*@(negedge cif0.dwait);
-		if(!cif0.dwait && 32'd1 == cif0.dstore && cif0.dWEN)
-		begin
-			$display("Correct Output durring %s",tb_test_case);
-		end
-		else
-		begin
-			$display("Incorrect Output durring %s",tb_test_case);
-		end*/
-
-
-    @(posedge dcif.dhit)
-		dcif.dmemstore = 32'd2;
-		dcif.dmemaddr = {26'd12,3'd0,1'b0,2'b0};
-		#(PERIOD);
-		/*if(2 == cif0.dstore && cif0.dWEN)
-		begin
-			$display("Correct Output durring %s",tb_test_case);
-		end
-		else
-		begin
-			$display("Incorrect Output durring %s",tb_test_case);
-		end*/
-
-		#(PERIOD);
-		dcif.dmemstore = 32'd3;
-		dcif.dmemaddr = {26'd12,3'd0,1'b0,2'b0};
-		if(dcif.dhit)
-		begin
-			$display("Correct Output during %s",tb_test_case);
-		end
-		else
-		begin
 			$display("Incorrect Output during %s",tb_test_case);
-		end
 		#(PERIOD);
-		dcif.dmemWEN = 1'b0;
-
+		dcif0.halt = 1'b1;
+		dcif1.dmemWEN = 1'b1;
+		dcif1.dmemstore = 32'hF4;
+		dcif1.dmemaddr = 32'h80;
+		@(posedge cif0.ccwait)
+		if(cif0.cctrans)
+			$display("Correct Output during %s", tb_test_case);
+		else
+			$display("Incorrect Output during %s",tb_test_case);
+		#(PERIOD);
+		dcif1.halt = 1'b1;
+		#(PERIOD);
+		dcif0.halt = 1'b0;
+		dcif0.dmemREN = 1'b0;
+		dcif0.dmemWEN = 1'b0;
+		dcif0.dmemstore = '0;
+		dcif0.dmemaddr = '0;
+		dcif1.halt = 1'b0;
+		dcif1.dmemREN = 1'b0;
+		dcif1.dmemWEN = 1'b0;
+		dcif1.dmemstore = '0;
+		dcif1.dmemaddr = '0;
+		reset_dut();
 		//******************************************************************
-		// Test Case 8: Toggles
-		//******************************************************************
-		/*tb_test_num = tb_test_num + 1;
-		tb_test_case ="Toggles";
-
-    dcif.dmemWEN = 1'b1;
-
-		dcif.dmemstore = 32'hffffffff;
-		dcif.dmemaddr = {26'b11111111111111111111111111,3'b000,1'b1,2'b00};
-		@(posedge dcif.dhit);
-    #(PERIOD);
-		dcif.dmemaddr = {26'b11111111111111111111111111,3'b000,1'b0,2'b00};
-		@(posedge dcif.dhit);
-    #(PERIOD);
-
-		dcif.dmemstore = 32'h0;
-		dcif.dmemaddr = {26'b11111111111111111111111111,3'b000,1'b0,2'b00};
-		@(posedge dcif.dhit);
-    #(PERIOD);
-		dcif.dmemaddr = {26'b11111111111111111111111111,3'b000,1'b1,2'b00};
-
-    @(posedge dcif.dhit);
-    #(PERIOD);
-
-		dcif.dmemstore = 32'hffffffff;
-		dcif.dmemaddr = {26'b0,3'b000,1'b1,2'b00};
-		@(posedge dcif.dhit);
-    #(PERIOD);
-		dcif.dmemaddr = {26'b0,3'b000,1'b0,2'b00};
-		@(posedge dcif.dhit);
-    #(PERIOD);
-
-		dcif.dmemstore = 32'h0;
-		dcif.dmemaddr = {26'b0,3'b000,1'b0,2'b00};
-		@(posedge dcif.dhit);
-    #(PERIOD);
-		dcif.dmemaddr = {26'b0,3'b000,1'b1,2'b00};
-
-    @(posedge dcif.dhit);
-    #(PERIOD);
-
-    dcif.dmemstore = 32'hffffffff;
-		dcif.dmemaddr = {26'b11111111111111111111111111,3'b111,1'b1,2'b00};
-		@(posedge dcif.dhit);
-    #(PERIOD);
-		dcif.dmemaddr = {26'b11111111111111111111111111,3'b111,1'b0,2'b00};
-		@(posedge dcif.dhit);
-    #(PERIOD);
-
-		dcif.dmemstore = 32'h0;
-		dcif.dmemaddr = {26'b11111111111111111111111111,3'b111,1'b0,2'b00};
-		@(posedge dcif.dhit);
-    #(PERIOD);
-		dcif.dmemaddr = {26'b11111111111111111111111111,3'b111,1'b1,2'b00};
-
-    @(posedge dcif.dhit);
-    #(PERIOD);*/
-
-
-	//******************************************************************
-		// Test Case 4: Flushing
+		// Test Case 2: S->M M->S
 		//******************************************************************
 		tb_test_num = tb_test_num + 1;
-		tb_test_case ="Test Flushing";
-		reset_dut();
-		dcif.dmemWEN = 1'b1;
-		dcif.dmemstore = 32'd1;
-		dcif.dmemaddr = {26'd0,3'd0,1'b0,2'b0};
-		@ (posedge dcif.dhit) 
+		tb_test_case ="S->M M->S";
+		dcif0.dmemWEN = 1'b1;
+		dcif0.dmemstore = 32'hF00;
+		dcif0.dmemaddr =  32'h80;
 		#(PERIOD);
-		dcif.dmemstore = 32'd2;
-		dcif.dmemaddr = {26'd0,3'd0,1'b0,2'b0};
-    #(PERIOD);
-		dcif.dmemstore = 32'd3;
-		dcif.dmemaddr = {26'd0,3'd0,1'b0,2'b0};
-    #(PERIOD);
-		dcif.dmemstore = 32'd4;
-		dcif.dmemaddr = {26'd0,3'd0,1'b0,2'b0};
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+	  dcif0.dmemstore = 32'h40;
+		dcif0.dmemaddr =  32'h80;
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		dcif0.dmemWEN = 1'b0;
+		dcif0.halt = 1'b1;
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		dcif1.dmemREN = 1'b1;	
+		dcif1.dmemaddr =  32'h80;
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		if (dcif1.dmemload == 32'h40)
+		$display("Correct Output during %s", tb_test_case);
+		else
+			$display("Incorrect Output during %s",tb_test_case);
+		#(PERIOD);
+		dcif1.halt = 1'b1;
+		#(PERIOD);
+		dcif0.halt = 1'b0;
+		dcif0.dmemREN = 1'b0;
+		dcif0.dmemWEN = 1'b0;
+		dcif0.dmemstore = '0;
+		dcif0.dmemaddr = '0;
+		dcif1.halt = 1'b0;
+		dcif1.dmemREN = 1'b0;
+		dcif1.dmemWEN = 1'b0;
+		dcif1.dmemstore = '0;
+		dcif1.dmemaddr = '0;
+		reset_dut();
+		//******************************************************************
+		// Test Case 2: S->M S->I
+		//******************************************************************
+		tb_test_num = tb_test_num + 1;
+		tb_test_case ="S->M S->I";
+		dcif1.dmemWEN = 1'b1;
+		dcif1.dmemstore = 32'hF0;
+		dcif1.dmemaddr =  32'h80;
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		dcif1.dmemWEN = 1'b0;
+		dcif1.halt = 1'b1;
+		dcif0.dmemREN = 1'b1;
+		dcif0.dmemaddr =  32'h80;
+		@(posedge dcif0.dhit)
+		if (dcif0.dmemload == 32'hF0)
+		$display("Correct Output during %s", tb_test_case);
+		else
+			$display("Incorrect Output during %s",tb_test_case);
+		dcif0.halt = 1'b1;
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		reset_dut();
+		//******************************************************************
+		// Test Case Toggle 
+		//******************************************************************
+		dcif0.halt = 1'b0;
+		dcif0.dmemREN = 1'b0;
+		dcif0.dmemWEN = 1'b0;
+		dcif0.dmemstore = '0;
+		dcif0.dmemaddr = '0;
+		dcif1.halt = 1'b0;
+		dcif1.dmemREN = 1'b0;
+		dcif1.dmemWEN = 1'b0;
+		dcif1.dmemstore = '0;
+		dcif1.dmemaddr = '0;
+		reset_dut();
+		tb_test_num = tb_test_num + 1;
+		tb_test_case ="Toggle Coverage";
+		dcif1.dmemWEN = 1'b1;
+		dcif1.dmemstore = 32'hF0;
+		dcif1.dmemaddr =  {26'h6,6'b000000};
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		dcif1.dmemWEN = 1'b0;
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		dcif1.dmemWEN = 1'b1;
+		dcif1.dmemstore = 32'hF0;
+		dcif1.dmemaddr =  {26'h7,6'b000000};
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		dcif1.dmemWEN = 1'b0;
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
 
-    #(PERIOD);
-		dcif.dmemWEN = 1'b0;
-		dcif.halt = 1'b1;
+		dcif1.dmemWEN = 1'b1;
+		dcif1.dmemstore = 32'hF0;
+		dcif1.dmemaddr =  {26'h8,6'b000000};
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		dcif1.dmemWEN = 1'b0;
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
 
-		@(posedge dcif.flushed)
+		dcif0.dmemWEN = 1'b1;
+		dcif0.dmemstore = 32'hF0;
+		dcif0.dmemaddr = {26'h6,6'b000000};
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		dcif0.dmemWEN = 1'b0;
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		dcif0.dmemWEN = 1'b1;
+		dcif0.dmemstore = 32'hF5;
+		dcif0.dmemaddr =  {26'h7,6'b000000};
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
 
-		$display("%s Passed!", tb_test_case);
+		dcif0.dmemWEN = 1'b0;
 
-		dcif.halt = 1'b0;
+		#(PERIOD);
+		dcif0.dmemWEN = 1'b1;
+		dcif0.dmemstore = 32'hF0;
+		dcif0.dmemaddr =  {26'h8,6'b000000};
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		dcif0.dmemWEN = 1'b0;
+
+		#(PERIOD);
+		#(PERIOD);
+		dcif1.dmemWEN = 1'b1;
+		dcif1.dmemstore = 32'hF0;
+		dcif1.dmemaddr =  {26'h6,6'b001000};
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		dcif1.dmemWEN = 1'b0;
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		dcif1.dmemWEN = 1'b1;
+		dcif1.dmemstore = 32'hF0;
+		dcif1.dmemaddr =  {26'h7,6'b001000};
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		dcif1.dmemWEN = 1'b0;
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+
+		dcif1.dmemWEN = 1'b1;
+		dcif1.dmemstore = 32'hF0;
+		dcif1.dmemaddr =  {26'h8,6'b001000};
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		dcif1.dmemWEN = 1'b0;
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+
+		dcif1.dmemWEN = 1'b0;
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+
+		dcif1.dmemWEN = 1'b1;
+		dcif1.dmemstore = 32'hF0;
+		dcif1.dmemaddr =  {26'h9,6'b001000};
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		dcif1.dmemWEN = 1'b0;
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+
+
+		//@(posedge dcif0.dhit)
+		dcif0.halt = 1'b1;
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		dcif1.halt = 1'b1;
+	reset_dut();
+		//******************************************************************
+		// Test Case Toggle 
+		//******************************************************************
+		dcif0.halt = 1'b0;
+		dcif0.dmemREN = 1'b0;
+		dcif0.dmemWEN = 1'b0;
+		dcif0.dmemstore = '0;
+		dcif0.dmemaddr = '0;
+		dcif1.halt = 1'b0;
+		dcif1.dmemREN = 1'b0;
+		dcif1.dmemWEN = 1'b0;
+		dcif1.dmemstore = '0;
+		dcif1.dmemaddr = '0;
+		reset_dut();
+		tb_test_num = tb_test_num + 1;
+		tb_test_case ="Toggle Coverage";
+		dcif1.dmemWEN = 1'b1;
+		dcif1.dmemstore = 32'hF0;
+		dcif1.dmemaddr =  {26'h6,6'b000000};
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		dcif1.dmemWEN = 1'b0;
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		dcif1.dmemWEN = 1'b1;
+		dcif1.dmemstore = 32'hF0;
+		dcif1.dmemaddr =  {26'h7,6'b000000};
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		dcif1.dmemWEN = 1'b0;
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+
+		dcif1.dmemWEN = 1'b1;
+		dcif1.dmemstore = 32'hF0;
+		dcif1.dmemaddr =  {26'h8,6'b000000};
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		dcif1.dmemWEN = 1'b0;
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+
+		dcif1.dmemWEN = 1'b1;
+		dcif1.dmemstore = 32'hF0;
+		dcif1.dmemaddr =  {26'h9,6'b000000};
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		dcif1.dmemWEN = 1'b0;
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+
+		
+
+
+		//@(posedge dcif0.dhit)
+		dcif0.halt = 1'b1;
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		dcif1.halt = 1'b1;
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+
+
+
+
+
+
+
+
+		//******************************************************************
+		// Test Case 
+		//******************************************************************
+		dcif0.halt = 1'b0;
+		dcif0.dmemREN = 1'b0;
+		dcif0.dmemWEN = 1'b0;
+		dcif0.dmemstore = '0;
+		dcif0.dmemaddr = '0;
+		dcif1.halt = 1'b0;
+		dcif1.dmemREN = 1'b0;
+		dcif1.dmemWEN = 1'b0;
+		dcif1.dmemstore = '0;
+		dcif1.dmemaddr = '0;
+		reset_dut();
+		tb_test_num = tb_test_num + 1;
+		tb_test_case ="Toggle Coverage cache 0";
+		dcif0.dmemWEN = 1'b1;
+		dcif0.dmemstore = 32'hF0;
+		dcif0.dmemaddr =  {26'h6,6'b000000};
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		dcif0.dmemWEN = 1'b0;
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		dcif0.dmemWEN = 1'b1;
+		dcif0.dmemstore = 32'hF0;
+		dcif0.dmemaddr =  {26'h7,6'b000000};
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		dcif0.dmemWEN = 1'b0;
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+
+		dcif0.dmemWEN = 1'b1;
+		dcif0.dmemstore = 32'hF0;
+		dcif0.dmemaddr =  {26'h8,6'b000000};
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		dcif0.dmemWEN = 1'b0;
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+
+		dcif1.dmemWEN = 1'b1;
+		dcif1.dmemstore = 32'hF0;
+		dcif1.dmemaddr = {26'h6,6'b000000};
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		dcif1.dmemWEN = 1'b0;
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		dcif1.dmemWEN = 1'b1;
+		dcif1.dmemstore = 32'hF5;
+		dcif1.dmemaddr =  {26'h7,6'b000000};
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+
+		dcif1.dmemWEN = 1'b0;
+
+		#(PERIOD);
+		dcif1.dmemWEN = 1'b1;
+		dcif1.dmemstore = 32'hF0;
+		dcif1.dmemaddr =  {26'h8,6'b000000};
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		dcif1.dmemWEN = 1'b0;
+
+		#(PERIOD);
+		#(PERIOD);
+		dcif0.dmemWEN = 1'b1;
+		dcif0.dmemstore = 32'hF0;
+		dcif0.dmemaddr =  {26'h6,6'b001000};
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		dcif0.dmemWEN = 1'b0;
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		dcif0.dmemWEN = 1'b1;
+		dcif0.dmemstore = 32'hF0;
+		dcif0.dmemaddr =  {26'h7,6'b001000};
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		dcif0.dmemWEN = 1'b0;
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+
+		dcif0.dmemWEN = 1'b1;
+		dcif0.dmemstore = 32'hF0;
+		dcif0.dmemaddr =  {26'h8,6'b001000};
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		dcif0.dmemWEN = 1'b0;
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+
+		dcif0.dmemWEN = 1'b0;
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+
+		dcif0.dmemWEN = 1'b1;
+		dcif0.dmemstore = 32'hF0;
+		dcif0.dmemaddr =  {26'h9,6'b001000};
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		dcif0.dmemWEN = 1'b0;
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+
+
+		//@(posedge dcif0.dhit)
+		dcif1.halt = 1'b1;
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		dcif0.halt = 1'b1;
+	reset_dut();
+		//******************************************************************
+		// Test Case Toggle 
+		//******************************************************************
+		dcif0.halt = 1'b0;
+		dcif0.dmemREN = 1'b0;
+		dcif0.dmemWEN = 1'b0;
+		dcif0.dmemstore = '0;
+		dcif0.dmemaddr = '0;
+		dcif1.halt = 1'b0;
+		dcif1.dmemREN = 1'b0;
+		dcif1.dmemWEN = 1'b0;
+		dcif1.dmemstore = '0;
+		dcif1.dmemaddr = '0;
+		reset_dut();
+		tb_test_num = tb_test_num + 1;
+		tb_test_case ="Toggle Coverage cache0";
+		dcif0.dmemWEN = 1'b1;
+		dcif0.dmemstore = 32'hF0;
+		dcif0.dmemaddr =  {26'h6,6'b000000};
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		dcif0.dmemWEN = 1'b0;
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		dcif0.dmemWEN = 1'b1;
+		dcif0.dmemstore = 32'hF0;
+		dcif0.dmemaddr =  {26'h7,6'b000000};
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		dcif0.dmemWEN = 1'b0;
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+
+		dcif0.dmemWEN = 1'b1;
+		dcif0.dmemstore = 32'hF0;
+		dcif0.dmemaddr =  {26'h8,6'b000000};
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		dcif0.dmemWEN = 1'b0;
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+
+		dcif0.dmemWEN = 1'b1;
+		dcif0.dmemstore = 32'hF0;
+		dcif0.dmemaddr =  {26'h9,6'b000000};
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		dcif0.dmemWEN = 1'b0;
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+
+		
+
+
+		//@(posedge dcif0.dhit)
+		dcif1.halt = 1'b1;
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		dcif0.halt = 1'b1;
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+		#(PERIOD);
+
+
+
+
+
 
   dump_memory();
   $finish;

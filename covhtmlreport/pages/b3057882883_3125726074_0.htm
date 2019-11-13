@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+  <title>Questa Coverage Report</title>
+  <!-- original name: _work.hazard_unitContentFrame2.htm -->
+  <link rel="StyleSheet" media="print"  href="../css/ucdb2htmlP.css"/>
+  <link rel="StyleSheet" media="screen" href="../css/ucdb2html.css"/>
+  <link rel="StyleSheet" media="screen" href="../css/ucdb2html_newlook.css"/>
+  <script type="text/javascript" src="../scripts/jquery.js"></script>
+  <script type="text/javascript" src="../scripts/showhide.js"></script>
+  
+</head>
+<body id="ucdb2html_detail" onload="showLast()">
+  <h1><span class="strip">Questa</span> Branch Coverage Report</h1>
+  <h3>Scope: /<a href="z3057882883_3125726074_0.htm">work.hazard_unit</a></h3>
+  <!-- use script block so buttons vanish when JavaScript is disabled -->
+  <script type="text/javascript">
+  <!--
+  document.write(
+    '<table class="buttons" cellspacing="2" cellpadding="2"><tr>' +
+       '<td id="showAll" width="100" onclick="showAll()" class="button_on" ' +
+           'title="Display all coverage scopes and bins.">Show All</td>' +
+       '<td id="showCov" width="100" onclick="showCov()" class="button_off" ' +
+           'title="Display only covered scopes and bins.">Show Covered</td>' +
+       '<td id="showMis" width="100" onclick="showMis()" class="button_off" ' +
+           'title="Display only uncovered scopes and bins.">Show Missing</td>' +
+    '</tr></table>');
+  //-->
+  </script>
+  <div><a name="cvg16288"/><hr/><table>
+  <tr l="35" lnk="__HDL_srcfile_25.htm#35" z="	if (rt_MEM.opcode == J || rt_MEM.opcode == JAL || (rt_MEM.func..." c="Y" p="75.00"/><tr/>
+  <tr cr="m" t="I" l="35" lnk="__HDL_srcfile_25.htm#35" z="	if (rt_MEM.opcode == J || rt_MEM.opcode == JAL || (rt_MEM.func..." h="0" c="r"/>
+  <tr cr="c" t="T" l="67" lnk="__HDL_srcfile_25.htm#67" z=" else if((RegWr_EX || memWr_EX) /*&amp;&amp; (rt_EX.opcode != J &amp;&amp; rt_E..." h="16" c="g"/>
+  <tr cr="c" t="T" l="103" lnk="__HDL_srcfile_25.htm#103" z="	else if((RegWr_MEM || memWr_MEM) /*&amp;&amp; (rt_MEM.opcode != J &amp;&amp; r..." h="4" c="g"/>
+  <tr cr="c" t="A" l="35" lnk="__HDL_srcfile_25.htm#35" z="	if (rt_MEM.opcode == J || rt_MEM.opcode == JAL || (rt_MEM.func..." h="10" c="g"/>
+  </table>
+  </div><div class="missing"><a name="cvg16289"/><hr/><table>
+  <tr l="37" lnk="__HDL_srcfile_25.htm#37" z="	casez(rt_MEM.opcode)" c="R" p="0.00"/><tr/>
+  <tr cr="m" t="T" l="38" lnk="__HDL_srcfile_25.htm#38" z="			RTYPE:" h="0" c="r"/>
+  <tr cr="m" t="T" l="49" lnk="__HDL_srcfile_25.htm#49" z="			J:" h="0" c="r"/>
+  <tr cr="m" t="T" l="57" lnk="__HDL_srcfile_25.htm#57" z="			JAL:" h="0" c="r"/>
+  <tr cr="e" t="A" l="37" lnk="__HDL_srcfile_25.htm#37" z="	casez(rt_MEM.opcode)" h="E-Miss"/>
+  </table>
+  </div><div class="missing"><a name="cvg16290"/><hr/><table>
+  <tr l="40" lnk="__HDL_srcfile_25.htm#40" z="				if(rt_MEM.funct == JR)" c="R" p="0.00"/><tr/>
+  <tr cr="m" t="I" l="40" lnk="__HDL_srcfile_25.htm#40" z="				if(rt_MEM.funct == JR)" h="0" c="r"/>
+  <tr cr="m" t="A" l="40" lnk="__HDL_srcfile_25.htm#40" z="				if(rt_MEM.funct == JR)" h="0" c="r"/>
+  </table>
+  </div><div><a name="cvg16291"/><hr/><table>
+  <tr l="69" lnk="__HDL_srcfile_25.htm#69" z="		if(it_EX.opcode == LW)" c="Y" p="75.00"/><tr/>
+  <tr cr="m" t="I" l="69" lnk="__HDL_srcfile_25.htm#69" z="		if(it_EX.opcode == LW)" h="0" c="r"/>
+  <tr cr="c" t="T" l="79" lnk="__HDL_srcfile_25.htm#79" z="		else if((((rt_EX.rd == rt_ID.rs || rt_EX.rd == rt_ID.rt) &amp;&amp; (..." h="6" c="g"/>
+  <tr cr="c" t="T" l="86" lnk="__HDL_srcfile_25.htm#86" z="		else if ((it_EX.opcode == SW) &amp;&amp; ((it_ID.rt == it_EX.rs) || i..." h="2" c="g"/>
+  <tr cr="c" t="A" l="69" lnk="__HDL_srcfile_25.htm#69" z="		if(it_EX.opcode == LW)" h="8" c="g"/>
+  </table>
+  </div><div class="missing"><a name="cvg16292"/><hr/><table>
+  <tr l="71" lnk="__HDL_srcfile_25.htm#71" z="			if((it_ID.rs == it_EX.rt &amp;&amp; it_ID.opcode != RTYPE)  || ((rt_..." c="R" p="0.00"/><tr/>
+  <tr cr="m" t="I" l="71" lnk="__HDL_srcfile_25.htm#71" z="			if((it_ID.rs == it_EX.rt &amp;&amp; it_ID.opcode != RTYPE)  || ((rt_..." h="0" c="r"/>
+  <tr cr="m" t="A" l="71" lnk="__HDL_srcfile_25.htm#71" z="			if((it_ID.rs == it_EX.rt &amp;&amp; it_ID.opcode != RTYPE)  || ((rt_..." h="0" c="r"/>
+  </table>
+  </div><div><a name="cvg16293"/><hr/><table>
+  <tr l="106" lnk="__HDL_srcfile_25.htm#106" z="		if(it_MEM.opcode == LW)" c="Y" p="50.00"/><tr/>
+  <tr cr="m" t="I" l="106" lnk="__HDL_srcfile_25.htm#106" z="		if(it_MEM.opcode == LW)" h="0" c="r"/>
+  <tr cr="c" t="T" l="116" lnk="__HDL_srcfile_25.htm#116" z="		else if((((rt_MEM.rd == rt_ID.rs || rt_MEM.rd == rt_ID.rt) &amp;&amp;..." h="2" c="g"/>
+  <tr cr="m" t="T" l="123" lnk="__HDL_srcfile_25.htm#123" z="	else if ((it_MEM.opcode == SW) &amp;&amp; ((it_ID.rt == it_MEM.rs) || ..." h="0" c="r"/>
+  <tr cr="c" t="A" l="106" lnk="__HDL_srcfile_25.htm#106" z="		if(it_MEM.opcode == LW)" h="2" c="g"/>
+  </table>
+  </div><div class="missing"><a name="cvg16294"/><hr/><table>
+  <tr l="108" lnk="__HDL_srcfile_25.htm#108" z="			if((it_ID.rs == it_MEM.rt &amp;&amp; it_ID.opcode != RTYPE)  || ((rt..." c="R" p="0.00"/><tr/>
+  <tr cr="m" t="I" l="108" lnk="__HDL_srcfile_25.htm#108" z="			if((it_ID.rs == it_MEM.rt &amp;&amp; it_ID.opcode != RTYPE)  || ((rt..." h="0" c="r"/>
+  <tr cr="m" t="A" l="108" lnk="__HDL_srcfile_25.htm#108" z="			if((it_ID.rs == it_MEM.rt &amp;&amp; it_ID.opcode != RTYPE)  || ((rt..." h="0" c="r"/>
+  </table>
+  </div><script type="text/javascript" src="../scripts/buildbranchpage.js"></script>
+  <!-- make sure jumps to last few line nos work -->
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+  
+</body>
+</html>

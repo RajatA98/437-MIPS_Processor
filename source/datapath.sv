@@ -18,7 +18,11 @@
 // alu op, mips op, and instruction type
 `include "cpu_types_pkg.vh"
 
-module datapath (
+module datapath 
+#(
+	parameter PC_INIT = 0
+)
+(
   input logic CLK, nRST,
   datapath_cache_if.dp dpif
 );
@@ -35,7 +39,7 @@ module datapath (
 
 
   // pc init
-  parameter PC_INIT = 0;
+  
 
 
 	//control unit signals
@@ -157,6 +161,9 @@ assign fdif.imemaddr = dpif.imemaddr;
 always_ff @(posedge CLK, negedge nRST) begin
 	if (!nRST)
 			dpif.halt <= '0;
+  /*else if (!mwif.enable) begin
+			dpif.halt <= dpif.halt;
+	end*/
 	else
 			dpif.halt <= mwif.halt_WB;
 end
@@ -678,7 +685,7 @@ always_comb begin
 end
 
 
-	pc PC(.CLK(CLK), .nRST(nRST),.ihit(dpif.ihit), .halt(pc_halt), .next_addr(next_addr), .iaddr(dpif.imemaddr));
+	pc #(.PC_INIT(PC_INIT)) PC(.CLK(CLK), .nRST(nRST),.ihit(dpif.ihit), .halt(pc_halt), .next_addr(next_addr), .iaddr(dpif.imemaddr));
 
 //	branch_predictor BP(.zero(emif.zero_MEM), .instr(emif.instr_MEM), .pc_enable(pc_enable_bp), .flush_ID(flush_ID_BP), .flush_EX(flush_EX_BP), .flush_MEM(flush_MEM_BP), .bp_choose(bp_choose));
 

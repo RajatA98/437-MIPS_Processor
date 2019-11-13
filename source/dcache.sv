@@ -12,7 +12,7 @@ module dcache(
   import cpu_types_pkg::*;
 
   word_t hit_count, n_hit_count, prev_dmemaddr, current_dmemaddr, miss_cnt, n_miss_cnt;
-	logic prev_dhit;
+	logic prev_dhit, halt_flag, n_halt_flag;
 
   //Cache Frames
   dcache_frame frame_a [7:0];
@@ -21,9 +21,10 @@ module dcache(
   dcache_frame next_frame_b [7:0];
 
   //parsing address input
-  dcachef_t addr;
+  dcachef_t addr, snoopaddr;
   assign addr = ddif.dmemaddr;
 	assign prev_dmemaddr = ddif.dmemaddr;
+	assign snoopaddr = dmif.ccsnoopaddr;
 
 	//assign prev_dhit = ddif.dhit;
 
@@ -32,18 +33,32 @@ module dcache(
   assign set_a = frame_a[addr.idx];
   assign set_b = frame_b[addr.idx];
 
-typedef enum logic [3:0] {IDLE, STOP, MISS, MISS2, WBACK, WBACK2, HIT_COUNT, FLUSH_A, NEXT_FLUSH_A, FLUSH_B, NEXT_FLUSH_B} dcache_state_t;
+typedef enum logic [3:0] {IDLE, STOP, MISS, MISS2, WBACK, WBACK2, FLUSH_A, NEXT_FLUSH_A, FLUSH_B, NEXT_FLUSH_B, SNOOP_WB1, SNOOP_WB2} dcache_state_t;
 dcache_state_t dcache_state, next_state, prev_state;
 
 //to indicate which one is recently used
 logic [7:0] used_a, used_b, n_used_a, n_used_b;
+//logic n_cctrans, dmif.ccwrite;
 
 //Comparing tags of set with address tag
-logic match_a, match_b, hit, miss, lru_enable, hitcnt_enable, dirty, next_a, next_b, valid_a, valid_b;
+logic match_a, match_b, hit, miss, lru_enable, hitcnt_enable, dirty, next_a, next_b, valid_a, valid_b, write_hit_a, write_hit_b;
 assign match_a = (addr.tag == set_a.tag) ? 1 : 0;
 assign match_b = (addr.tag == set_b.tag) ? 1 : 0;
 assign valid_a = (set_a.valid && match_a) ? 1 : 0;
 assign valid_b = (set_b.valid && match_b) ? 1 : 0;
+assign write_hit_a = (set_a.valid && match_a && set_a.dirty) ? 1 : 0;
+assign write_hit_b = (set_b.valid && match_b && set_b.dirty) ? 1 : 0;
+
+
+//halt flag
+always_ff @ (posedge CLK, negedge nRST) begin
+    if (!nRST) begin
+				halt_flag <= '0;
+    end
+    else begin
+				halt_flag <= n_halt_flag;
+    end
+end
 
 	//checking dmemaddr
 	always_ff @ (posedge CLK, negedge nRST) begin
@@ -81,10 +96,12 @@ always_ff @ (posedge CLK, negedge nRST) begin
     if (!nRST) begin
 			hit_count <= '0;
 			miss_cnt <= '0;
+			//dmif.cctrans <= '0;
     end
     else begin
 			hit_count <= n_hit_count;
 			miss_cnt <= n_miss_cnt;
+			//dmif.cctrans <= n_cctrans;
     end
 end
 
@@ -131,6 +148,19 @@ always_ff @ (posedge CLK, negedge nRST) begin
     end
 end
 
+//Snoop Hit or Miss logic
+logic dirty_snoop;
+always_comb begin
+			dirty_snoop = 0;
+	    if (frame_a[snoopaddr.idx].tag == snoopaddr.tag) begin //the address exists in frame a
+					dirty_snoop = frame_a[snoopaddr.idx].dirty;
+			end
+			else if (frame_b[snoopaddr.idx].tag == snoopaddr.tag) begin //the address exists in frame b
+					dirty_snoop = frame_b[snoopaddr.idx].dirty;
+			end
+end
+
+
 
 //Block Selection and Hit/Miss, and LRU logic
 always_comb begin
@@ -140,15 +170,15 @@ always_comb begin
     miss = 0;
     dirty = 0;
 
-   if (ddif.dmemWEN) begin
-    if ((valid_a) && (!valid_b)) begin //only first set is valid
+   if (ddif.dmemWEN) begin //processor write request
+    if ((write_hit_a) && (!write_hit_b)) begin //only first set is valid
         n_used_a[addr.idx] = 1;
         n_used_b[addr.idx] = 0;
         hit = 1;
         dirty = set_a.dirty;
         //n_hit_count = hit_count + 1;
     end
-    else if ((!valid_a) && (valid_b)) begin //only second set is valid
+    else if ((!write_hit_a) && (write_hit_b)) begin //only second set is valid
         n_used_a[addr.idx] = 0;
         n_used_b[addr.idx] = 1;
         hit = 1;
@@ -156,7 +186,7 @@ always_comb begin
         //n_hit_count = hit_count + 1;
 
     end
-    else if ((valid_a) && (valid_b)) begin //both are valid
+    else if ((write_hit_a) && (write_hit_b)) begin //both are valid
         hit = 1;
         //n_hit_count = hit_count + 1;
         if (!used_a[addr.idx] && used_b[addr.idx]) begin //set a is least recently used
@@ -175,7 +205,7 @@ always_comb begin
            dirty = set_a.dirty;
         end
     end
-    else if ((!valid_a) && (!valid_b)) begin //none are valid // in here we want to keep LRU the same?????
+    else if ((!write_hit_a) && (!write_hit_b)) begin //none are valid // in here we want to keep LRU the same?????
         miss = 1;
        // n_hit_count = hit_count - 1;
         if (!used_a[addr.idx] && used_b[addr.idx]) begin //set a is least recently used
@@ -284,10 +314,20 @@ always_comb begin
 		 next_flush_count_b = flush_count_b;
 	 	 n_miss_cnt = miss_cnt;
      next_state = dcache_state;
+	   n_halt_flag = halt_flag;
    case(dcache_state)
    IDLE: begin
-      if (ddif.halt) begin
-         next_state = HIT_COUNT;
+			if (dmif.ccwait && dirty_snoop) begin
+				 next_state = SNOOP_WB1;
+				 if (ddif.halt) begin
+						n_halt_flag = 1;
+				 end
+				 else begin
+						n_halt_flag = 0;
+				 end
+			end
+      else if (ddif.halt) begin
+         next_state = FLUSH_A;
       end
       else if ((ddif.dmemREN || ddif.dmemWEN) && miss && !dirty) begin //miss but no dirty bit
         next_state = MISS;
@@ -298,6 +338,7 @@ always_comb begin
       else begin
         next_state = IDLE;
       end
+
    end
 
    STOP: begin
@@ -309,7 +350,11 @@ always_comb begin
      end
    end
    MISS: begin
-     if (dmif.dwait) begin
+		 if (dmif.ccwait && dirty_snoop) begin
+				 next_state = SNOOP_WB1;
+			end
+		
+     else if (dmif.dwait) begin
         next_state = MISS;
      end
      else if (!dmif.dwait) begin
@@ -326,6 +371,10 @@ always_comb begin
      end
    end
    WBACK: begin
+		 if (dmif.ccwait && dirty_snoop) begin
+				 next_state = SNOOP_WB1;
+			end
+
      if (dmif.dwait) begin
         next_state = WBACK;
      end
@@ -341,16 +390,19 @@ always_comb begin
        next_state = MISS;
      end
    end
-   HIT_COUNT: begin
+   /*HIT_COUNT: begin
      if (dmif.dwait) begin
         next_state = HIT_COUNT;
      end
      else if (!dmif.dwait) begin
        next_state = FLUSH_A;
      end
-   end
+   end*/
    FLUSH_A: begin
-      if (dmif.dwait && next_a) begin
+			if (dmif.ccwait && dirty_snoop) begin
+				 next_state = SNOOP_WB1;
+			end
+      else if (dmif.dwait && next_a) begin
         next_state = FLUSH_A;
       end
       else if (!dmif.dwait && next_a)  begin
@@ -369,7 +421,11 @@ always_comb begin
       end
    end
    FLUSH_B: begin
-      if (dmif.dwait && next_b) begin
+			if (dmif.ccwait && dirty_snoop) begin
+				 next_state = SNOOP_WB1;
+			end
+
+      else if (dmif.dwait && next_b) begin
           next_state = FLUSH_B;
       end
       else if (!dmif.dwait && next_b)  begin
@@ -385,22 +441,6 @@ always_comb begin
 				  end
       end
    end
-   /*FLUSH_COUNT_A: begin
-      if (flush_count_a == 7) begin
-        next_state = FLUSH_B;
-      end
-      else if (flush_count_a != 7) begin
-        next_state = FLUSH_A;
-      end
-   end
-   FLUSH_COUNT_B: begin
-      if (flush_count_b == 7) begin
-        next_state = STOP;
-      end
-      else if (flush_count_b != 7) begin
-        next_state = FLUSH_B;
-      end
-   end*/
 
    NEXT_FLUSH_A: begin
       if (dmif.dwait) begin
@@ -432,6 +472,36 @@ always_comb begin
 				  end
       end
    end
+
+	 /*SNOOP: begin
+			if (dirty_snoop) begin
+				 next_state = SNOOP_WB1;
+			end
+			else begin
+				 next_state = IDLE;
+			end
+	 end*/
+   SNOOP_WB1: begin
+			if (dmif.dwait) begin
+					next_state = SNOOP_WB1;
+			end
+			else begin
+					next_state = SNOOP_WB2;
+			end
+	 end
+	 SNOOP_WB2: begin
+			if (dmif.dwait) begin
+					next_state = SNOOP_WB2;
+			end
+			else begin
+					if (halt_flag) begin
+						next_state = FLUSH_A;
+					end
+					else begin
+						next_state = IDLE;
+					end
+			end	
+	 end 
    endcase
 end
 
@@ -476,72 +546,68 @@ always_comb begin
    next_b = 0;
 	 hitcnt_enable = 0;
    n_hit_count = hit_count;
+
+	 //coherence additions
+	 dmif.cctrans = 0;
+	 dmif.ccwrite = ddif.dmemWEN;
 	
 
    case(dcache_state)
    IDLE: begin //basically where you check tags and stuff // in this state, LRU has not been updated yet
       lru_enable = 1;
       ddif.dhit = 0;
+			
+		
+			if(dmif.ccwait) begin
+					dmif.cctrans = 1;
+					dmif.ccwrite = dirty_snoop;
+					if (frame_a[snoopaddr.idx].tag == snoopaddr.tag) begin //the address exists in frame a
+							if (dmif.ccinv) begin 
+									next_frame_a[snoopaddr.idx].valid = '0;
+									next_frame_a[snoopaddr.idx].dirty = '0; 						 
+							end
+							else begin //no invalidate // not a requester write!
+									next_frame_a[snoopaddr.idx].dirty = '0; 	
+							end
+					end
+					else if (frame_b[snoopaddr.idx].tag == snoopaddr.tag) begin //the address exists in frame b
+							if (dmif.ccinv) begin 
+									next_frame_b[snoopaddr.idx].valid = '0;
+									next_frame_b[snoopaddr.idx].dirty = '0; 						 
+							end
+							else begin //no invalidate // not a requester write!
+									next_frame_b[snoopaddr.idx].dirty = '0; 	
+							end
+					end
+			end
 
-     if (ddif.dmemWEN && hit) begin //write hit
-          ddif.dhit = 1;
-					n_hit_count = hit_count + 1;
-          if (n_used_a[addr.idx]) begin
-            next_frame_a[addr.idx].data[addr.blkoff] = ddif.dmemstore;
-            next_frame_a[addr.idx].dirty = 1;
-          end
-          else if (n_used_b[addr.idx]) begin
-            next_frame_b[addr.idx].data[addr.blkoff] = ddif.dmemstore;
-            next_frame_b[addr.idx].dirty = 1;
-          end
-      end
 
-      else if (ddif.dmemREN && hit) begin //read hit
-          ddif.dhit = 1;
-					n_hit_count = hit_count + 1;
-          if (n_used_a[addr.idx]) begin
-            ddif.dmemload =  frame_a[addr.idx].data[addr.blkoff];
-          end
-          else if (n_used_b[addr.idx]) begin
-            ddif.dmemload = frame_b[addr.idx].data[addr.blkoff];
-          end
-      end
-
-		////hit count enable block 
-		 /*if (ddif.dhit == 1) begin
-				if (prev_dhit != current_dhit) begin
-					hitcnt_enable = 1;
-					//n_enable = 1;
-				end
-				else if ((prev_dhit == current_dhit) && (prev_dmemaddr == current_dmemaddr)) begin
-					 	hitcnt_enable = 0;
-						/* //Weird patching job commented out, going back to previous way
-						if (c_enable == 0) begin
-								hitcnt_enable = 1;
-								n_enable  = 1;							
+			else if (!dmif.ccwait) begin
+					 if (ddif.dmemWEN && hit) begin //write hit
+						    ddif.dhit = 1;
+								n_hit_count = hit_count + 1;
+						    if (n_used_a[addr.idx]) begin
+						      next_frame_a[addr.idx].data[addr.blkoff] = ddif.dmemstore;
+						      //next_frame_a[addr.idx].dirty = 1;
+						    end
+						    else if (n_used_b[addr.idx]) begin
+						      next_frame_b[addr.idx].data[addr.blkoff] = ddif.dmemstore;
+						      //next_frame_b[addr.idx].dirty = 1;
+						    end
 						end
-						else begin
-					 			hitcnt_enable = 0;
-								n_enable = 0;
-						end*/
-				/*end
-				else if ((prev_dhit == current_dhit) && (prev_dmemaddr != current_dmemaddr)) begin
-					 hitcnt_enable = 1;
-					 //n_enable = 1;
-				end
-		 end
-		 else begin
-			 if (prev_dmemaddr == current_dmemaddr) begin
-				hitcnt_enable = 0;
-				//n_enable = 0;
-			 end
-			 else begin
-				hitcnt_enable = 1;
-				//n_enable = 0;
-			 end		 
 
-			end*/
+						else if (ddif.dmemREN && hit) begin //read hit
+						    ddif.dhit = 1;
+								n_hit_count = hit_count + 1;
+						    if (n_used_a[addr.idx]) begin
+						      ddif.dmemload =  frame_a[addr.idx].data[addr.blkoff];
+						    end
+						    else if (n_used_b[addr.idx]) begin
+						      ddif.dmemload = frame_b[addr.idx].data[addr.blkoff];
+						    end
+						end
 
+			end 
 
     end
 
@@ -550,19 +616,45 @@ always_comb begin
       dmif.daddr = 0;
       dmif.dstore = 0;
       next_a = 0;
-      if (frame_a[flush_count_a].valid && frame_a[flush_count_a].dirty) begin
-          next_a = 1;
-          dmif.dWEN = 1;
-          dmif.daddr = {frame_a[flush_count_a].tag, flush_count_a,1'b0,2'b0};
-          dmif.dstore = frame_a[flush_count_a].data[0];
-      end
-   end
-   NEXT_FLUSH_A: begin
-          dmif.dWEN = 1;
-          dmif.daddr = {frame_a[flush_count_a].tag, flush_count_a,1'b1,2'b0};
-          dmif.dstore = frame_a[flush_count_a].data[1];
-   end
 
+		if(dmif.ccwait) begin
+					dmif.cctrans = 1;
+					dmif.ccwrite = dirty_snoop;
+					if (frame_a[snoopaddr.idx].tag == snoopaddr.tag) begin //the address exists in frame a
+							if (dmif.ccinv) begin 
+									next_frame_a[snoopaddr.idx].valid = '0;
+									next_frame_a[snoopaddr.idx].dirty = '0; 						 
+							end
+							else begin //no invalidate // not a requester write!
+									next_frame_a[snoopaddr.idx].dirty = '0; 	
+							end
+					end
+					else if (frame_b[snoopaddr.idx].tag == snoopaddr.tag) begin //the address exists in frame b
+							if (dmif.ccinv) begin 
+									next_frame_b[snoopaddr.idx].valid = '0;
+									next_frame_b[snoopaddr.idx].dirty = '0; 						 
+							end
+							else begin //no invalidate // not a requester write!
+									next_frame_b[snoopaddr.idx].dirty = '0; 	
+							end
+					end
+			end
+
+
+			else if (!dmif.ccwait) begin
+				  if (frame_a[flush_count_a].valid && frame_a[flush_count_a].dirty) begin
+				      next_a = 1;
+				      dmif.dWEN = 1;
+				      dmif.daddr = {frame_a[flush_count_a].tag, flush_count_a,1'b0,2'b0};
+				      dmif.dstore = frame_a[flush_count_a].data[0];
+				  end
+			 end
+	 end
+	 NEXT_FLUSH_A: begin
+		      dmif.dWEN = 1;
+		      dmif.daddr = {frame_a[flush_count_a].tag, flush_count_a,1'b1,2'b0};
+		      dmif.dstore = frame_a[flush_count_a].data[1];
+	 end
    /*FLUSH_COUNT_A: begin
         next_flush_count_a = flush_count_a + 1;
    end*/
@@ -572,12 +664,41 @@ always_comb begin
       dmif.daddr = 0;
       dmif.dstore = 0;
       next_b = 0;
+
+
+		if(dmif.ccwait) begin
+					dmif.cctrans = 1;
+					dmif.ccwrite = dirty_snoop;
+					if (frame_a[snoopaddr.idx].tag == snoopaddr.tag) begin //the address exists in frame a
+							if (dmif.ccinv) begin 
+									next_frame_a[snoopaddr.idx].valid = '0;
+									next_frame_a[snoopaddr.idx].dirty = '0; 						 
+							end
+							else begin //no invalidate // not a requester write!
+									next_frame_a[snoopaddr.idx].dirty = '0; 	
+							end
+					end
+					else if (frame_b[snoopaddr.idx].tag == snoopaddr.tag) begin //the address exists in frame b
+							if (dmif.ccinv) begin 
+									next_frame_b[snoopaddr.idx].valid = '0;
+									next_frame_b[snoopaddr.idx].dirty = '0; 						 
+							end
+							else begin //no invalidate // not a requester write!
+									next_frame_b[snoopaddr.idx].dirty = '0; 	
+							end
+					end
+			end
+
+
+			else if (!dmif.ccwait) begin
       if (frame_b[flush_count_b].valid && frame_b[flush_count_b].dirty) begin
           next_b = 1;
           dmif.dWEN = 1;
           dmif.daddr = {frame_b[flush_count_b].tag, flush_count_b,1'b0,2'b0};
           dmif.dstore = frame_b[flush_count_b].data[0];
       end
+		 end
+
    end
 
    NEXT_FLUSH_B: begin
@@ -592,12 +713,43 @@ always_comb begin
 
    STOP: begin
      ddif.flushed = 1;
-     dmif.dWEN = 1;
-     dmif.dstore = hit_count;
-     dmif.daddr = 'h3100;
+
+		if (dmif.ccwait) begin
+			dmif.cctrans = 0;
+			dmif.ccwrite = 0;
+		end
+     //dmif.dWEN = 1;
+     //dmif.dstore = hit_count;
+     //dmif.daddr = 'h3100;
    end
 
    MISS: begin
+
+		if(dmif.ccwait) begin
+					dmif.cctrans = 1;
+					dmif.ccwrite = dirty_snoop;
+					if (frame_a[snoopaddr.idx].tag == snoopaddr.tag) begin //the address exists in frame a
+							if (dmif.ccinv) begin 
+									next_frame_a[snoopaddr.idx].valid = '0;
+									next_frame_a[snoopaddr.idx].dirty = '0; 						 
+							end
+							else begin //no invalidate // not a requester write!
+									next_frame_a[snoopaddr.idx].dirty = '0; 	
+							end
+					end
+					else if (frame_b[snoopaddr.idx].tag == snoopaddr.tag) begin //the address exists in frame b
+							if (dmif.ccinv) begin 
+									next_frame_b[snoopaddr.idx].valid = '0;
+									next_frame_b[snoopaddr.idx].dirty = '0; 						 
+							end
+							else begin //no invalidate // not a requester write!
+									next_frame_b[snoopaddr.idx].dirty = '0; 	
+							end
+					end
+			end
+
+
+		else if (!dmif.ccwait) begin
      dmif.dREN = 1;
      dmif.daddr = {ddif.dmemaddr[31:3],3'b000}; //first block
 
@@ -609,8 +761,9 @@ always_comb begin
            next_frame_b[addr.idx].data[0] = dmif.dload;
         end
      end
+		end	
+		end
 
-   end
    MISS2: begin
       dmif.dREN = 1;
       dmif.daddr =  {ddif.dmemaddr[31:3],3'b100}; //second block
@@ -630,14 +783,48 @@ always_comb begin
       if (used_a[addr.idx]) begin //frame a is chosen
         next_frame_a[addr.idx].tag = addr.tag;
         next_frame_a[addr.idx].valid = 1;
+				if (ddif.dmemWEN) begin
+						next_frame_a[addr.idx].dirty = 1;						
+				end
       end
       else if (used_b[addr.idx]) begin //frame b is chosen
         next_frame_b[addr.idx].tag = addr.tag;
         next_frame_b[addr.idx].valid = 1;
+				if (ddif.dmemWEN) begin
+						next_frame_b[addr.idx].dirty = 1;						
+				end
       end
+
+		
 
    end
    WBACK: begin
+
+		 if(dmif.ccwait) begin
+					dmif.cctrans = 1;
+					dmif.ccwrite = dirty_snoop;
+					if (frame_a[snoopaddr.idx].tag == snoopaddr.tag) begin //the address exists in frame a
+							if (dmif.ccinv) begin 
+									next_frame_a[snoopaddr.idx].valid = '0;
+									next_frame_a[snoopaddr.idx].dirty = '0; 						 
+							end
+							else begin //no invalidate // not a requester write!
+									next_frame_a[snoopaddr.idx].dirty = '0; 	
+							end
+					end
+					else if (frame_b[snoopaddr.idx].tag == snoopaddr.tag) begin //the address exists in frame b
+							if (dmif.ccinv) begin 
+									next_frame_b[snoopaddr.idx].valid = '0;
+									next_frame_b[snoopaddr.idx].dirty = '0; 						 
+							end
+							else begin //no invalidate // not a requester write!
+									next_frame_b[snoopaddr.idx].dirty = '0; 	
+							end
+					end
+			end
+
+
+			else if (!dmif.ccwait) begin
       dmif.dWEN = 1;
       if (used_a[addr.idx]) begin //frame a is chosen
         dmif.dstore = frame_a[addr.idx].data[0];
@@ -647,6 +834,7 @@ always_comb begin
         dmif.dstore = frame_b[addr.idx].data[0];
         dmif.daddr = {frame_b[addr.idx].tag,addr.idx,3'b000}; //first block
       end
+		 end
    end
    WBACK2: begin
       dmif.dWEN = 1;
@@ -668,12 +856,59 @@ always_comb begin
 
    end
 
-   HIT_COUNT: begin
+   /*HIT_COUNT: begin
       dmif.dWEN = 1;
 			dmif.daddr = 'h3100;
 			dmif.dstore = (hit_count - miss_cnt);
-   end
+   end*/
 
+	 /*SNOOP: begin
+					dmif.cctrans = 1;
+					dmif.ccwrite = dirty_snoop;
+					if (frame_a[snoopaddr.idx].tag == snoopaddr.tag) begin //the address exists in frame a
+							if (dmif.ccinv) begin 
+									next_frame_a[snoopaddr.idx].valid = '0;
+									next_frame_a[snoopaddr.idx].dirty = '0; 						 
+							end
+							else begin //no invalidate // not a requester write!
+									next_frame_a[snoopaddr.idx].dirty = '0; 	
+							end
+					end
+					else if (frame_b[snoopaddr.idx].tag == snoopaddr.tag) begin //the address exists in frame b
+							if (dmif.ccinv) begin 
+									next_frame_b[snoopaddr.idx].valid = '0;
+									next_frame_b[snoopaddr.idx].dirty = '0; 						 
+							end
+							else begin //no invalidate // not a requester write!
+									next_frame_b[snoopaddr.idx].dirty = '0; 	
+							end
+					end
+
+	 end*/
+
+	 SNOOP_WB1: begin //writing back first block
+      dmif.dWEN = 1;
+	    if (frame_a[snoopaddr.idx].tag == snoopaddr.tag) begin //the address exists in frame a
+					dmif.daddr = {frame_a[snoopaddr.idx].tag,snoopaddr.idx,3'b000};
+					dmif.dstore = frame_a[snoopaddr.idx].data[0];
+			end
+			else if (frame_b[snoopaddr.idx].tag == snoopaddr.tag) begin //the address exists in frame b
+					dmif.daddr = {frame_b[snoopaddr.idx].tag,snoopaddr.idx,3'b000};
+					dmif.dstore = frame_b[snoopaddr.idx].data[0];
+			end
+	 end
+
+	 SNOOP_WB2: begin
+      dmif.dWEN = 1;
+	    if (frame_a[snoopaddr.idx].tag == snoopaddr.tag) begin //the address exists in frame a
+					dmif.daddr = {frame_a[snoopaddr.idx].tag,snoopaddr.idx,3'b100};
+					dmif.dstore = frame_a[snoopaddr.idx].data[1];
+			end
+			else if (frame_b[snoopaddr.idx].tag == snoopaddr.tag) begin //the address exists in frame b
+					dmif.daddr = {frame_b[snoopaddr.idx].tag,snoopaddr.idx,3'b100};
+					dmif.dstore = frame_b[snoopaddr.idx].data[1];
+			end
+	 end
 
    endcase
 

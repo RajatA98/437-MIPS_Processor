@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+  <title>Questa Coverage Report</title>
+  <!-- original name: _system_tb_DUT_CPU_DP0_FUContentFrame2.htm -->
+  <link rel="StyleSheet" media="print"  href="../css/ucdb2htmlP.css"/>
+  <link rel="StyleSheet" media="screen" href="../css/ucdb2html.css"/>
+  <link rel="StyleSheet" media="screen" href="../css/ucdb2html_newlook.css"/>
+  <script type="text/javascript" src="../scripts/jquery.js"></script>
+  <script type="text/javascript" src="../scripts/showhide.js"></script>
+  
+</head>
+<body id="ucdb2html_detail" onload="showLast()">
+  <h1><span class="strip">Questa</span> Branch Coverage Report</h1>
+  <h3>Scope: /<a href="z0484492237_0067245891_0.htm">system_tb</a>/<a href="z1949200214_3609719958_0.htm">DUT</a>/<a href="z3461427539_0039650898_0.htm">CPU</a>/<a href="z4113661773_0776339549_0.htm">DP0</a>/<a href="z1796212762_1453845832_0.htm">FU</a></h3>
+  <!-- use script block so buttons vanish when JavaScript is disabled -->
+  <script type="text/javascript">
+  <!--
+  document.write(
+    '<table class="buttons" cellspacing="2" cellpadding="2"><tr>' +
+       '<td id="showAll" width="100" onclick="showAll()" class="button_on" ' +
+           'title="Display all coverage scopes and bins.">Show All</td>' +
+       '<td id="showCov" width="100" onclick="showCov()" class="button_off" ' +
+           'title="Display only covered scopes and bins.">Show Covered</td>' +
+       '<td id="showMis" width="100" onclick="showMis()" class="button_off" ' +
+           'title="Display only uncovered scopes and bins.">Show Missing</td>' +
+    '</tr></table>');
+  //-->
+  </script>
+  <div><a name="cvg7281"/><hr/><table>
+  <tr l="29" lnk="__HDL_srcfile_26.htm#29" z="  if (((RegWr_MEM) &amp;&amp; (memtoReg_MEM == 0)) || (RegWr_WB &amp;&amp; memt..." c="Y" p="66.66"/><tr/>
+  <tr cr="c" t="I" l="29" lnk="__HDL_srcfile_26.htm#29" z="  if (((RegWr_MEM) &amp;&amp; (memtoReg_MEM == 0)) || (RegWr_WB &amp;&amp; memt..." h="9" c="g"/>
+  <tr cr="m" t="T" l="94" lnk="__HDL_srcfile_26.htm#94" z="	else if (memtoReg_WB == 1) begin" h="0" c="r"/>
+  <tr cr="c" t="A" l="29" lnk="__HDL_srcfile_26.htm#29" z="  if (((RegWr_MEM) &amp;&amp; (memtoReg_MEM == 0)) || (RegWr_WB &amp;&amp; memt..." h="6" c="g"/>
+  </table>
+  </div><div><a name="cvg7282"/><hr/><table>
+  <tr l="30" lnk="__HDL_srcfile_26.htm#30" z="      if (rt_EX.opcode == RTYPE) begin ///////////////EX stage ..." c="Y" p="75.00"/><tr/>
+  <tr cr="c" t="I" l="30" lnk="__HDL_srcfile_26.htm#30" z="      if (rt_EX.opcode == RTYPE) begin ///////////////EX stage ..." h="1" c="g"/>
+  <tr cr="c" t="T" l="55" lnk="__HDL_srcfile_26.htm#55" z="      else if (it_EX.opcode == SW) begin ////////////////EX sta..." h="2" c="g"/>
+  <tr cr="c" t="T" l="79" lnk="__HDL_srcfile_26.htm#79" z="      else if (it_EX.opcode != RTYPE) begin ////////////////EX ..." h="6" c="g"/>
+  <tr cr="m" t="A" l="30" lnk="__HDL_srcfile_26.htm#30" z="      if (rt_EX.opcode == RTYPE) begin ///////////////EX stage ..." h="0" c="r"/>
+  </table>
+  </div><div><a name="cvg7283"/><hr/><table>
+  <tr l="34" lnk="__HDL_srcfile_26.htm#34" z="          if ((it_MEM.opcode != SW &amp;&amp; (rt_EX.rs == rt_MEM.rd) &amp;..." c="R" p="33.33"/><tr/>
+  <tr cr="m" t="I" l="34" lnk="__HDL_srcfile_26.htm#34" z="          if ((it_MEM.opcode != SW &amp;&amp; (rt_EX.rs == rt_MEM.rd) &amp;..." h="0" c="r"/>
+  <tr cr="m" t="T" l="37" lnk="__HDL_srcfile_26.htm#37" z="          else if  (( it_WB.opcode != SW &amp;&amp;(rt_EX.rs == rt_WB.r..." h="0" c="r"/>
+  <tr cr="c" t="A" l="34" lnk="__HDL_srcfile_26.htm#34" z="          if ((it_MEM.opcode != SW &amp;&amp; (rt_EX.rs == rt_MEM.rd) &amp;..." h="1" c="g"/>
+  </table>
+  </div><div><a name="cvg7284"/><hr/><table>
+  <tr l="45" lnk="__HDL_srcfile_26.htm#45" z="          if ((it_MEM.opcode != SW &amp;&amp; (rt_EX.rt == rt_MEM.rd) &amp;..." c="R" p="33.33"/><tr/>
+  <tr cr="m" t="I" l="45" lnk="__HDL_srcfile_26.htm#45" z="          if ((it_MEM.opcode != SW &amp;&amp; (rt_EX.rt == rt_MEM.rd) &amp;..." h="0" c="r"/>
+  <tr cr="m" t="T" l="48" lnk="__HDL_srcfile_26.htm#48" z="          else if (( it_WB.opcode != SW &amp;&amp;(rt_EX.rt == rt_WB.rd..." h="0" c="r"/>
+  <tr cr="c" t="A" l="45" lnk="__HDL_srcfile_26.htm#45" z="          if ((it_MEM.opcode != SW &amp;&amp; (rt_EX.rt == rt_MEM.rd) &amp;..." h="1" c="g"/>
+  </table>
+  </div><div><a name="cvg7285"/><hr/><table>
+  <tr l="59" lnk="__HDL_srcfile_26.htm#59" z="          if (((it_EX.rs == rt_MEM.rd) &amp;&amp; (rt_MEM.opcode == RTY..." c="R" p="33.33"/><tr/>
+  <tr cr="m" t="I" l="59" lnk="__HDL_srcfile_26.htm#59" z="          if (((it_EX.rs == rt_MEM.rd) &amp;&amp; (rt_MEM.opcode == RTY..." h="0" c="r"/>
+  <tr cr="m" t="T" l="62" lnk="__HDL_srcfile_26.htm#62" z="          else if  (((it_EX.rs == rt_WB.rd) &amp;&amp; (rt_WB.opcode ==..." h="0" c="r"/>
+  <tr cr="c" t="A" l="59" lnk="__HDL_srcfile_26.htm#59" z="          if (((it_EX.rs == rt_MEM.rd) &amp;&amp; (rt_MEM.opcode == RTY..." h="2" c="g"/>
+  </table>
+  </div><div><a name="cvg7286"/><hr/><table>
+  <tr l="69" lnk="__HDL_srcfile_26.htm#69" z="          if (((it_EX.rt == rt_MEM.rd) &amp;&amp; (rt_MEM.opcode == RTY..." c="R" p="33.33"/><tr/>
+  <tr cr="c" t="I" l="69" lnk="__HDL_srcfile_26.htm#69" z="          if (((it_EX.rt == rt_MEM.rd) &amp;&amp; (rt_MEM.opcode == RTY..." h="2" c="g"/>
+  <tr cr="m" t="T" l="72" lnk="__HDL_srcfile_26.htm#72" z="          else if (((it_EX.rt == rt_WB.rd) &amp;&amp; (rt_WB.opcode == ..." h="0" c="r"/>
+  <tr cr="m" t="A" l="69" lnk="__HDL_srcfile_26.htm#69" z="          if (((it_EX.rt == rt_MEM.rd) &amp;&amp; (rt_MEM.opcode == RTY..." h="0" c="r"/>
+  </table>
+  </div><div class="covered"><a name="cvg7287"/><hr/><table>
+  <tr l="83" lnk="__HDL_srcfile_26.htm#83" z="          if (((it_EX.rs == rt_MEM.rd) &amp;&amp; (rt_MEM.opcode == RTY..." c="G" p="100.00"/><tr/>
+  <tr cr="c" t="I" l="83" lnk="__HDL_srcfile_26.htm#83" z="          if (((it_EX.rs == rt_MEM.rd) &amp;&amp; (rt_MEM.opcode == RTY..." h="1" c="g"/>
+  <tr cr="c" t="T" l="86" lnk="__HDL_srcfile_26.htm#86" z="          else if  (((it_EX.rs == rt_WB.rd) &amp;&amp; (rt_WB.opcode ==..." h="1" c="g"/>
+  <tr cr="c" t="A" l="83" lnk="__HDL_srcfile_26.htm#83" z="          if (((it_EX.rs == rt_MEM.rd) &amp;&amp; (rt_MEM.opcode == RTY..." h="4" c="g"/>
+  </table>
+  </div><div class="missing"><a name="cvg7288"/><hr/><table>
+  <tr l="97" lnk="__HDL_srcfile_26.htm#97" z="          if (rt_EX.rs == it_WB.rt) begin" c="R" p="0.00"/><tr/>
+  <tr cr="m" t="I" l="97" lnk="__HDL_srcfile_26.htm#97" z="          if (rt_EX.rs == it_WB.rt) begin" h="0" c="r"/>
+  <tr cr="m" t="A" l="97" lnk="__HDL_srcfile_26.htm#97" z="          if (rt_EX.rs == it_WB.rt) begin" h="0" c="r"/>
+  </table>
+  </div><div class="missing"><a name="cvg7289"/><hr/><table>
+  <tr l="101" lnk="__HDL_srcfile_26.htm#101" z="          if (rt_EX.rt == it_WB.rt) begin" c="R" p="0.00"/><tr/>
+  <tr cr="m" t="I" l="101" lnk="__HDL_srcfile_26.htm#101" z="          if (rt_EX.rt == it_WB.rt) begin" h="0" c="r"/>
+  <tr cr="m" t="A" l="101" lnk="__HDL_srcfile_26.htm#101" z="          if (rt_EX.rt == it_WB.rt) begin" h="0" c="r"/>
+  </table>
+  </div><script type="text/javascript" src="../scripts/buildbranchpage.js"></script>
+  <!-- make sure jumps to last few line nos work -->
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+  
+</body>
+</html>

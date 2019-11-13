@@ -1,0 +1,382 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+  <title>Questa Coverage Report</title>
+  <!-- original name: _system_tb_DUT_CPU_DP1_FUContentFrame4.htm -->
+  <link rel="StyleSheet" media="print"  href="../css/ucdb2htmlP.css"/>
+  <link rel="StyleSheet" media="screen" href="../css/ucdb2html.css"/>
+  <link rel="StyleSheet" media="screen" href="../css/ucdb2html_newlook.css"/>
+  <script type="text/javascript" src="../scripts/jquery.js"></script>
+  <script type="text/javascript" src="../scripts/showhide.js"></script>
+  
+</head>
+<body id="ucdb2html_detail" onload="showLast()">
+  <h1><span class="strip">Questa</span> Condition Coverage Report</h1>
+  <h3>Scope: /<a href="z0484492237_0067245891_0.htm">system_tb</a>/<a href="z1949200214_3609719958_0.htm">DUT</a>/<a href="z3461427539_0039650898_0.htm">CPU</a>/<a href="z4113661774_0776339550_0.htm">DP1</a>/<a href="z1796242553_1453925339_0.htm">FU</a></h3>
+  <!-- use script block so buttons vanish when JavaScript is disabled -->
+  <script type="text/javascript">
+  <!--
+  document.write(
+    '<table class="buttons" cellspacing="2" cellpadding="2"><tr>' +
+       '<td id="showAll" width="100" onclick="showAll()" class="button_on" ' +
+           'title="Display all coverage scopes and bins.">Show All</td>' +
+       '<td id="showCov" width="100" onclick="showCov()" class="button_off" ' +
+           'title="Display only covered scopes and bins.">Show Covered</td>' +
+       '<td id="showMis" width="100" onclick="showMis()" class="button_off" ' +
+           'title="Display only uncovered scopes and bins.">Show Missing</td>' +
+    '</tr></table>');
+  //-->
+  </script>
+  <div class="missing"><a name="cvg13167"/><hr/><table>
+  <tr s="3" x="FC" lnk="__HDL_srcfile_26.htm#29" z="((RegWr_MEM && (memtoReg_MEM == 0)) || (RegWr_WB && (memtoReg_WB == 0)))" c="R" p="0.00" d="0" F="1"/>
+  <tr/>
+  <tr z="RegWr_MEM" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(memtoReg_MEM == 0)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="RegWr_WB" c="r" r="'_0' not hit" i="Hit '_0'"/>
+  <tr z="(memtoReg_WB == 0)" c="r" r="'_0' not hit" i="Hit '_0'"/>
+  <tr/>
+  <tr n="1" z="RegWr_MEM_0" h1="0" t="c" c1="(~(RegWr_WB && (memtoReg_WB == 0)) && (memtoReg_MEM == 0))"/>
+  <tr n="2" z="RegWr_MEM_1" h1="0" t="c" c1="(~(RegWr_WB && (memtoReg_WB == 0)) && (memtoReg_MEM == 0))"/>
+  <tr n="3" z="(memtoReg_MEM == 0)_0" h1="0" t="c" c1="(~(RegWr_WB && (memtoReg_WB == 0)) && RegWr_MEM)"/>
+  <tr n="4" z="(memtoReg_MEM == 0)_1" h1="0" t="c" c1="(~(RegWr_WB && (memtoReg_WB == 0)) && RegWr_MEM)"/>
+  <tr n="5" z="RegWr_WB_0" h1="0" t="c" c1="(~(RegWr_MEM && (memtoReg_MEM == 0)) && (memtoReg_WB == 0))"/>
+  <tr n="6" z="RegWr_WB_1" h1="1" t="c" c1="(~(RegWr_MEM && (memtoReg_MEM == 0)) && (memtoReg_WB == 0))"/>
+  <tr n="7" z="(memtoReg_WB == 0)_0" h1="0" t="c" c1="(~(RegWr_MEM && (memtoReg_MEM == 0)) && RegWr_WB)"/>
+  <tr n="8" z="(memtoReg_WB == 0)_1" h1="1" t="c" c1="(~(RegWr_MEM && (memtoReg_MEM == 0)) && RegWr_WB)"/>
+  </table>
+</div><div class="missing"><a name="cvg13169"/><hr/><table>
+  <tr s="3" x="FC" lnk="__HDL_srcfile_26.htm#34" z="(((it_MEM.opcode != SW) && (rt_EX.rs == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) || ((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_MEM.rt != 0) && (rt_EX.rs == it_MEM.rt)) || ((it_MEM.opcode == JAL) && (rt_EX.rs == 31)))" c="R" p="0.00" d="0" F="1"/>
+  <tr/>
+  <tr z="(it_MEM.opcode != SW)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(rt_EX.rs == rt_MEM.rd)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(rt_MEM.opcode == RTYPE)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(rt_MEM.rd != 0)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(it_MEM.opcode != RTYPE)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(it_MEM.rt != 0)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(rt_EX.rs == it_MEM.rt)" c="r" r="'_1' not hit" i="Hit '_1'"/>
+  <tr z="(it_MEM.opcode == JAL)" c="r" r="'_1' not hit" i="Hit '_1'"/>
+  <tr z="(rt_EX.rs == 31)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr/>
+  <tr n="1" z="(it_MEM.opcode != SW)_0" h1="0" t="c" c1="(~(((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_MEM.rt != 0) && (rt_EX.rs == it_MEM.rt)) || ((it_MEM.opcode == JAL) && (rt_EX.rs == 31))) && ((rt_EX.rs == rt_MEM.rd) && ((rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)))), (~((it_MEM.opcode == JAL) && (rt_EX.rs == 31)) && (it_MEM.opcode != RTYPE) && ((it_MEM.rt != 0) && (rt_EX.rs == it_MEM.rt)))"/>
+  <tr n="2" z="(it_MEM.opcode != SW)_1" h1="0" t="c" c1="(~(((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_MEM.rt != 0) && (rt_EX.rs == it_MEM.rt)) || ((it_MEM.opcode == JAL) && (rt_EX.rs == 31))) && ((rt_EX.rs == rt_MEM.rd) && ((rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)))), (~((it_MEM.opcode != SW) && (rt_EX.rs == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) && ~((it_MEM.opcode == JAL) && (rt_EX.rs == 31)) && (it_MEM.opcode != RTYPE) && ((it_MEM.rt != 0) && (rt_EX.rs == it_MEM.rt)))"/>
+  <tr n="3" z="(rt_EX.rs == rt_MEM.rd)_0" h1="0" t="c" c1="(~(((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_MEM.rt != 0) && (rt_EX.rs == it_MEM.rt)) || ((it_MEM.opcode == JAL) && (rt_EX.rs == 31))) && (it_MEM.opcode != SW) && ((rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)))"/>
+  <tr n="4" z="(rt_EX.rs == rt_MEM.rd)_1" h1="0" t="c" c1="(~(((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_MEM.rt != 0) && (rt_EX.rs == it_MEM.rt)) || ((it_MEM.opcode == JAL) && (rt_EX.rs == 31))) && (it_MEM.opcode != SW) && ((rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)))"/>
+  <tr n="5" z="(rt_MEM.opcode == RTYPE)_0" h1="0" t="c" c1="(~(((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_MEM.rt != 0) && (rt_EX.rs == it_MEM.rt)) || ((it_MEM.opcode == JAL) && (rt_EX.rs == 31))) && (it_MEM.opcode != SW) && (rt_EX.rs == rt_MEM.rd) && (rt_MEM.rd != 0))"/>
+  <tr n="6" z="(rt_MEM.opcode == RTYPE)_1" h1="0" t="c" c1="(~(((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_MEM.rt != 0) && (rt_EX.rs == it_MEM.rt)) || ((it_MEM.opcode == JAL) && (rt_EX.rs == 31))) && (it_MEM.opcode != SW) && (rt_EX.rs == rt_MEM.rd) && (rt_MEM.rd != 0))"/>
+  <tr n="7" z="(rt_MEM.rd != 0)_0" h1="0" t="c" c1="(~(((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_MEM.rt != 0) && (rt_EX.rs == it_MEM.rt)) || ((it_MEM.opcode == JAL) && (rt_EX.rs == 31))) && (it_MEM.opcode != SW) && (rt_EX.rs == rt_MEM.rd) && (rt_MEM.opcode == RTYPE))"/>
+  <tr n="8" z="(rt_MEM.rd != 0)_1" h1="0" t="c" c1="(~(((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_MEM.rt != 0) && (rt_EX.rs == it_MEM.rt)) || ((it_MEM.opcode == JAL) && (rt_EX.rs == 31))) && (it_MEM.opcode != SW) && (rt_EX.rs == rt_MEM.rd) && (rt_MEM.opcode == RTYPE))"/>
+  <tr n="9" z="(it_MEM.opcode != RTYPE)_0" h1="0" t="c" c1="(~((it_MEM.opcode != SW) && (rt_EX.rs == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) && ~((it_MEM.opcode == JAL) && (rt_EX.rs == 31)) && ((it_MEM.opcode != SW) && ((it_MEM.rt != 0) && (rt_EX.rs == it_MEM.rt))))"/>
+  <tr n="10" z="(it_MEM.opcode != RTYPE)_1" h1="0" t="c" c1="(~((it_MEM.opcode != SW) && (rt_EX.rs == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) && ~((it_MEM.opcode == JAL) && (rt_EX.rs == 31)) && ((it_MEM.opcode != SW) && ((it_MEM.rt != 0) && (rt_EX.rs == it_MEM.rt))))"/>
+  <tr n="11" z="(it_MEM.rt != 0)_0" h1="0" t="c" c1="(~((it_MEM.opcode != SW) && (rt_EX.rs == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) && ~((it_MEM.opcode == JAL) && (rt_EX.rs == 31)) && (it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (rt_EX.rs == it_MEM.rt))"/>
+  <tr n="12" z="(it_MEM.rt != 0)_1" h1="0" t="c" c1="(~((it_MEM.opcode != SW) && (rt_EX.rs == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) && ~((it_MEM.opcode == JAL) && (rt_EX.rs == 31)) && (it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (rt_EX.rs == it_MEM.rt))"/>
+  <tr n="13" z="(rt_EX.rs == it_MEM.rt)_0" h1="1" t="c" c1="(~((it_MEM.opcode != SW) && (rt_EX.rs == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) && ~((it_MEM.opcode == JAL) && (rt_EX.rs == 31)) && (it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_MEM.rt != 0))"/>
+  <tr n="14" z="(rt_EX.rs == it_MEM.rt)_1" h1="0" t="c" c1="(~((it_MEM.opcode != SW) && (rt_EX.rs == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) && ~((it_MEM.opcode == JAL) && (rt_EX.rs == 31)) && (it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_MEM.rt != 0))"/>
+  <tr n="15" z="(it_MEM.opcode == JAL)_0" h1="1" t="c" c1="(~((it_MEM.opcode != SW) && (rt_EX.rs == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) && ~((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_MEM.rt != 0) && (rt_EX.rs == it_MEM.rt)) && (rt_EX.rs == 31))"/>
+  <tr n="16" z="(it_MEM.opcode == JAL)_1" h1="0" t="c" c1="(~((it_MEM.opcode != SW) && (rt_EX.rs == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) && ~((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_MEM.rt != 0) && (rt_EX.rs == it_MEM.rt)) && (rt_EX.rs == 31))"/>
+  <tr n="17" z="(rt_EX.rs == 31)_0" h1="0" t="c" c1="(~((it_MEM.opcode != SW) && (rt_EX.rs == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) && ~((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_MEM.rt != 0) && (rt_EX.rs == it_MEM.rt)) && (it_MEM.opcode == JAL))"/>
+  <tr n="18" z="(rt_EX.rs == 31)_1" h1="0" t="c" c1="(~((it_MEM.opcode != SW) && (rt_EX.rs == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) && ~((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_MEM.rt != 0) && (rt_EX.rs == it_MEM.rt)) && (it_MEM.opcode == JAL))"/>
+  </table>
+</div><div class="missing"><a name="cvg13171"/><hr/><table>
+  <tr s="3" x="FC" lnk="__HDL_srcfile_26.htm#37" z="(((it_WB.opcode != SW) && (rt_EX.rs == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) || ((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.rt != 0) && (rt_EX.rs == it_WB.rt)) || ((it_WB.opcode == JAL) && (rt_EX.rs == 31)))" c="R" p="0.00" d="0" F="1"/>
+  <tr/>
+  <tr z="(it_WB.opcode != SW)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(rt_EX.rs == rt_WB.rd)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(rt_WB.opcode == RTYPE)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(rt_WB.rd != 0)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(it_WB.opcode != RTYPE)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(it_WB.rt != 0)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(rt_EX.rs == it_WB.rt)" c="r" r="'_1' not hit" i="Hit '_1'"/>
+  <tr z="(it_WB.opcode == JAL)" c="r" r="'_1' not hit" i="Hit '_1'"/>
+  <tr z="(rt_EX.rs == 31)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr/>
+  <tr n="1" z="(it_WB.opcode != SW)_0" h1="0" t="c" c1="(~(((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.rt != 0) && (rt_EX.rs == it_WB.rt)) || ((it_WB.opcode == JAL) && (rt_EX.rs == 31))) && ((rt_EX.rs == rt_WB.rd) && ((rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)))), (~((it_WB.opcode == JAL) && (rt_EX.rs == 31)) && (it_WB.opcode != RTYPE) && ((it_WB.rt != 0) && (rt_EX.rs == it_WB.rt)))"/>
+  <tr n="2" z="(it_WB.opcode != SW)_1" h1="0" t="c" c1="(~(((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.rt != 0) && (rt_EX.rs == it_WB.rt)) || ((it_WB.opcode == JAL) && (rt_EX.rs == 31))) && ((rt_EX.rs == rt_WB.rd) && ((rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)))), (~((it_WB.opcode != SW) && (rt_EX.rs == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((it_WB.opcode == JAL) && (rt_EX.rs == 31)) && (it_WB.opcode != RTYPE) && ((it_WB.rt != 0) && (rt_EX.rs == it_WB.rt)))"/>
+  <tr n="3" z="(rt_EX.rs == rt_WB.rd)_0" h1="0" t="c" c1="(~(((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.rt != 0) && (rt_EX.rs == it_WB.rt)) || ((it_WB.opcode == JAL) && (rt_EX.rs == 31))) && (it_WB.opcode != SW) && ((rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)))"/>
+  <tr n="4" z="(rt_EX.rs == rt_WB.rd)_1" h1="0" t="c" c1="(~(((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.rt != 0) && (rt_EX.rs == it_WB.rt)) || ((it_WB.opcode == JAL) && (rt_EX.rs == 31))) && (it_WB.opcode != SW) && ((rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)))"/>
+  <tr n="5" z="(rt_WB.opcode == RTYPE)_0" h1="0" t="c" c1="(~(((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.rt != 0) && (rt_EX.rs == it_WB.rt)) || ((it_WB.opcode == JAL) && (rt_EX.rs == 31))) && (it_WB.opcode != SW) && (rt_EX.rs == rt_WB.rd) && (rt_WB.rd != 0))"/>
+  <tr n="6" z="(rt_WB.opcode == RTYPE)_1" h1="0" t="c" c1="(~(((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.rt != 0) && (rt_EX.rs == it_WB.rt)) || ((it_WB.opcode == JAL) && (rt_EX.rs == 31))) && (it_WB.opcode != SW) && (rt_EX.rs == rt_WB.rd) && (rt_WB.rd != 0))"/>
+  <tr n="7" z="(rt_WB.rd != 0)_0" h1="0" t="c" c1="(~(((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.rt != 0) && (rt_EX.rs == it_WB.rt)) || ((it_WB.opcode == JAL) && (rt_EX.rs == 31))) && (it_WB.opcode != SW) && (rt_EX.rs == rt_WB.rd) && (rt_WB.opcode == RTYPE))"/>
+  <tr n="8" z="(rt_WB.rd != 0)_1" h1="0" t="c" c1="(~(((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.rt != 0) && (rt_EX.rs == it_WB.rt)) || ((it_WB.opcode == JAL) && (rt_EX.rs == 31))) && (it_WB.opcode != SW) && (rt_EX.rs == rt_WB.rd) && (rt_WB.opcode == RTYPE))"/>
+  <tr n="9" z="(it_WB.opcode != RTYPE)_0" h1="0" t="c" c1="(~((it_WB.opcode != SW) && (rt_EX.rs == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((it_WB.opcode == JAL) && (rt_EX.rs == 31)) && ((it_WB.opcode != SW) && ((it_WB.rt != 0) && (rt_EX.rs == it_WB.rt))))"/>
+  <tr n="10" z="(it_WB.opcode != RTYPE)_1" h1="0" t="c" c1="(~((it_WB.opcode != SW) && (rt_EX.rs == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((it_WB.opcode == JAL) && (rt_EX.rs == 31)) && ((it_WB.opcode != SW) && ((it_WB.rt != 0) && (rt_EX.rs == it_WB.rt))))"/>
+  <tr n="11" z="(it_WB.rt != 0)_0" h1="0" t="c" c1="(~((it_WB.opcode != SW) && (rt_EX.rs == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((it_WB.opcode == JAL) && (rt_EX.rs == 31)) && (it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (rt_EX.rs == it_WB.rt))"/>
+  <tr n="12" z="(it_WB.rt != 0)_1" h1="0" t="c" c1="(~((it_WB.opcode != SW) && (rt_EX.rs == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((it_WB.opcode == JAL) && (rt_EX.rs == 31)) && (it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (rt_EX.rs == it_WB.rt))"/>
+  <tr n="13" z="(rt_EX.rs == it_WB.rt)_0" h1="1" t="c" c1="(~((it_WB.opcode != SW) && (rt_EX.rs == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((it_WB.opcode == JAL) && (rt_EX.rs == 31)) && (it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.rt != 0))"/>
+  <tr n="14" z="(rt_EX.rs == it_WB.rt)_1" h1="0" t="c" c1="(~((it_WB.opcode != SW) && (rt_EX.rs == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((it_WB.opcode == JAL) && (rt_EX.rs == 31)) && (it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.rt != 0))"/>
+  <tr n="15" z="(it_WB.opcode == JAL)_0" h1="1" t="c" c1="(~((it_WB.opcode != SW) && (rt_EX.rs == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.rt != 0) && (rt_EX.rs == it_WB.rt)) && (rt_EX.rs == 31))"/>
+  <tr n="16" z="(it_WB.opcode == JAL)_1" h1="0" t="c" c1="(~((it_WB.opcode != SW) && (rt_EX.rs == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.rt != 0) && (rt_EX.rs == it_WB.rt)) && (rt_EX.rs == 31))"/>
+  <tr n="17" z="(rt_EX.rs == 31)_0" h1="0" t="c" c1="(~((it_WB.opcode != SW) && (rt_EX.rs == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.rt != 0) && (rt_EX.rs == it_WB.rt)) && (it_WB.opcode == JAL))"/>
+  <tr n="18" z="(rt_EX.rs == 31)_1" h1="0" t="c" c1="(~((it_WB.opcode != SW) && (rt_EX.rs == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.rt != 0) && (rt_EX.rs == it_WB.rt)) && (it_WB.opcode == JAL))"/>
+  </table>
+</div><div class="missing"><a name="cvg13173"/><hr/><table>
+  <tr s="3" x="FC" lnk="__HDL_srcfile_26.htm#45" z="(((it_MEM.opcode != SW) && (rt_EX.rt == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) || ((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && ((it_MEM.rt != 0) && (rt_EX.rt == it_MEM.rt))) || ((it_MEM.opcode == JAL) && (rt_EX.rt == 31)))" c="R" p="0.00" d="0" F="1"/>
+  <tr/>
+  <tr z="(it_MEM.opcode != SW)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(rt_EX.rt == rt_MEM.rd)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(rt_MEM.opcode == RTYPE)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(rt_MEM.rd != 0)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(it_MEM.opcode != RTYPE)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(it_MEM.rt != 0)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(rt_EX.rt == it_MEM.rt)" c="r" r="'_1' not hit" i="Hit '_1'"/>
+  <tr z="(it_MEM.opcode == JAL)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(rt_EX.rt == 31)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr/>
+  <tr n="1" z="(it_MEM.opcode != SW)_0" h1="0" t="c" c1="(~(((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && ((it_MEM.rt != 0) && (rt_EX.rt == it_MEM.rt))) || ((it_MEM.opcode == JAL) && (rt_EX.rt == 31))) && ((rt_EX.rt == rt_MEM.rd) && ((rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)))), (~((it_MEM.opcode == JAL) && (rt_EX.rt == 31)) && (it_MEM.opcode != RTYPE) && ((it_MEM.rt != 0) && (rt_EX.rt == it_MEM.rt)))"/>
+  <tr n="2" z="(it_MEM.opcode != SW)_1" h1="0" t="c" c1="(~(((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && ((it_MEM.rt != 0) && (rt_EX.rt == it_MEM.rt))) || ((it_MEM.opcode == JAL) && (rt_EX.rt == 31))) && ((rt_EX.rt == rt_MEM.rd) && ((rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)))), (~((it_MEM.opcode != SW) && (rt_EX.rt == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) && ~((it_MEM.opcode == JAL) && (rt_EX.rt == 31)) && (it_MEM.opcode != RTYPE) && ((it_MEM.rt != 0) && (rt_EX.rt == it_MEM.rt)))"/>
+  <tr n="3" z="(rt_EX.rt == rt_MEM.rd)_0" h1="0" t="c" c1="(~(((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && ((it_MEM.rt != 0) && (rt_EX.rt == it_MEM.rt))) || ((it_MEM.opcode == JAL) && (rt_EX.rt == 31))) && (it_MEM.opcode != SW) && ((rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)))"/>
+  <tr n="4" z="(rt_EX.rt == rt_MEM.rd)_1" h1="0" t="c" c1="(~(((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && ((it_MEM.rt != 0) && (rt_EX.rt == it_MEM.rt))) || ((it_MEM.opcode == JAL) && (rt_EX.rt == 31))) && (it_MEM.opcode != SW) && ((rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)))"/>
+  <tr n="5" z="(rt_MEM.opcode == RTYPE)_0" h1="0" t="c" c1="(~(((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && ((it_MEM.rt != 0) && (rt_EX.rt == it_MEM.rt))) || ((it_MEM.opcode == JAL) && (rt_EX.rt == 31))) && (it_MEM.opcode != SW) && (rt_EX.rt == rt_MEM.rd) && (rt_MEM.rd != 0))"/>
+  <tr n="6" z="(rt_MEM.opcode == RTYPE)_1" h1="0" t="c" c1="(~(((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && ((it_MEM.rt != 0) && (rt_EX.rt == it_MEM.rt))) || ((it_MEM.opcode == JAL) && (rt_EX.rt == 31))) && (it_MEM.opcode != SW) && (rt_EX.rt == rt_MEM.rd) && (rt_MEM.rd != 0))"/>
+  <tr n="7" z="(rt_MEM.rd != 0)_0" h1="0" t="c" c1="(~(((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && ((it_MEM.rt != 0) && (rt_EX.rt == it_MEM.rt))) || ((it_MEM.opcode == JAL) && (rt_EX.rt == 31))) && (it_MEM.opcode != SW) && (rt_EX.rt == rt_MEM.rd) && (rt_MEM.opcode == RTYPE))"/>
+  <tr n="8" z="(rt_MEM.rd != 0)_1" h1="0" t="c" c1="(~(((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && ((it_MEM.rt != 0) && (rt_EX.rt == it_MEM.rt))) || ((it_MEM.opcode == JAL) && (rt_EX.rt == 31))) && (it_MEM.opcode != SW) && (rt_EX.rt == rt_MEM.rd) && (rt_MEM.opcode == RTYPE))"/>
+  <tr n="9" z="(it_MEM.opcode != RTYPE)_0" h1="0" t="c" c1="(~((it_MEM.opcode != SW) && (rt_EX.rt == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) && ~((it_MEM.opcode == JAL) && (rt_EX.rt == 31)) && ((it_MEM.opcode != SW) && ((it_MEM.rt != 0) && (rt_EX.rt == it_MEM.rt))))"/>
+  <tr n="10" z="(it_MEM.opcode != RTYPE)_1" h1="0" t="c" c1="(~((it_MEM.opcode != SW) && (rt_EX.rt == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) && ~((it_MEM.opcode == JAL) && (rt_EX.rt == 31)) && ((it_MEM.opcode != SW) && ((it_MEM.rt != 0) && (rt_EX.rt == it_MEM.rt))))"/>
+  <tr n="11" z="(it_MEM.rt != 0)_0" h1="0" t="c" c1="(~((it_MEM.opcode != SW) && (rt_EX.rt == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) && ~((it_MEM.opcode == JAL) && (rt_EX.rt == 31)) && (it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (rt_EX.rt == it_MEM.rt))"/>
+  <tr n="12" z="(it_MEM.rt != 0)_1" h1="0" t="c" c1="(~((it_MEM.opcode != SW) && (rt_EX.rt == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) && ~((it_MEM.opcode == JAL) && (rt_EX.rt == 31)) && (it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (rt_EX.rt == it_MEM.rt))"/>
+  <tr n="13" z="(rt_EX.rt == it_MEM.rt)_0" h1="1" t="c" c1="(~((it_MEM.opcode != SW) && (rt_EX.rt == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) && ~((it_MEM.opcode == JAL) && (rt_EX.rt == 31)) && (it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_MEM.rt != 0))"/>
+  <tr n="14" z="(rt_EX.rt == it_MEM.rt)_1" h1="0" t="c" c1="(~((it_MEM.opcode != SW) && (rt_EX.rt == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) && ~((it_MEM.opcode == JAL) && (rt_EX.rt == 31)) && (it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_MEM.rt != 0))"/>
+  <tr n="15" z="(it_MEM.opcode == JAL)_0" h1="0" t="c" c1="(~((it_MEM.opcode != SW) && (rt_EX.rt == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) && ~((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && ((it_MEM.rt != 0) && (rt_EX.rt == it_MEM.rt))) && (rt_EX.rt == 31))"/>
+  <tr n="16" z="(it_MEM.opcode == JAL)_1" h1="0" t="c" c1="(~((it_MEM.opcode != SW) && (rt_EX.rt == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) && ~((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && ((it_MEM.rt != 0) && (rt_EX.rt == it_MEM.rt))) && (rt_EX.rt == 31))"/>
+  <tr n="17" z="(rt_EX.rt == 31)_0" h1="0" t="c" c1="(~((it_MEM.opcode != SW) && (rt_EX.rt == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) && ~((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && ((it_MEM.rt != 0) && (rt_EX.rt == it_MEM.rt))) && (it_MEM.opcode == JAL))"/>
+  <tr n="18" z="(rt_EX.rt == 31)_1" h1="0" t="c" c1="(~((it_MEM.opcode != SW) && (rt_EX.rt == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) && ~((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && ((it_MEM.rt != 0) && (rt_EX.rt == it_MEM.rt))) && (it_MEM.opcode == JAL))"/>
+  </table>
+</div><div class="missing"><a name="cvg13175"/><hr/><table>
+  <tr s="3" x="FC" lnk="__HDL_srcfile_26.htm#48" z="(((it_WB.opcode != SW) && (rt_EX.rt == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) || ((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.opcode != SW) && ((it_WB.rt != 0) && (rt_EX.rt == it_WB.rt))) || ((it_WB.opcode == JAL) && (rt_EX.rt == 31)))" c="R" p="0.00" d="0" F="1"/>
+  <tr/>
+  <tr z="(it_WB.opcode != SW)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(rt_EX.rt == rt_WB.rd)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(rt_WB.opcode == RTYPE)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(rt_WB.rd != 0)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(it_WB.opcode != RTYPE)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(it_WB.rt != 0)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(rt_EX.rt == it_WB.rt)" c="r" r="'_1' not hit" i="Hit '_1'"/>
+  <tr z="(it_WB.opcode == JAL)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(rt_EX.rt == 31)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr/>
+  <tr n="1" z="(it_WB.opcode != SW)_0" h1="0" t="c" c1="(~(((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.opcode != SW) && ((it_WB.rt != 0) && (rt_EX.rt == it_WB.rt))) || ((it_WB.opcode == JAL) && (rt_EX.rt == 31))) && ((rt_EX.rt == rt_WB.rd) && ((rt_WB.opcode == RTYPE) && (rt_WB.rd != 0))))"/>
+  <tr n="2" z="(it_WB.opcode != SW)_1" h1="0" t="c" c1="(~(((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.opcode != SW) && ((it_WB.rt != 0) && (rt_EX.rt == it_WB.rt))) || ((it_WB.opcode == JAL) && (rt_EX.rt == 31))) && ((rt_EX.rt == rt_WB.rd) && ((rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)))), (~((it_WB.opcode != SW) && (rt_EX.rt == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((it_WB.opcode == JAL) && (rt_EX.rt == 31)) && (it_WB.opcode != RTYPE) && ((it_WB.opcode != SW) && ((it_WB.rt != 0) && (rt_EX.rt == it_WB.rt)))), (~((it_WB.opcode != SW) && (rt_EX.rt == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((it_WB.opcode == JAL) && (rt_EX.rt == 31)) && (it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && ((it_WB.rt != 0) && (rt_EX.rt == it_WB.rt)))"/>
+  <tr n="3" z="(rt_EX.rt == rt_WB.rd)_0" h1="0" t="c" c1="(~(((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.opcode != SW) && ((it_WB.rt != 0) && (rt_EX.rt == it_WB.rt))) || ((it_WB.opcode == JAL) && (rt_EX.rt == 31))) && (it_WB.opcode != SW) && ((rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)))"/>
+  <tr n="4" z="(rt_EX.rt == rt_WB.rd)_1" h1="0" t="c" c1="(~(((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.opcode != SW) && ((it_WB.rt != 0) && (rt_EX.rt == it_WB.rt))) || ((it_WB.opcode == JAL) && (rt_EX.rt == 31))) && (it_WB.opcode != SW) && ((rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)))"/>
+  <tr n="5" z="(rt_WB.opcode == RTYPE)_0" h1="0" t="c" c1="(~(((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.opcode != SW) && ((it_WB.rt != 0) && (rt_EX.rt == it_WB.rt))) || ((it_WB.opcode == JAL) && (rt_EX.rt == 31))) && (it_WB.opcode != SW) && (rt_EX.rt == rt_WB.rd) && (rt_WB.rd != 0))"/>
+  <tr n="6" z="(rt_WB.opcode == RTYPE)_1" h1="0" t="c" c1="(~(((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.opcode != SW) && ((it_WB.rt != 0) && (rt_EX.rt == it_WB.rt))) || ((it_WB.opcode == JAL) && (rt_EX.rt == 31))) && (it_WB.opcode != SW) && (rt_EX.rt == rt_WB.rd) && (rt_WB.rd != 0))"/>
+  <tr n="7" z="(rt_WB.rd != 0)_0" h1="0" t="c" c1="(~(((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.opcode != SW) && ((it_WB.rt != 0) && (rt_EX.rt == it_WB.rt))) || ((it_WB.opcode == JAL) && (rt_EX.rt == 31))) && (it_WB.opcode != SW) && (rt_EX.rt == rt_WB.rd) && (rt_WB.opcode == RTYPE))"/>
+  <tr n="8" z="(rt_WB.rd != 0)_1" h1="0" t="c" c1="(~(((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.opcode != SW) && ((it_WB.rt != 0) && (rt_EX.rt == it_WB.rt))) || ((it_WB.opcode == JAL) && (rt_EX.rt == 31))) && (it_WB.opcode != SW) && (rt_EX.rt == rt_WB.rd) && (rt_WB.opcode == RTYPE))"/>
+  <tr n="9" z="(it_WB.opcode != RTYPE)_0" h1="0" t="c" c1="(~((it_WB.opcode != SW) && (rt_EX.rt == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((it_WB.opcode == JAL) && (rt_EX.rt == 31)) && ((it_WB.opcode != SW) && ((it_WB.opcode != SW) && ((it_WB.rt != 0) && (rt_EX.rt == it_WB.rt)))))"/>
+  <tr n="10" z="(it_WB.opcode != RTYPE)_1" h1="0" t="c" c1="(~((it_WB.opcode != SW) && (rt_EX.rt == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((it_WB.opcode == JAL) && (rt_EX.rt == 31)) && ((it_WB.opcode != SW) && ((it_WB.opcode != SW) && ((it_WB.rt != 0) && (rt_EX.rt == it_WB.rt)))))"/>
+  <tr n="11" z="(it_WB.rt != 0)_0" h1="0" t="c" c1="(~((it_WB.opcode != SW) && (rt_EX.rt == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((it_WB.opcode == JAL) && (rt_EX.rt == 31)) && (it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.opcode != SW) && (rt_EX.rt == it_WB.rt))"/>
+  <tr n="12" z="(it_WB.rt != 0)_1" h1="0" t="c" c1="(~((it_WB.opcode != SW) && (rt_EX.rt == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((it_WB.opcode == JAL) && (rt_EX.rt == 31)) && (it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.opcode != SW) && (rt_EX.rt == it_WB.rt))"/>
+  <tr n="13" z="(rt_EX.rt == it_WB.rt)_0" h1="1" t="c" c1="(~((it_WB.opcode != SW) && (rt_EX.rt == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((it_WB.opcode == JAL) && (rt_EX.rt == 31)) && (it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.opcode != SW) && (it_WB.rt != 0))"/>
+  <tr n="14" z="(rt_EX.rt == it_WB.rt)_1" h1="0" t="c" c1="(~((it_WB.opcode != SW) && (rt_EX.rt == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((it_WB.opcode == JAL) && (rt_EX.rt == 31)) && (it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.opcode != SW) && (it_WB.rt != 0))"/>
+  <tr n="15" z="(it_WB.opcode == JAL)_0" h1="0" t="c" c1="(~((it_WB.opcode != SW) && (rt_EX.rt == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.opcode != SW) && ((it_WB.rt != 0) && (rt_EX.rt == it_WB.rt))) && (rt_EX.rt == 31))"/>
+  <tr n="16" z="(it_WB.opcode == JAL)_1" h1="0" t="c" c1="(~((it_WB.opcode != SW) && (rt_EX.rt == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.opcode != SW) && ((it_WB.rt != 0) && (rt_EX.rt == it_WB.rt))) && (rt_EX.rt == 31))"/>
+  <tr n="17" z="(rt_EX.rt == 31)_0" h1="0" t="c" c1="(~((it_WB.opcode != SW) && (rt_EX.rt == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.opcode != SW) && ((it_WB.rt != 0) && (rt_EX.rt == it_WB.rt))) && (it_WB.opcode == JAL))"/>
+  <tr n="18" z="(rt_EX.rt == 31)_1" h1="0" t="c" c1="(~((it_WB.opcode != SW) && (rt_EX.rt == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.opcode != SW) && ((it_WB.rt != 0) && (rt_EX.rt == it_WB.rt))) && (it_WB.opcode == JAL))"/>
+  </table>
+</div><div class="missing"><a name="cvg13177"/><hr/><table>
+  <tr s="3" x="FC" lnk="__HDL_srcfile_26.htm#59" z="(((it_EX.rs == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) || ((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_MEM.rt != 0) && (it_EX.rs == it_MEM.rt)) || ((rt_MEM.opcode == JAL) && (it_EX.rs == 31)))" c="R" p="0.00" d="0" F="1"/>
+  <tr/>
+  <tr z="(it_EX.rs == rt_MEM.rd)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(rt_MEM.opcode == RTYPE)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(rt_MEM.rd != 0)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(it_MEM.opcode != RTYPE)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(it_MEM.opcode != SW)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(it_MEM.rt != 0)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(it_EX.rs == it_MEM.rt)" c="r" r="'_1' not hit" i="Hit '_1'"/>
+  <tr z="(rt_MEM.opcode == JAL)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(it_EX.rs == 31)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr/>
+  <tr n="1" z="(it_EX.rs == rt_MEM.rd)_0" h1="0" t="c" c1="(~(((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_MEM.rt != 0) && (it_EX.rs == it_MEM.rt)) || ((rt_MEM.opcode == JAL) && (it_EX.rs == 31))) && ((rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)))"/>
+  <tr n="2" z="(it_EX.rs == rt_MEM.rd)_1" h1="0" t="c" c1="(~(((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_MEM.rt != 0) && (it_EX.rs == it_MEM.rt)) || ((rt_MEM.opcode == JAL) && (it_EX.rs == 31))) && ((rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)))"/>
+  <tr n="3" z="(rt_MEM.opcode == RTYPE)_0" h1="0" t="c" c1="(~(((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_MEM.rt != 0) && (it_EX.rs == it_MEM.rt)) || ((rt_MEM.opcode == JAL) && (it_EX.rs == 31))) && (it_EX.rs == rt_MEM.rd) && (rt_MEM.rd != 0))"/>
+  <tr n="4" z="(rt_MEM.opcode == RTYPE)_1" h1="0" t="c" c1="(~(((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_MEM.rt != 0) && (it_EX.rs == it_MEM.rt)) || ((rt_MEM.opcode == JAL) && (it_EX.rs == 31))) && (it_EX.rs == rt_MEM.rd) && (rt_MEM.rd != 0))"/>
+  <tr n="5" z="(rt_MEM.rd != 0)_0" h1="0" t="c" c1="(~(((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_MEM.rt != 0) && (it_EX.rs == it_MEM.rt)) || ((rt_MEM.opcode == JAL) && (it_EX.rs == 31))) && (it_EX.rs == rt_MEM.rd) && (rt_MEM.opcode == RTYPE))"/>
+  <tr n="6" z="(rt_MEM.rd != 0)_1" h1="0" t="c" c1="(~(((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_MEM.rt != 0) && (it_EX.rs == it_MEM.rt)) || ((rt_MEM.opcode == JAL) && (it_EX.rs == 31))) && (it_EX.rs == rt_MEM.rd) && (rt_MEM.opcode == RTYPE))"/>
+  <tr n="7" z="(it_MEM.opcode != RTYPE)_0" h1="0" t="c" c1="(~((it_EX.rs == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) && ~((rt_MEM.opcode == JAL) && (it_EX.rs == 31)) && ((it_MEM.opcode != SW) && ((it_MEM.rt != 0) && (it_EX.rs == it_MEM.rt))))"/>
+  <tr n="8" z="(it_MEM.opcode != RTYPE)_1" h1="0" t="c" c1="(~((it_EX.rs == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) && ~((rt_MEM.opcode == JAL) && (it_EX.rs == 31)) && ((it_MEM.opcode != SW) && ((it_MEM.rt != 0) && (it_EX.rs == it_MEM.rt))))"/>
+  <tr n="9" z="(it_MEM.opcode != SW)_0" h1="0" t="c" c1="(~((it_EX.rs == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) && ~((rt_MEM.opcode == JAL) && (it_EX.rs == 31)) && (it_MEM.opcode != RTYPE) && ((it_MEM.rt != 0) && (it_EX.rs == it_MEM.rt)))"/>
+  <tr n="10" z="(it_MEM.opcode != SW)_1" h1="0" t="c" c1="(~((it_EX.rs == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) && ~((rt_MEM.opcode == JAL) && (it_EX.rs == 31)) && (it_MEM.opcode != RTYPE) && ((it_MEM.rt != 0) && (it_EX.rs == it_MEM.rt)))"/>
+  <tr n="11" z="(it_MEM.rt != 0)_0" h1="0" t="c" c1="(~((it_EX.rs == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) && ~((rt_MEM.opcode == JAL) && (it_EX.rs == 31)) && (it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_EX.rs == it_MEM.rt))"/>
+  <tr n="12" z="(it_MEM.rt != 0)_1" h1="0" t="c" c1="(~((it_EX.rs == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) && ~((rt_MEM.opcode == JAL) && (it_EX.rs == 31)) && (it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_EX.rs == it_MEM.rt))"/>
+  <tr n="13" z="(it_EX.rs == it_MEM.rt)_0" h1="1" t="c" c1="(~((it_EX.rs == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) && ~((rt_MEM.opcode == JAL) && (it_EX.rs == 31)) && (it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_MEM.rt != 0))"/>
+  <tr n="14" z="(it_EX.rs == it_MEM.rt)_1" h1="0" t="c" c1="(~((it_EX.rs == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) && ~((rt_MEM.opcode == JAL) && (it_EX.rs == 31)) && (it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_MEM.rt != 0))"/>
+  <tr n="15" z="(rt_MEM.opcode == JAL)_0" h1="0" t="c" c1="(~((it_EX.rs == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) && ~((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_MEM.rt != 0) && (it_EX.rs == it_MEM.rt)) && (it_EX.rs == 31))"/>
+  <tr n="16" z="(rt_MEM.opcode == JAL)_1" h1="0" t="c" c1="(~((it_EX.rs == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) && ~((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_MEM.rt != 0) && (it_EX.rs == it_MEM.rt)) && (it_EX.rs == 31))"/>
+  <tr n="17" z="(it_EX.rs == 31)_0" h1="0" t="c" c1="(~((it_EX.rs == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) && ~((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_MEM.rt != 0) && (it_EX.rs == it_MEM.rt)) && (rt_MEM.opcode == JAL))"/>
+  <tr n="18" z="(it_EX.rs == 31)_1" h1="0" t="c" c1="(~((it_EX.rs == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) && ~((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_MEM.rt != 0) && (it_EX.rs == it_MEM.rt)) && (rt_MEM.opcode == JAL))"/>
+  </table>
+</div><div class="missing"><a name="cvg13179"/><hr/><table>
+  <tr s="3" x="FC" lnk="__HDL_srcfile_26.htm#62" z="(((it_EX.rs == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) || ((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.rt != 0) && (it_EX.rs == it_WB.rt)) || ((rt_WB.opcode == JAL) && (it_EX.rs == 31)))" c="R" p="0.00" d="0" F="1"/>
+  <tr/>
+  <tr z="(it_EX.rs == rt_WB.rd)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(rt_WB.opcode == RTYPE)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(rt_WB.rd != 0)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(it_WB.opcode != RTYPE)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(it_WB.opcode != SW)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(it_WB.rt != 0)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(it_EX.rs == it_WB.rt)" c="r" r="'_1' not hit" i="Hit '_1'"/>
+  <tr z="(rt_WB.opcode == JAL)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(it_EX.rs == 31)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr/>
+  <tr n="1" z="(it_EX.rs == rt_WB.rd)_0" h1="0" t="c" c1="(~(((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.rt != 0) && (it_EX.rs == it_WB.rt)) || ((rt_WB.opcode == JAL) && (it_EX.rs == 31))) && ((rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)))"/>
+  <tr n="2" z="(it_EX.rs == rt_WB.rd)_1" h1="0" t="c" c1="(~(((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.rt != 0) && (it_EX.rs == it_WB.rt)) || ((rt_WB.opcode == JAL) && (it_EX.rs == 31))) && ((rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)))"/>
+  <tr n="3" z="(rt_WB.opcode == RTYPE)_0" h1="0" t="c" c1="(~(((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.rt != 0) && (it_EX.rs == it_WB.rt)) || ((rt_WB.opcode == JAL) && (it_EX.rs == 31))) && (it_EX.rs == rt_WB.rd) && (rt_WB.rd != 0))"/>
+  <tr n="4" z="(rt_WB.opcode == RTYPE)_1" h1="0" t="c" c1="(~(((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.rt != 0) && (it_EX.rs == it_WB.rt)) || ((rt_WB.opcode == JAL) && (it_EX.rs == 31))) && (it_EX.rs == rt_WB.rd) && (rt_WB.rd != 0))"/>
+  <tr n="5" z="(rt_WB.rd != 0)_0" h1="0" t="c" c1="(~(((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.rt != 0) && (it_EX.rs == it_WB.rt)) || ((rt_WB.opcode == JAL) && (it_EX.rs == 31))) && (it_EX.rs == rt_WB.rd) && (rt_WB.opcode == RTYPE))"/>
+  <tr n="6" z="(rt_WB.rd != 0)_1" h1="0" t="c" c1="(~(((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.rt != 0) && (it_EX.rs == it_WB.rt)) || ((rt_WB.opcode == JAL) && (it_EX.rs == 31))) && (it_EX.rs == rt_WB.rd) && (rt_WB.opcode == RTYPE))"/>
+  <tr n="7" z="(it_WB.opcode != RTYPE)_0" h1="0" t="c" c1="(~((it_EX.rs == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((rt_WB.opcode == JAL) && (it_EX.rs == 31)) && ((it_WB.opcode != SW) && ((it_WB.rt != 0) && (it_EX.rs == it_WB.rt))))"/>
+  <tr n="8" z="(it_WB.opcode != RTYPE)_1" h1="0" t="c" c1="(~((it_EX.rs == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((rt_WB.opcode == JAL) && (it_EX.rs == 31)) && ((it_WB.opcode != SW) && ((it_WB.rt != 0) && (it_EX.rs == it_WB.rt))))"/>
+  <tr n="9" z="(it_WB.opcode != SW)_0" h1="0" t="c" c1="(~((it_EX.rs == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((rt_WB.opcode == JAL) && (it_EX.rs == 31)) && (it_WB.opcode != RTYPE) && ((it_WB.rt != 0) && (it_EX.rs == it_WB.rt)))"/>
+  <tr n="10" z="(it_WB.opcode != SW)_1" h1="0" t="c" c1="(~((it_EX.rs == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((rt_WB.opcode == JAL) && (it_EX.rs == 31)) && (it_WB.opcode != RTYPE) && ((it_WB.rt != 0) && (it_EX.rs == it_WB.rt)))"/>
+  <tr n="11" z="(it_WB.rt != 0)_0" h1="0" t="c" c1="(~((it_EX.rs == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((rt_WB.opcode == JAL) && (it_EX.rs == 31)) && (it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_EX.rs == it_WB.rt))"/>
+  <tr n="12" z="(it_WB.rt != 0)_1" h1="0" t="c" c1="(~((it_EX.rs == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((rt_WB.opcode == JAL) && (it_EX.rs == 31)) && (it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_EX.rs == it_WB.rt))"/>
+  <tr n="13" z="(it_EX.rs == it_WB.rt)_0" h1="1" t="c" c1="(~((it_EX.rs == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((rt_WB.opcode == JAL) && (it_EX.rs == 31)) && (it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.rt != 0))"/>
+  <tr n="14" z="(it_EX.rs == it_WB.rt)_1" h1="0" t="c" c1="(~((it_EX.rs == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((rt_WB.opcode == JAL) && (it_EX.rs == 31)) && (it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.rt != 0))"/>
+  <tr n="15" z="(rt_WB.opcode == JAL)_0" h1="0" t="c" c1="(~((it_EX.rs == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.rt != 0) && (it_EX.rs == it_WB.rt)) && (it_EX.rs == 31))"/>
+  <tr n="16" z="(rt_WB.opcode == JAL)_1" h1="0" t="c" c1="(~((it_EX.rs == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.rt != 0) && (it_EX.rs == it_WB.rt)) && (it_EX.rs == 31))"/>
+  <tr n="17" z="(it_EX.rs == 31)_0" h1="0" t="c" c1="(~((it_EX.rs == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.rt != 0) && (it_EX.rs == it_WB.rt)) && (rt_WB.opcode == JAL))"/>
+  <tr n="18" z="(it_EX.rs == 31)_1" h1="0" t="c" c1="(~((it_EX.rs == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.rt != 0) && (it_EX.rs == it_WB.rt)) && (rt_WB.opcode == JAL))"/>
+  </table>
+</div><div class="missing"><a name="cvg13181"/><hr/><table>
+  <tr s="3" x="FC" lnk="__HDL_srcfile_26.htm#69" z="(((it_EX.rt == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) || ((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_MEM.rt != 0) && (it_EX.rt == it_MEM.rt)) || ((rt_MEM.opcode == JAL) && (it_EX.rt == 31)))" c="R" p="0.00" d="0" F="1"/>
+  <tr/>
+  <tr z="(it_EX.rt == rt_MEM.rd)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(rt_MEM.opcode == RTYPE)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(rt_MEM.rd != 0)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(it_MEM.opcode != RTYPE)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(it_MEM.opcode != SW)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(it_MEM.rt != 0)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(it_EX.rt == it_MEM.rt)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(rt_MEM.opcode == JAL)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(it_EX.rt == 31)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr/>
+  <tr n="1" z="(it_EX.rt == rt_MEM.rd)_0" h1="0" t="c" c1="(~(((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_MEM.rt != 0) && (it_EX.rt == it_MEM.rt)) || ((rt_MEM.opcode == JAL) && (it_EX.rt == 31))) && ((rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)))"/>
+  <tr n="2" z="(it_EX.rt == rt_MEM.rd)_1" h1="0" t="c" c1="(~(((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_MEM.rt != 0) && (it_EX.rt == it_MEM.rt)) || ((rt_MEM.opcode == JAL) && (it_EX.rt == 31))) && ((rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)))"/>
+  <tr n="3" z="(rt_MEM.opcode == RTYPE)_0" h1="0" t="c" c1="(~(((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_MEM.rt != 0) && (it_EX.rt == it_MEM.rt)) || ((rt_MEM.opcode == JAL) && (it_EX.rt == 31))) && (it_EX.rt == rt_MEM.rd) && (rt_MEM.rd != 0))"/>
+  <tr n="4" z="(rt_MEM.opcode == RTYPE)_1" h1="0" t="c" c1="(~(((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_MEM.rt != 0) && (it_EX.rt == it_MEM.rt)) || ((rt_MEM.opcode == JAL) && (it_EX.rt == 31))) && (it_EX.rt == rt_MEM.rd) && (rt_MEM.rd != 0))"/>
+  <tr n="5" z="(rt_MEM.rd != 0)_0" h1="0" t="c" c1="(~(((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_MEM.rt != 0) && (it_EX.rt == it_MEM.rt)) || ((rt_MEM.opcode == JAL) && (it_EX.rt == 31))) && (it_EX.rt == rt_MEM.rd) && (rt_MEM.opcode == RTYPE))"/>
+  <tr n="6" z="(rt_MEM.rd != 0)_1" h1="0" t="c" c1="(~(((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_MEM.rt != 0) && (it_EX.rt == it_MEM.rt)) || ((rt_MEM.opcode == JAL) && (it_EX.rt == 31))) && (it_EX.rt == rt_MEM.rd) && (rt_MEM.opcode == RTYPE))"/>
+  <tr n="7" z="(it_MEM.opcode != RTYPE)_0" h1="0" t="c" c1="(~((it_EX.rt == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) && ~((rt_MEM.opcode == JAL) && (it_EX.rt == 31)) && ((it_MEM.opcode != SW) && ((it_MEM.rt != 0) && (it_EX.rt == it_MEM.rt))))"/>
+  <tr n="8" z="(it_MEM.opcode != RTYPE)_1" h1="0" t="c" c1="(~((it_EX.rt == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) && ~((rt_MEM.opcode == JAL) && (it_EX.rt == 31)) && ((it_MEM.opcode != SW) && ((it_MEM.rt != 0) && (it_EX.rt == it_MEM.rt))))"/>
+  <tr n="9" z="(it_MEM.opcode != SW)_0" h1="0" t="c" c1="(~((it_EX.rt == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) && ~((rt_MEM.opcode == JAL) && (it_EX.rt == 31)) && (it_MEM.opcode != RTYPE) && ((it_MEM.rt != 0) && (it_EX.rt == it_MEM.rt)))"/>
+  <tr n="10" z="(it_MEM.opcode != SW)_1" h1="0" t="c" c1="(~((it_EX.rt == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) && ~((rt_MEM.opcode == JAL) && (it_EX.rt == 31)) && (it_MEM.opcode != RTYPE) && ((it_MEM.rt != 0) && (it_EX.rt == it_MEM.rt)))"/>
+  <tr n="11" z="(it_MEM.rt != 0)_0" h1="0" t="c" c1="(~((it_EX.rt == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) && ~((rt_MEM.opcode == JAL) && (it_EX.rt == 31)) && (it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_EX.rt == it_MEM.rt))"/>
+  <tr n="12" z="(it_MEM.rt != 0)_1" h1="0" t="c" c1="(~((it_EX.rt == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) && ~((rt_MEM.opcode == JAL) && (it_EX.rt == 31)) && (it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_EX.rt == it_MEM.rt))"/>
+  <tr n="13" z="(it_EX.rt == it_MEM.rt)_0" h1="0" t="c" c1="(~((it_EX.rt == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) && ~((rt_MEM.opcode == JAL) && (it_EX.rt == 31)) && (it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_MEM.rt != 0))"/>
+  <tr n="14" z="(it_EX.rt == it_MEM.rt)_1" h1="0" t="c" c1="(~((it_EX.rt == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) && ~((rt_MEM.opcode == JAL) && (it_EX.rt == 31)) && (it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_MEM.rt != 0))"/>
+  <tr n="15" z="(rt_MEM.opcode == JAL)_0" h1="0" t="c" c1="(~((it_EX.rt == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) && ~((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_MEM.rt != 0) && (it_EX.rt == it_MEM.rt)) && (it_EX.rt == 31))"/>
+  <tr n="16" z="(rt_MEM.opcode == JAL)_1" h1="0" t="c" c1="(~((it_EX.rt == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) && ~((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_MEM.rt != 0) && (it_EX.rt == it_MEM.rt)) && (it_EX.rt == 31))"/>
+  <tr n="17" z="(it_EX.rt == 31)_0" h1="0" t="c" c1="(~((it_EX.rt == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) && ~((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_MEM.rt != 0) && (it_EX.rt == it_MEM.rt)) && (rt_MEM.opcode == JAL))"/>
+  <tr n="18" z="(it_EX.rt == 31)_1" h1="0" t="c" c1="(~((it_EX.rt == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) && ~((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_MEM.rt != 0) && (it_EX.rt == it_MEM.rt)) && (rt_MEM.opcode == JAL))"/>
+  </table>
+</div><div class="missing"><a name="cvg13183"/><hr/><table>
+  <tr s="3" x="FC" lnk="__HDL_srcfile_26.htm#72" z="(((it_EX.rt == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) || ((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.rt != 0) && (it_EX.rt == it_WB.rt)) || ((rt_WB.opcode == JAL) && (it_EX.rt == 31)))" c="R" p="0.00" d="0" F="1"/>
+  <tr/>
+  <tr z="(it_EX.rt == rt_WB.rd)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(rt_WB.opcode == RTYPE)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(rt_WB.rd != 0)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(it_WB.opcode != RTYPE)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(it_WB.opcode != SW)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(it_WB.rt != 0)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(it_EX.rt == it_WB.rt)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(rt_WB.opcode == JAL)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(it_EX.rt == 31)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr/>
+  <tr n="1" z="(it_EX.rt == rt_WB.rd)_0" h1="0" t="c" c1="(~(((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.rt != 0) && (it_EX.rt == it_WB.rt)) || ((rt_WB.opcode == JAL) && (it_EX.rt == 31))) && ((rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)))"/>
+  <tr n="2" z="(it_EX.rt == rt_WB.rd)_1" h1="0" t="c" c1="(~(((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.rt != 0) && (it_EX.rt == it_WB.rt)) || ((rt_WB.opcode == JAL) && (it_EX.rt == 31))) && ((rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)))"/>
+  <tr n="3" z="(rt_WB.opcode == RTYPE)_0" h1="0" t="c" c1="(~(((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.rt != 0) && (it_EX.rt == it_WB.rt)) || ((rt_WB.opcode == JAL) && (it_EX.rt == 31))) && (it_EX.rt == rt_WB.rd) && (rt_WB.rd != 0))"/>
+  <tr n="4" z="(rt_WB.opcode == RTYPE)_1" h1="0" t="c" c1="(~(((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.rt != 0) && (it_EX.rt == it_WB.rt)) || ((rt_WB.opcode == JAL) && (it_EX.rt == 31))) && (it_EX.rt == rt_WB.rd) && (rt_WB.rd != 0))"/>
+  <tr n="5" z="(rt_WB.rd != 0)_0" h1="0" t="c" c1="(~(((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.rt != 0) && (it_EX.rt == it_WB.rt)) || ((rt_WB.opcode == JAL) && (it_EX.rt == 31))) && (it_EX.rt == rt_WB.rd) && (rt_WB.opcode == RTYPE))"/>
+  <tr n="6" z="(rt_WB.rd != 0)_1" h1="0" t="c" c1="(~(((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.rt != 0) && (it_EX.rt == it_WB.rt)) || ((rt_WB.opcode == JAL) && (it_EX.rt == 31))) && (it_EX.rt == rt_WB.rd) && (rt_WB.opcode == RTYPE))"/>
+  <tr n="7" z="(it_WB.opcode != RTYPE)_0" h1="0" t="c" c1="(~((it_EX.rt == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((rt_WB.opcode == JAL) && (it_EX.rt == 31)) && ((it_WB.opcode != SW) && ((it_WB.rt != 0) && (it_EX.rt == it_WB.rt))))"/>
+  <tr n="8" z="(it_WB.opcode != RTYPE)_1" h1="0" t="c" c1="(~((it_EX.rt == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((rt_WB.opcode == JAL) && (it_EX.rt == 31)) && ((it_WB.opcode != SW) && ((it_WB.rt != 0) && (it_EX.rt == it_WB.rt))))"/>
+  <tr n="9" z="(it_WB.opcode != SW)_0" h1="0" t="c" c1="(~((it_EX.rt == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((rt_WB.opcode == JAL) && (it_EX.rt == 31)) && (it_WB.opcode != RTYPE) && ((it_WB.rt != 0) && (it_EX.rt == it_WB.rt)))"/>
+  <tr n="10" z="(it_WB.opcode != SW)_1" h1="0" t="c" c1="(~((it_EX.rt == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((rt_WB.opcode == JAL) && (it_EX.rt == 31)) && (it_WB.opcode != RTYPE) && ((it_WB.rt != 0) && (it_EX.rt == it_WB.rt)))"/>
+  <tr n="11" z="(it_WB.rt != 0)_0" h1="0" t="c" c1="(~((it_EX.rt == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((rt_WB.opcode == JAL) && (it_EX.rt == 31)) && (it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_EX.rt == it_WB.rt))"/>
+  <tr n="12" z="(it_WB.rt != 0)_1" h1="0" t="c" c1="(~((it_EX.rt == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((rt_WB.opcode == JAL) && (it_EX.rt == 31)) && (it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_EX.rt == it_WB.rt))"/>
+  <tr n="13" z="(it_EX.rt == it_WB.rt)_0" h1="0" t="c" c1="(~((it_EX.rt == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((rt_WB.opcode == JAL) && (it_EX.rt == 31)) && (it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.rt != 0))"/>
+  <tr n="14" z="(it_EX.rt == it_WB.rt)_1" h1="0" t="c" c1="(~((it_EX.rt == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((rt_WB.opcode == JAL) && (it_EX.rt == 31)) && (it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.rt != 0))"/>
+  <tr n="15" z="(rt_WB.opcode == JAL)_0" h1="0" t="c" c1="(~((it_EX.rt == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.rt != 0) && (it_EX.rt == it_WB.rt)) && (it_EX.rt == 31))"/>
+  <tr n="16" z="(rt_WB.opcode == JAL)_1" h1="0" t="c" c1="(~((it_EX.rt == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.rt != 0) && (it_EX.rt == it_WB.rt)) && (it_EX.rt == 31))"/>
+  <tr n="17" z="(it_EX.rt == 31)_0" h1="0" t="c" c1="(~((it_EX.rt == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.rt != 0) && (it_EX.rt == it_WB.rt)) && (rt_WB.opcode == JAL))"/>
+  <tr n="18" z="(it_EX.rt == 31)_1" h1="0" t="c" c1="(~((it_EX.rt == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.rt != 0) && (it_EX.rt == it_WB.rt)) && (rt_WB.opcode == JAL))"/>
+  </table>
+</div><div class="missing"><a name="cvg13185"/><hr/><table>
+  <tr s="3" x="FC" lnk="__HDL_srcfile_26.htm#83" z="(((it_EX.rs == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) || ((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_MEM.rt != 0) && (it_EX.rs == it_MEM.rt)) || ((rt_MEM.opcode == JAL) && (it_EX.rs == 31)))" c="R" p="0.00" d="0" F="1"/>
+  <tr/>
+  <tr z="(it_EX.rs == rt_MEM.rd)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(rt_MEM.opcode == RTYPE)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(rt_MEM.rd != 0)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(it_MEM.opcode != RTYPE)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(it_MEM.opcode != SW)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(it_MEM.rt != 0)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(it_EX.rs == it_MEM.rt)" c="r" r="'_1' not hit" i="Hit '_1'"/>
+  <tr z="(rt_MEM.opcode == JAL)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(it_EX.rs == 31)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr/>
+  <tr n="1" z="(it_EX.rs == rt_MEM.rd)_0" h1="0" t="c" c1="(~(((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_MEM.rt != 0) && (it_EX.rs == it_MEM.rt)) || ((rt_MEM.opcode == JAL) && (it_EX.rs == 31))) && ((rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)))"/>
+  <tr n="2" z="(it_EX.rs == rt_MEM.rd)_1" h1="0" t="c" c1="(~(((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_MEM.rt != 0) && (it_EX.rs == it_MEM.rt)) || ((rt_MEM.opcode == JAL) && (it_EX.rs == 31))) && ((rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)))"/>
+  <tr n="3" z="(rt_MEM.opcode == RTYPE)_0" h1="0" t="c" c1="(~(((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_MEM.rt != 0) && (it_EX.rs == it_MEM.rt)) || ((rt_MEM.opcode == JAL) && (it_EX.rs == 31))) && (it_EX.rs == rt_MEM.rd) && (rt_MEM.rd != 0))"/>
+  <tr n="4" z="(rt_MEM.opcode == RTYPE)_1" h1="0" t="c" c1="(~(((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_MEM.rt != 0) && (it_EX.rs == it_MEM.rt)) || ((rt_MEM.opcode == JAL) && (it_EX.rs == 31))) && (it_EX.rs == rt_MEM.rd) && (rt_MEM.rd != 0))"/>
+  <tr n="5" z="(rt_MEM.rd != 0)_0" h1="0" t="c" c1="(~(((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_MEM.rt != 0) && (it_EX.rs == it_MEM.rt)) || ((rt_MEM.opcode == JAL) && (it_EX.rs == 31))) && (it_EX.rs == rt_MEM.rd) && (rt_MEM.opcode == RTYPE))"/>
+  <tr n="6" z="(rt_MEM.rd != 0)_1" h1="0" t="c" c1="(~(((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_MEM.rt != 0) && (it_EX.rs == it_MEM.rt)) || ((rt_MEM.opcode == JAL) && (it_EX.rs == 31))) && (it_EX.rs == rt_MEM.rd) && (rt_MEM.opcode == RTYPE))"/>
+  <tr n="7" z="(it_MEM.opcode != RTYPE)_0" h1="0" t="c" c1="(~((it_EX.rs == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) && ~((rt_MEM.opcode == JAL) && (it_EX.rs == 31)) && ((it_MEM.opcode != SW) && ((it_MEM.rt != 0) && (it_EX.rs == it_MEM.rt))))"/>
+  <tr n="8" z="(it_MEM.opcode != RTYPE)_1" h1="0" t="c" c1="(~((it_EX.rs == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) && ~((rt_MEM.opcode == JAL) && (it_EX.rs == 31)) && ((it_MEM.opcode != SW) && ((it_MEM.rt != 0) && (it_EX.rs == it_MEM.rt))))"/>
+  <tr n="9" z="(it_MEM.opcode != SW)_0" h1="0" t="c" c1="(~((it_EX.rs == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) && ~((rt_MEM.opcode == JAL) && (it_EX.rs == 31)) && (it_MEM.opcode != RTYPE) && ((it_MEM.rt != 0) && (it_EX.rs == it_MEM.rt)))"/>
+  <tr n="10" z="(it_MEM.opcode != SW)_1" h1="0" t="c" c1="(~((it_EX.rs == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) && ~((rt_MEM.opcode == JAL) && (it_EX.rs == 31)) && (it_MEM.opcode != RTYPE) && ((it_MEM.rt != 0) && (it_EX.rs == it_MEM.rt)))"/>
+  <tr n="11" z="(it_MEM.rt != 0)_0" h1="0" t="c" c1="(~((it_EX.rs == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) && ~((rt_MEM.opcode == JAL) && (it_EX.rs == 31)) && (it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_EX.rs == it_MEM.rt))"/>
+  <tr n="12" z="(it_MEM.rt != 0)_1" h1="0" t="c" c1="(~((it_EX.rs == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) && ~((rt_MEM.opcode == JAL) && (it_EX.rs == 31)) && (it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_EX.rs == it_MEM.rt))"/>
+  <tr n="13" z="(it_EX.rs == it_MEM.rt)_0" h1="1" t="c" c1="(~((it_EX.rs == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) && ~((rt_MEM.opcode == JAL) && (it_EX.rs == 31)) && (it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_MEM.rt != 0))"/>
+  <tr n="14" z="(it_EX.rs == it_MEM.rt)_1" h1="0" t="c" c1="(~((it_EX.rs == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) && ~((rt_MEM.opcode == JAL) && (it_EX.rs == 31)) && (it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_MEM.rt != 0))"/>
+  <tr n="15" z="(rt_MEM.opcode == JAL)_0" h1="0" t="c" c1="(~((it_EX.rs == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) && ~((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_MEM.rt != 0) && (it_EX.rs == it_MEM.rt)) && (it_EX.rs == 31))"/>
+  <tr n="16" z="(rt_MEM.opcode == JAL)_1" h1="0" t="c" c1="(~((it_EX.rs == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) && ~((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_MEM.rt != 0) && (it_EX.rs == it_MEM.rt)) && (it_EX.rs == 31))"/>
+  <tr n="17" z="(it_EX.rs == 31)_0" h1="0" t="c" c1="(~((it_EX.rs == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) && ~((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_MEM.rt != 0) && (it_EX.rs == it_MEM.rt)) && (rt_MEM.opcode == JAL))"/>
+  <tr n="18" z="(it_EX.rs == 31)_1" h1="0" t="c" c1="(~((it_EX.rs == rt_MEM.rd) && (rt_MEM.opcode == RTYPE) && (rt_MEM.rd != 0)) && ~((it_MEM.opcode != RTYPE) && (it_MEM.opcode != SW) && (it_MEM.rt != 0) && (it_EX.rs == it_MEM.rt)) && (rt_MEM.opcode == JAL))"/>
+  </table>
+</div><div class="missing"><a name="cvg13187"/><hr/><table>
+  <tr s="3" x="FC" lnk="__HDL_srcfile_26.htm#86" z="(((it_EX.rs == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) || ((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.rt != 0) && (it_EX.rs == it_WB.rt)) || ((rt_WB.opcode == JAL) && (it_EX.rs == 31)))" c="R" p="0.00" d="0" F="1"/>
+  <tr/>
+  <tr z="(it_EX.rs == rt_WB.rd)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(rt_WB.opcode == RTYPE)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(rt_WB.rd != 0)" c="r" r="'_1' not hit" i="Hit '_1'"/>
+  <tr z="(it_WB.opcode != RTYPE)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(it_WB.opcode != SW)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(it_WB.rt != 0)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(it_EX.rs == it_WB.rt)" c="r" r="'_1' not hit" i="Hit '_1'"/>
+  <tr z="(rt_WB.opcode == JAL)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr z="(it_EX.rs == 31)" c="r" r="No hits" i="Hit '_0' and '_1'"/>
+  <tr/>
+  <tr n="1" z="(it_EX.rs == rt_WB.rd)_0" h1="0" t="c" c1="(~(((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.rt != 0) && (it_EX.rs == it_WB.rt)) || ((rt_WB.opcode == JAL) && (it_EX.rs == 31))) && ((rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)))"/>
+  <tr n="2" z="(it_EX.rs == rt_WB.rd)_1" h1="0" t="c" c1="(~(((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.rt != 0) && (it_EX.rs == it_WB.rt)) || ((rt_WB.opcode == JAL) && (it_EX.rs == 31))) && ((rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)))"/>
+  <tr n="3" z="(rt_WB.opcode == RTYPE)_0" h1="0" t="c" c1="(~(((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.rt != 0) && (it_EX.rs == it_WB.rt)) || ((rt_WB.opcode == JAL) && (it_EX.rs == 31))) && (it_EX.rs == rt_WB.rd) && (rt_WB.rd != 0))"/>
+  <tr n="4" z="(rt_WB.opcode == RTYPE)_1" h1="0" t="c" c1="(~(((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.rt != 0) && (it_EX.rs == it_WB.rt)) || ((rt_WB.opcode == JAL) && (it_EX.rs == 31))) && (it_EX.rs == rt_WB.rd) && (rt_WB.rd != 0))"/>
+  <tr n="5" z="(rt_WB.rd != 0)_0" h1="1" t="c" c1="(~(((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.rt != 0) && (it_EX.rs == it_WB.rt)) || ((rt_WB.opcode == JAL) && (it_EX.rs == 31))) && (it_EX.rs == rt_WB.rd) && (rt_WB.opcode == RTYPE))"/>
+  <tr n="6" z="(rt_WB.rd != 0)_1" h1="0" t="c" c1="(~(((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.rt != 0) && (it_EX.rs == it_WB.rt)) || ((rt_WB.opcode == JAL) && (it_EX.rs == 31))) && (it_EX.rs == rt_WB.rd) && (rt_WB.opcode == RTYPE))"/>
+  <tr n="7" z="(it_WB.opcode != RTYPE)_0" h1="0" t="c" c1="(~((it_EX.rs == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((rt_WB.opcode == JAL) && (it_EX.rs == 31)) && ((it_WB.opcode != SW) && ((it_WB.rt != 0) && (it_EX.rs == it_WB.rt))))"/>
+  <tr n="8" z="(it_WB.opcode != RTYPE)_1" h1="0" t="c" c1="(~((it_EX.rs == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((rt_WB.opcode == JAL) && (it_EX.rs == 31)) && ((it_WB.opcode != SW) && ((it_WB.rt != 0) && (it_EX.rs == it_WB.rt))))"/>
+  <tr n="9" z="(it_WB.opcode != SW)_0" h1="0" t="c" c1="(~((it_EX.rs == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((rt_WB.opcode == JAL) && (it_EX.rs == 31)) && (it_WB.opcode != RTYPE) && ((it_WB.rt != 0) && (it_EX.rs == it_WB.rt)))"/>
+  <tr n="10" z="(it_WB.opcode != SW)_1" h1="0" t="c" c1="(~((it_EX.rs == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((rt_WB.opcode == JAL) && (it_EX.rs == 31)) && (it_WB.opcode != RTYPE) && ((it_WB.rt != 0) && (it_EX.rs == it_WB.rt)))"/>
+  <tr n="11" z="(it_WB.rt != 0)_0" h1="0" t="c" c1="(~((it_EX.rs == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((rt_WB.opcode == JAL) && (it_EX.rs == 31)) && (it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_EX.rs == it_WB.rt))"/>
+  <tr n="12" z="(it_WB.rt != 0)_1" h1="0" t="c" c1="(~((it_EX.rs == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((rt_WB.opcode == JAL) && (it_EX.rs == 31)) && (it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_EX.rs == it_WB.rt))"/>
+  <tr n="13" z="(it_EX.rs == it_WB.rt)_0" h1="1" t="c" c1="(~((it_EX.rs == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((rt_WB.opcode == JAL) && (it_EX.rs == 31)) && (it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.rt != 0))"/>
+  <tr n="14" z="(it_EX.rs == it_WB.rt)_1" h1="0" t="c" c1="(~((it_EX.rs == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((rt_WB.opcode == JAL) && (it_EX.rs == 31)) && (it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.rt != 0))"/>
+  <tr n="15" z="(rt_WB.opcode == JAL)_0" h1="0" t="c" c1="(~((it_EX.rs == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.rt != 0) && (it_EX.rs == it_WB.rt)) && (it_EX.rs == 31))"/>
+  <tr n="16" z="(rt_WB.opcode == JAL)_1" h1="0" t="c" c1="(~((it_EX.rs == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.rt != 0) && (it_EX.rs == it_WB.rt)) && (it_EX.rs == 31))"/>
+  <tr n="17" z="(it_EX.rs == 31)_0" h1="0" t="c" c1="(~((it_EX.rs == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.rt != 0) && (it_EX.rs == it_WB.rt)) && (rt_WB.opcode == JAL))"/>
+  <tr n="18" z="(it_EX.rs == 31)_1" h1="0" t="c" c1="(~((it_EX.rs == rt_WB.rd) && (rt_WB.opcode == RTYPE) && (rt_WB.rd != 0)) && ~((it_WB.opcode != RTYPE) && (it_WB.opcode != SW) && (it_WB.rt != 0) && (it_EX.rs == it_WB.rt)) && (rt_WB.opcode == JAL))"/>
+  </table>
+</div><script type="text/javascript" src="../scripts/buildecpage.js"></script>
+  <!-- make sure jumps to last few line nos work -->
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+  
+</body>
+</html>

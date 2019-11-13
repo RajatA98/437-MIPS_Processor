@@ -1,0 +1,452 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+  <title>Questa Coverage Report</title>
+  <!-- original name: _system_tb_DUT_CPU_CM0_DCACHEContentFrame2.htm -->
+  <link rel="StyleSheet" media="print"  href="../css/ucdb2htmlP.css"/>
+  <link rel="StyleSheet" media="screen" href="../css/ucdb2html.css"/>
+  <link rel="StyleSheet" media="screen" href="../css/ucdb2html_newlook.css"/>
+  <script type="text/javascript" src="../scripts/jquery.js"></script>
+  <script type="text/javascript" src="../scripts/showhide.js"></script>
+  
+</head>
+<body id="ucdb2html_detail" onload="showLast()">
+  <h1><span class="strip">Questa</span> Branch Coverage Report</h1>
+  <h3>Scope: /<a href="z0484492237_0067245891_0.htm">system_tb</a>/<a href="z1949200214_3609719958_0.htm">DUT</a>/<a href="z3461427539_0039650898_0.htm">CPU</a>/<a href="z4113660719_0776337571_0.htm">CM0</a>/<a href="z0536336624_2191947165_0.htm">DCACHE</a></h3>
+  <!-- use script block so buttons vanish when JavaScript is disabled -->
+  <script type="text/javascript">
+  <!--
+  document.write(
+    '<table class="buttons" cellspacing="2" cellpadding="2"><tr>' +
+       '<td id="showAll" width="100" onclick="showAll()" class="button_on" ' +
+           'title="Display all coverage scopes and bins.">Show All</td>' +
+       '<td id="showCov" width="100" onclick="showCov()" class="button_off" ' +
+           'title="Display only covered scopes and bins.">Show Covered</td>' +
+       '<td id="showMis" width="100" onclick="showMis()" class="button_off" ' +
+           'title="Display only uncovered scopes and bins.">Show Missing</td>' +
+    '</tr></table>');
+  //-->
+  </script>
+  <div class="covered"><a name="cvg13523"/><hr/><table>
+  <tr l="44" lnk="__HDL_srcfile_29.htm#44" z="assign match_a = (addr.tag == set_a.tag) ? 1 : 0;" c="G" p="100.00"/><tr/>
+  <tr cr="c" t="I" l="44" lnk="__HDL_srcfile_29.htm#44" z="assign match_a = (addr.tag == set_a.tag) ? 1 : 0;" h="4" c="g"/>
+  <tr cr="c" t="E" l="44" lnk="__HDL_srcfile_29.htm#44" z="assign match_a = (addr.tag == set_a.tag) ? 1 : 0;" h="11" c="g"/>
+  </table>
+  </div><div class="covered"><a name="cvg13524"/><hr/><table>
+  <tr l="45" lnk="__HDL_srcfile_29.htm#45" z="assign match_b = (addr.tag == set_b.tag) ? 1 : 0;" c="G" p="100.00"/><tr/>
+  <tr cr="c" t="I" l="45" lnk="__HDL_srcfile_29.htm#45" z="assign match_b = (addr.tag == set_b.tag) ? 1 : 0;" h="4" c="g"/>
+  <tr cr="c" t="E" l="45" lnk="__HDL_srcfile_29.htm#45" z="assign match_b = (addr.tag == set_b.tag) ? 1 : 0;" h="9" c="g"/>
+  </table>
+  </div><div class="covered"><a name="cvg13525"/><hr/><table>
+  <tr l="46" lnk="__HDL_srcfile_29.htm#46" z="assign valid_a = (set_a.valid &amp;&amp; match_a) ? 1 : 0;" c="G" p="100.00"/><tr/>
+  <tr cr="c" t="I" l="46" lnk="__HDL_srcfile_29.htm#46" z="assign valid_a = (set_a.valid &amp;&amp; match_a) ? 1 : 0;" h="2" c="g"/>
+  <tr cr="c" t="E" l="46" lnk="__HDL_srcfile_29.htm#46" z="assign valid_a = (set_a.valid &amp;&amp; match_a) ? 1 : 0;" h="8" c="g"/>
+  </table>
+  </div><div class="covered"><a name="cvg13526"/><hr/><table>
+  <tr l="47" lnk="__HDL_srcfile_29.htm#47" z="assign valid_b = (set_b.valid &amp;&amp; match_b) ? 1 : 0;" c="G" p="100.00"/><tr/>
+  <tr cr="c" t="I" l="47" lnk="__HDL_srcfile_29.htm#47" z="assign valid_b = (set_b.valid &amp;&amp; match_b) ? 1 : 0;" h="1" c="g"/>
+  <tr cr="c" t="E" l="47" lnk="__HDL_srcfile_29.htm#47" z="assign valid_b = (set_b.valid &amp;&amp; match_b) ? 1 : 0;" h="6" c="g"/>
+  </table>
+  </div><div class="covered"><a name="cvg13527"/><hr/><table>
+  <tr l="48" lnk="__HDL_srcfile_29.htm#48" z="assign write_hit_a = (set_a.valid &amp;&amp; match_a &amp;&amp; set_a.dirty) ? ..." c="G" p="100.00"/><tr/>
+  <tr cr="c" t="I" l="48" lnk="__HDL_srcfile_29.htm#48" z="assign write_hit_a = (set_a.valid &amp;&amp; match_a &amp;&amp; set_a.dirty) ? ..." h="2" c="g"/>
+  <tr cr="c" t="E" l="48" lnk="__HDL_srcfile_29.htm#48" z="assign write_hit_a = (set_a.valid &amp;&amp; match_a &amp;&amp; set_a.dirty) ? ..." h="8" c="g"/>
+  </table>
+  </div><div class="covered"><a name="cvg13528"/><hr/><table>
+  <tr l="49" lnk="__HDL_srcfile_29.htm#49" z="assign write_hit_b = (set_b.valid &amp;&amp; match_b &amp;&amp; set_b.dirty) ? ..." c="G" p="100.00"/><tr/>
+  <tr cr="c" t="I" l="49" lnk="__HDL_srcfile_29.htm#49" z="assign write_hit_b = (set_b.valid &amp;&amp; match_b &amp;&amp; set_b.dirty) ? ..." h="1" c="g"/>
+  <tr cr="c" t="E" l="49" lnk="__HDL_srcfile_29.htm#49" z="assign write_hit_b = (set_b.valid &amp;&amp; match_b &amp;&amp; set_b.dirty) ? ..." h="6" c="g"/>
+  </table>
+  </div><div class="covered"><a name="cvg13529"/><hr/><table>
+  <tr l="53" lnk="__HDL_srcfile_29.htm#53" z="    if (!nRST) begin" c="G" p="100.00"/><tr/>
+  <tr cr="c" t="I" l="53" lnk="__HDL_srcfile_29.htm#53" z="    if (!nRST) begin" h="2" c="g"/>
+  <tr cr="c" t="E" l="58" lnk="__HDL_srcfile_29.htm#58" z="    else begin" h="97" c="g"/>
+  </table>
+  </div><div class="covered"><a name="cvg13530"/><hr/><table>
+  <tr l="68" lnk="__HDL_srcfile_29.htm#68" z="    if (!nRST) begin" c="G" p="100.00"/><tr/>
+  <tr cr="c" t="I" l="68" lnk="__HDL_srcfile_29.htm#68" z="    if (!nRST) begin" h="2" c="g"/>
+  <tr cr="c" t="T" l="72" lnk="__HDL_srcfile_29.htm#72" z="    else if (lru_enable) begin" h="59" c="g"/>
+  <tr cr="c" t="E" l="76" lnk="__HDL_srcfile_29.htm#76" z="    else begin" h="38" c="g"/>
+  </table>
+  </div><div class="covered"><a name="cvg13531"/><hr/><table>
+  <tr l="84" lnk="__HDL_srcfile_29.htm#84" z="    if (!nRST) begin" c="G" p="100.00"/><tr/>
+  <tr cr="c" t="I" l="84" lnk="__HDL_srcfile_29.htm#84" z="    if (!nRST) begin" h="2" c="g"/>
+  <tr cr="c" t="E" l="88" lnk="__HDL_srcfile_29.htm#88" z="    else begin" h="97" c="g"/>
+  </table>
+  </div><div class="covered"><a name="cvg13532"/><hr/><table>
+  <tr l="97" lnk="__HDL_srcfile_29.htm#97" z="    if (!nRST) begin" c="G" p="100.00"/><tr/>
+  <tr cr="c" t="I" l="97" lnk="__HDL_srcfile_29.htm#97" z="    if (!nRST) begin" h="2" c="g"/>
+  <tr cr="c" t="E" l="116" lnk="__HDL_srcfile_29.htm#116" z="    else begin" h="97" c="g"/>
+  </table>
+  </div><div class="covered"><a name="cvg13533"/><hr/><table>
+  <tr l="141" lnk="__HDL_srcfile_29.htm#141" z="	    if (frame_a[snoopaddr.idx].tag == snoopaddr.tag) begin //t..." c="G" p="100.00"/><tr/>
+  <tr cr="c" t="I" l="141" lnk="__HDL_srcfile_29.htm#141" z="	    if (frame_a[snoopaddr.idx].tag == snoopaddr.tag) begin //t..." h="5" c="g"/>
+  <tr cr="c" t="T" l="144" lnk="__HDL_srcfile_29.htm#144" z="			else if (frame_b[snoopaddr.idx].tag == snoopaddr.tag) begin ..." h="3" c="g"/>
+  <tr cr="c" t="A" l="141" lnk="__HDL_srcfile_29.htm#141" z="	    if (frame_a[snoopaddr.idx].tag == snoopaddr.tag) begin //t..." h="6" c="g"/>
+  </table>
+  </div><div><a name="cvg13534"/><hr/><table>
+  <tr l="159" lnk="__HDL_srcfile_29.htm#159" z="   if (ddif.dmemWEN) begin //processor write request" c="Y" p="66.66"/><tr/>
+  <tr cr="c" t="I" l="159" lnk="__HDL_srcfile_29.htm#159" z="   if (ddif.dmemWEN) begin //processor write request" h="7" c="g"/>
+  <tr cr="m" t="T" l="217" lnk="__HDL_srcfile_29.htm#217" z="    else if (ddif.dmemREN) begin" h="0" c="r"/>
+  <tr cr="c" t="A" l="159" lnk="__HDL_srcfile_29.htm#159" z="   if (ddif.dmemWEN) begin //processor write request" h="8" c="g"/>
+  </table>
+  </div><div><a name="cvg13535"/><hr/><table>
+  <tr l="160" lnk="__HDL_srcfile_29.htm#160" z="    if ((write_hit_a) &amp;&amp; (!write_hit_b)) begin //only first set..." c="Y" p="60.00"/><tr/>
+  <tr cr="c" t="I" l="160" lnk="__HDL_srcfile_29.htm#160" z="    if ((write_hit_a) &amp;&amp; (!write_hit_b)) begin //only first set..." h="1" c="g"/>
+  <tr cr="c" t="T" l="167" lnk="__HDL_srcfile_29.htm#167" z="    else if ((!write_hit_a) &amp;&amp; (write_hit_b)) begin //only seco..." h="1" c="g"/>
+  <tr cr="m" t="T" l="175" lnk="__HDL_srcfile_29.htm#175" z="    else if ((write_hit_a) &amp;&amp; (write_hit_b)) begin //both are v..." h="0" c="r"/>
+  <tr cr="c" t="T" l="194" lnk="__HDL_srcfile_29.htm#194" z="    else if ((!write_hit_a) &amp;&amp; (!write_hit_b)) begin //none are..." h="5" c="g"/>
+  <tr cr="m" t="A" l="160" lnk="__HDL_srcfile_29.htm#160" z="    if ((write_hit_a) &amp;&amp; (!write_hit_b)) begin //only first set..." h="0" c="r"/>
+  </table>
+  </div><div class="missing"><a name="cvg13536"/><hr/><table>
+  <tr l="178" lnk="__HDL_srcfile_29.htm#178" z="        if (!used_a[addr.idx] &amp;&amp; used_b[addr.idx]) begin //set ..." c="R" p="0.00"/><tr/>
+  <tr cr="m" t="I" l="178" lnk="__HDL_srcfile_29.htm#178" z="        if (!used_a[addr.idx] &amp;&amp; used_b[addr.idx]) begin //set ..." h="0" c="r"/>
+  <tr cr="m" t="T" l="183" lnk="__HDL_srcfile_29.htm#183" z="        else if (!used_b[addr.idx] &amp;&amp; used_a[addr.idx]) begin  ..." h="0" c="r"/>
+  <tr cr="m" t="T" l="188" lnk="__HDL_srcfile_29.htm#188" z="        else if (!used_a[addr.idx]  &amp;&amp; !used_b[addr.idx]) begin..." h="0" c="r"/>
+  <tr cr="m" t="A" l="178" lnk="__HDL_srcfile_29.htm#178" z="        if (!used_a[addr.idx] &amp;&amp; used_b[addr.idx]) begin //set ..." h="0" c="r"/>
+  </table>
+  </div><div><a name="cvg13537"/><hr/><table>
+  <tr l="197" lnk="__HDL_srcfile_29.htm#197" z="        if (!used_a[addr.idx] &amp;&amp; used_b[addr.idx]) begin //set ..." c="Y" p="75.00"/><tr/>
+  <tr cr="c" t="I" l="197" lnk="__HDL_srcfile_29.htm#197" z="        if (!used_a[addr.idx] &amp;&amp; used_b[addr.idx]) begin //set ..." h="1" c="g"/>
+  <tr cr="c" t="T" l="202" lnk="__HDL_srcfile_29.htm#202" z="        else if (!used_b[addr.idx] &amp;&amp; used_a[addr.idx]) begin  ..." h="2" c="g"/>
+  <tr cr="c" t="T" l="207" lnk="__HDL_srcfile_29.htm#207" z="        else if (!used_a[addr.idx]  &amp;&amp; !used_b[addr.idx]) begin..." h="2" c="g"/>
+  <tr cr="m" t="A" l="197" lnk="__HDL_srcfile_29.htm#197" z="        if (!used_a[addr.idx] &amp;&amp; used_b[addr.idx]) begin //set ..." h="0" c="r"/>
+  </table>
+  </div><div class="missing"><a name="cvg13538"/><hr/><table>
+  <tr l="218" lnk="__HDL_srcfile_29.htm#218" z="    if (valid_a &amp;&amp; !valid_b) begin //only first set is valid" c="R" p="0.00"/><tr/>
+  <tr cr="m" t="I" l="218" lnk="__HDL_srcfile_29.htm#218" z="    if (valid_a &amp;&amp; !valid_b) begin //only first set is valid" h="0" c="r"/>
+  <tr cr="m" t="T" l="225" lnk="__HDL_srcfile_29.htm#225" z="    else if (valid_b &amp;&amp; !valid_a)begin //only second set is val..." h="0" c="r"/>
+  <tr cr="m" t="T" l="233" lnk="__HDL_srcfile_29.htm#233" z="    else if (valid_a &amp;&amp; valid_b)begin //both are valid" h="0" c="r"/>
+  <tr cr="m" t="T" l="252" lnk="__HDL_srcfile_29.htm#252" z="    else if (!valid_a &amp;&amp; !valid_b) begin //none are valid" h="0" c="r"/>
+  <tr cr="m" t="A" l="218" lnk="__HDL_srcfile_29.htm#218" z="    if (valid_a &amp;&amp; !valid_b) begin //only first set is valid" h="0" c="r"/>
+  </table>
+  </div><div class="missing"><a name="cvg13539"/><hr/><table>
+  <tr l="236" lnk="__HDL_srcfile_29.htm#236" z="        if (!used_a[addr.idx] &amp;&amp; used_b[addr.idx]) begin //set ..." c="R" p="0.00"/><tr/>
+  <tr cr="m" t="I" l="236" lnk="__HDL_srcfile_29.htm#236" z="        if (!used_a[addr.idx] &amp;&amp; used_b[addr.idx]) begin //set ..." h="0" c="r"/>
+  <tr cr="m" t="T" l="241" lnk="__HDL_srcfile_29.htm#241" z="        else if (!used_b[addr.idx] &amp;&amp; used_a[addr.idx]) begin  ..." h="0" c="r"/>
+  <tr cr="m" t="T" l="246" lnk="__HDL_srcfile_29.htm#246" z="        else if (!used_a[addr.idx]  &amp;&amp; !used_b[addr.idx]) begin..." h="0" c="r"/>
+  <tr cr="m" t="A" l="236" lnk="__HDL_srcfile_29.htm#236" z="        if (!used_a[addr.idx] &amp;&amp; used_b[addr.idx]) begin //set ..." h="0" c="r"/>
+  </table>
+  </div><div class="missing"><a name="cvg13540"/><hr/><table>
+  <tr l="255" lnk="__HDL_srcfile_29.htm#255" z="        if (!used_a[addr.idx] &amp;&amp; used_b[addr.idx]) begin //set ..." c="R" p="0.00"/><tr/>
+  <tr cr="m" t="I" l="255" lnk="__HDL_srcfile_29.htm#255" z="        if (!used_a[addr.idx] &amp;&amp; used_b[addr.idx]) begin //set ..." h="0" c="r"/>
+  <tr cr="m" t="T" l="260" lnk="__HDL_srcfile_29.htm#260" z="        else if (!used_b[addr.idx] &amp;&amp; used_a[addr.idx]) begin  ..." h="0" c="r"/>
+  <tr cr="m" t="T" l="265" lnk="__HDL_srcfile_29.htm#265" z="        else if (!used_a[addr.idx]  &amp;&amp; !used_b[addr.idx]) begin..." h="0" c="r"/>
+  <tr cr="m" t="A" l="255" lnk="__HDL_srcfile_29.htm#255" z="        if (!used_a[addr.idx] &amp;&amp; used_b[addr.idx]) begin //set ..." h="0" c="r"/>
+  </table>
+  </div><div class="covered"><a name="cvg13541"/><hr/><table>
+  <tr l="281" lnk="__HDL_srcfile_29.htm#281" z="    if (!nRST) begin" c="G" p="100.00"/><tr/>
+  <tr cr="c" t="I" l="281" lnk="__HDL_srcfile_29.htm#281" z="    if (!nRST) begin" h="2" c="g"/>
+  <tr cr="c" t="E" l="287" lnk="__HDL_srcfile_29.htm#287" z="    else begin" h="97" c="g"/>
+  </table>
+  </div><div><a name="cvg13542"/><hr/><table>
+  <tr l="303" lnk="__HDL_srcfile_29.htm#303" z="   case(dcache_state)" c="Y" p="66.66"/><tr/>
+  <tr cr="c" t="T" l="304" lnk="__HDL_srcfile_29.htm#304" z="   IDLE: begin" h="25" c="g"/>
+  <tr cr="c" t="T" l="323" lnk="__HDL_srcfile_29.htm#323" z="   STOP: begin" h="2" c="g"/>
+  <tr cr="c" t="T" l="331" lnk="__HDL_srcfile_29.htm#331" z="   MISS: begin" h="7" c="g"/>
+  <tr cr="c" t="T" l="344" lnk="__HDL_srcfile_29.htm#344" z="   MISS2: begin" h="6" c="g"/>
+  <tr cr="m" t="T" l="352" lnk="__HDL_srcfile_29.htm#352" z="   WBACK: begin" h="0" c="r"/>
+  <tr cr="m" t="T" l="363" lnk="__HDL_srcfile_29.htm#363" z="   WBACK2: begin" h="0" c="r"/>
+  <tr cr="c" t="T" l="379" lnk="__HDL_srcfile_29.htm#379" z="   FLUSH_A: begin" h="8" c="g"/>
+  <tr cr="c" t="T" l="401" lnk="__HDL_srcfile_29.htm#401" z="   FLUSH_B: begin" h="8" c="g"/>
+  <tr cr="m" t="T" l="423" lnk="__HDL_srcfile_29.htm#423" z="   NEXT_FLUSH_A: begin" h="0" c="r"/>
+  <tr cr="m" t="T" l="439" lnk="__HDL_srcfile_29.htm#439" z="   NEXT_FLUSH_B: begin" h="0" c="r"/>
+  <tr cr="c" t="T" l="462" lnk="__HDL_srcfile_29.htm#462" z="   SNOOP_WB1: begin" h="8" c="g"/>
+  <tr cr="c" t="T" l="470" lnk="__HDL_srcfile_29.htm#470" z="	 SNOOP_WB2: begin" h="2" c="g"/>
+  <tr cr="e" t="A" l="303" lnk="__HDL_srcfile_29.htm#303" z="   case(dcache_state)" h="E-Hit"/>
+  </table>
+  </div><div><a name="cvg13543"/><hr/><table>
+  <tr l="305" lnk="__HDL_srcfile_29.htm#305" z="      if (ddif.halt) begin" c="Y" p="80.00"/><tr/>
+  <tr cr="c" t="I" l="305" lnk="__HDL_srcfile_29.htm#305" z="      if (ddif.halt) begin" h="1" c="g"/>
+  <tr cr="c" t="T" l="308" lnk="__HDL_srcfile_29.htm#308" z="			else if (dmif.ccwait &amp;&amp; dirty_snoop) begin" h="2" c="g"/>
+  <tr cr="c" t="T" l="311" lnk="__HDL_srcfile_29.htm#311" z="      else if ((ddif.dmemREN || ddif.dmemWEN) &amp;&amp; miss &amp;&amp; !dirty..." h="5" c="g"/>
+  <tr cr="m" t="T" l="314" lnk="__HDL_srcfile_29.htm#314" z="      else if (((ddif.dmemREN &amp;&amp; miss) || (ddif.dmemWEN &amp;&amp; miss..." h="0" c="r"/>
+  <tr cr="c" t="E" l="317" lnk="__HDL_srcfile_29.htm#317" z="      else begin" h="17" c="g"/>
+  </table>
+  </div><div class="covered"><a name="cvg13544"/><hr/><table>
+  <tr l="324" lnk="__HDL_srcfile_29.htm#324" z="     if (!nRST) begin" c="G" p="100.00"/><tr/>
+  <tr cr="c" t="I" l="324" lnk="__HDL_srcfile_29.htm#324" z="     if (!nRST) begin" h="1" c="g"/>
+  <tr cr="c" t="E" l="327" lnk="__HDL_srcfile_29.htm#327" z="     else begin" h="1" c="g"/>
+  </table>
+  </div><div><a name="cvg13545"/><hr/><table>
+  <tr l="332" lnk="__HDL_srcfile_29.htm#332" z="		 if (dmif.ccwait) begin" c="Y" p="75.00"/><tr/>
+  <tr cr="c" t="I" l="332" lnk="__HDL_srcfile_29.htm#332" z="		 if (dmif.ccwait) begin" h="2" c="g"/>
+  <tr cr="c" t="T" l="336" lnk="__HDL_srcfile_29.htm#336" z="     else if (dmif.dwait) begin" h="3" c="g"/>
+  <tr cr="c" t="T" l="339" lnk="__HDL_srcfile_29.htm#339" z="     else if (!dmif.dwait) begin" h="2" c="g"/>
+  <tr cr="m" t="A" l="332" lnk="__HDL_srcfile_29.htm#332" z="		 if (dmif.ccwait) begin" h="0" c="r"/>
+  </table>
+  </div><div><a name="cvg13546"/><hr/><table>
+  <tr l="345" lnk="__HDL_srcfile_29.htm#345" z="     if (dmif.dwait) begin" c="Y" p="66.66"/><tr/>
+  <tr cr="c" t="I" l="345" lnk="__HDL_srcfile_29.htm#345" z="     if (dmif.dwait) begin" h="2" c="g"/>
+  <tr cr="c" t="T" l="348" lnk="__HDL_srcfile_29.htm#348" z="     else if (!dmif.dwait) begin" h="4" c="g"/>
+  <tr cr="m" t="A" l="345" lnk="__HDL_srcfile_29.htm#345" z="     if (dmif.dwait) begin" h="0" c="r"/>
+  </table>
+  </div><div class="missing"><a name="cvg13547"/><hr/><table>
+  <tr l="353" lnk="__HDL_srcfile_29.htm#353" z="		 if (dmif.ccwait) begin" c="R" p="0.00"/><tr/>
+  <tr cr="m" t="I" l="353" lnk="__HDL_srcfile_29.htm#353" z="		 if (dmif.ccwait) begin" h="0" c="r"/>
+  <tr cr="m" t="T" l="356" lnk="__HDL_srcfile_29.htm#356" z="     else if (dmif.dwait) begin" h="0" c="r"/>
+  <tr cr="m" t="T" l="359" lnk="__HDL_srcfile_29.htm#359" z="     else if (!dmif.dwait) begin" h="0" c="r"/>
+  <tr cr="m" t="A" l="353" lnk="__HDL_srcfile_29.htm#353" z="		 if (dmif.ccwait) begin" h="0" c="r"/>
+  </table>
+  </div><div class="missing"><a name="cvg13548"/><hr/><table>
+  <tr l="364" lnk="__HDL_srcfile_29.htm#364" z="     if (dmif.dwait) begin" c="R" p="0.00"/><tr/>
+  <tr cr="m" t="I" l="364" lnk="__HDL_srcfile_29.htm#364" z="     if (dmif.dwait) begin" h="0" c="r"/>
+  <tr cr="m" t="T" l="367" lnk="__HDL_srcfile_29.htm#367" z="     else if (!dmif.dwait) begin" h="0" c="r"/>
+  <tr cr="m" t="A" l="364" lnk="__HDL_srcfile_29.htm#364" z="     if (dmif.dwait) begin" h="0" c="r"/>
+  </table>
+  </div><div><a name="cvg13549"/><hr/><table>
+  <tr l="380" lnk="__HDL_srcfile_29.htm#380" z="			if (dmif.ccwait &amp;&amp; dirty_snoop) begin" c="R" p="20.00"/><tr/>
+  <tr cr="m" t="I" l="380" lnk="__HDL_srcfile_29.htm#380" z="			if (dmif.ccwait &amp;&amp; dirty_snoop) begin" h="0" c="r"/>
+  <tr cr="m" t="T" l="383" lnk="__HDL_srcfile_29.htm#383" z="      else if (dmif.dwait &amp;&amp; next_a) begin" h="0" c="r"/>
+  <tr cr="m" t="T" l="386" lnk="__HDL_srcfile_29.htm#386" z="      else if (!dmif.dwait &amp;&amp; next_a)  begin" h="0" c="r"/>
+  <tr cr="c" t="T" l="389" lnk="__HDL_srcfile_29.htm#389" z="      else if (!next_a) begin" h="8" c="g"/>
+  <tr cr="m" t="A" l="380" lnk="__HDL_srcfile_29.htm#380" z="			if (dmif.ccwait &amp;&amp; dirty_snoop) begin" h="0" c="r"/>
+  </table>
+  </div><div><a name="cvg13550"/><hr/><table>
+  <tr l="391" lnk="__HDL_srcfile_29.htm#391" z="		    if (flush_count_a == 7) begin" c="Y" p="66.66"/><tr/>
+  <tr cr="c" t="I" l="391" lnk="__HDL_srcfile_29.htm#391" z="		    if (flush_count_a == 7) begin" h="1" c="g"/>
+  <tr cr="c" t="T" l="394" lnk="__HDL_srcfile_29.htm#394" z="		    else if (flush_count_a != 7) begin" h="7" c="g"/>
+  <tr cr="m" t="A" l="391" lnk="__HDL_srcfile_29.htm#391" z="		    if (flush_count_a == 7) begin" h="0" c="r"/>
+  </table>
+  </div><div><a name="cvg13551"/><hr/><table>
+  <tr l="402" lnk="__HDL_srcfile_29.htm#402" z="			if (dmif.ccwait &amp;&amp; dirty_snoop) begin" c="R" p="20.00"/><tr/>
+  <tr cr="m" t="I" l="402" lnk="__HDL_srcfile_29.htm#402" z="			if (dmif.ccwait &amp;&amp; dirty_snoop) begin" h="0" c="r"/>
+  <tr cr="m" t="T" l="406" lnk="__HDL_srcfile_29.htm#406" z="      else if (dmif.dwait &amp;&amp; next_b) begin" h="0" c="r"/>
+  <tr cr="m" t="T" l="409" lnk="__HDL_srcfile_29.htm#409" z="      else if (!dmif.dwait &amp;&amp; next_b)  begin" h="0" c="r"/>
+  <tr cr="c" t="T" l="412" lnk="__HDL_srcfile_29.htm#412" z="      else if (!next_b) begin" h="8" c="g"/>
+  <tr cr="m" t="A" l="402" lnk="__HDL_srcfile_29.htm#402" z="			if (dmif.ccwait &amp;&amp; dirty_snoop) begin" h="0" c="r"/>
+  </table>
+  </div><div><a name="cvg13552"/><hr/><table>
+  <tr l="413" lnk="__HDL_srcfile_29.htm#413" z="				  if (flush_count_b == 7) begin" c="Y" p="66.66"/><tr/>
+  <tr cr="c" t="I" l="413" lnk="__HDL_srcfile_29.htm#413" z="				  if (flush_count_b == 7) begin" h="1" c="g"/>
+  <tr cr="c" t="T" l="416" lnk="__HDL_srcfile_29.htm#416" z="				  else if (flush_count_b != 7) begin" h="7" c="g"/>
+  <tr cr="m" t="A" l="413" lnk="__HDL_srcfile_29.htm#413" z="				  if (flush_count_b == 7) begin" h="0" c="r"/>
+  </table>
+  </div><div class="missing"><a name="cvg13553"/><hr/><table>
+  <tr l="424" lnk="__HDL_srcfile_29.htm#424" z="      if (dmif.dwait) begin" c="R" p="0.00"/><tr/>
+  <tr cr="m" t="I" l="424" lnk="__HDL_srcfile_29.htm#424" z="      if (dmif.dwait) begin" h="0" c="r"/>
+  <tr cr="m" t="T" l="428" lnk="__HDL_srcfile_29.htm#428" z="      else if (!dmif.dwait) begin" h="0" c="r"/>
+  <tr cr="m" t="A" l="424" lnk="__HDL_srcfile_29.htm#424" z="      if (dmif.dwait) begin" h="0" c="r"/>
+  </table>
+  </div><div class="missing"><a name="cvg13554"/><hr/><table>
+  <tr l="429" lnk="__HDL_srcfile_29.htm#429" z="		    if (flush_count_a == 7) begin" c="R" p="0.00"/><tr/>
+  <tr cr="m" t="I" l="429" lnk="__HDL_srcfile_29.htm#429" z="		    if (flush_count_a == 7) begin" h="0" c="r"/>
+  <tr cr="m" t="T" l="432" lnk="__HDL_srcfile_29.htm#432" z="		    else if (flush_count_a != 7) begin" h="0" c="r"/>
+  <tr cr="m" t="A" l="429" lnk="__HDL_srcfile_29.htm#429" z="		    if (flush_count_a == 7) begin" h="0" c="r"/>
+  </table>
+  </div><div class="missing"><a name="cvg13555"/><hr/><table>
+  <tr l="440" lnk="__HDL_srcfile_29.htm#440" z="      if (dmif.dwait) begin" c="R" p="0.00"/><tr/>
+  <tr cr="m" t="I" l="440" lnk="__HDL_srcfile_29.htm#440" z="      if (dmif.dwait) begin" h="0" c="r"/>
+  <tr cr="m" t="T" l="443" lnk="__HDL_srcfile_29.htm#443" z="      else if (!dmif.dwait) begin" h="0" c="r"/>
+  <tr cr="m" t="A" l="440" lnk="__HDL_srcfile_29.htm#440" z="      if (dmif.dwait) begin" h="0" c="r"/>
+  </table>
+  </div><div class="missing"><a name="cvg13556"/><hr/><table>
+  <tr l="444" lnk="__HDL_srcfile_29.htm#444" z="				  if (flush_count_b == 7) begin" c="R" p="0.00"/><tr/>
+  <tr cr="m" t="I" l="444" lnk="__HDL_srcfile_29.htm#444" z="				  if (flush_count_b == 7) begin" h="0" c="r"/>
+  <tr cr="m" t="T" l="447" lnk="__HDL_srcfile_29.htm#447" z="				  else if (flush_count_b != 7) begin" h="0" c="r"/>
+  <tr cr="m" t="A" l="444" lnk="__HDL_srcfile_29.htm#444" z="				  if (flush_count_b == 7) begin" h="0" c="r"/>
+  </table>
+  </div><div class="covered"><a name="cvg13557"/><hr/><table>
+  <tr l="463" lnk="__HDL_srcfile_29.htm#463" z="			if (dmif.dwait) begin" c="G" p="100.00"/><tr/>
+  <tr cr="c" t="I" l="463" lnk="__HDL_srcfile_29.htm#463" z="			if (dmif.dwait) begin" h="6" c="g"/>
+  <tr cr="c" t="E" l="466" lnk="__HDL_srcfile_29.htm#466" z="			else begin" h="2" c="g"/>
+  </table>
+  </div><div><a name="cvg13558"/><hr/><table>
+  <tr l="471" lnk="__HDL_srcfile_29.htm#471" z="			if (dmif.dwait) begin" c="Y" p="50.00"/><tr/>
+  <tr cr="m" t="I" l="471" lnk="__HDL_srcfile_29.htm#471" z="			if (dmif.dwait) begin" h="0" c="r"/>
+  <tr cr="c" t="E" l="474" lnk="__HDL_srcfile_29.htm#474" z="			else begin" h="2" c="g"/>
+  </table>
+  </div><div><a name="cvg13559"/><hr/><table>
+  <tr l="528" lnk="__HDL_srcfile_29.htm#528" z="   case(dcache_state)" c="Y" p="66.66"/><tr/>
+  <tr cr="c" t="T" l="529" lnk="__HDL_srcfile_29.htm#529" z="   IDLE: begin //basically where you check tags and stuff // in..." h="29" c="g"/>
+  <tr cr="c" t="T" l="587" lnk="__HDL_srcfile_29.htm#587" z="   FLUSH_A: begin //look through all sets of to flush to memory..." h="8" c="g"/>
+  <tr cr="m" t="T" l="625" lnk="__HDL_srcfile_29.htm#625" z="	 NEXT_FLUSH_A: begin" h="0" c="r"/>
+  <tr cr="c" t="T" l="634" lnk="__HDL_srcfile_29.htm#634" z="   FLUSH_B: begin" h="8" c="g"/>
+  <tr cr="m" t="T" l="677" lnk="__HDL_srcfile_29.htm#677" z="   NEXT_FLUSH_B: begin" h="0" c="r"/>
+  <tr cr="c" t="T" l="687" lnk="__HDL_srcfile_29.htm#687" z="   STOP: begin" h="1" c="g"/>
+  <tr cr="c" t="T" l="694" lnk="__HDL_srcfile_29.htm#694" z="   MISS: begin" h="11" c="g"/>
+  <tr cr="c" t="T" l="710" lnk="__HDL_srcfile_29.htm#710" z="   MISS2: begin" h="7" c="g"/>
+  <tr cr="m" t="T" l="744" lnk="__HDL_srcfile_29.htm#744" z="   WBACK: begin" h="0" c="r"/>
+  <tr cr="m" t="T" l="757" lnk="__HDL_srcfile_29.htm#757" z="   WBACK2: begin" h="0" c="r"/>
+  <tr cr="c" t="T" l="807" lnk="__HDL_srcfile_29.htm#807" z="	 SNOOP_WB1: begin //writing back first block" h="8" c="g"/>
+  <tr cr="c" t="T" l="819" lnk="__HDL_srcfile_29.htm#819" z="	 SNOOP_WB2: begin" h="2" c="g"/>
+  <tr cr="e" t="A" l="528" lnk="__HDL_srcfile_29.htm#528" z="   case(dcache_state)" h="E-Hit"/>
+  </table>
+  </div><div><a name="cvg13560"/><hr/><table>
+  <tr l="534" lnk="__HDL_srcfile_29.htm#534" z="			if(dmif.ccwait) begin" c="Y" p="66.66"/><tr/>
+  <tr cr="c" t="I" l="534" lnk="__HDL_srcfile_29.htm#534" z="			if(dmif.ccwait) begin" h="4" c="g"/>
+  <tr cr="c" t="T" l="558" lnk="__HDL_srcfile_29.htm#558" z="			else if (!dmif.ccwait) begin" h="25" c="g"/>
+  <tr cr="m" t="A" l="534" lnk="__HDL_srcfile_29.htm#534" z="			if(dmif.ccwait) begin" h="0" c="r"/>
+  </table>
+  </div><div><a name="cvg13561"/><hr/><table>
+  <tr l="537" lnk="__HDL_srcfile_29.htm#537" z="					if (frame_a[snoopaddr.idx].tag == snoopaddr.tag) begin //t..." c="Y" p="66.66"/><tr/>
+  <tr cr="c" t="I" l="537" lnk="__HDL_srcfile_29.htm#537" z="					if (frame_a[snoopaddr.idx].tag == snoopaddr.tag) begin //t..." h="2" c="g"/>
+  <tr cr="c" t="T" l="546" lnk="__HDL_srcfile_29.htm#546" z="					else if (frame_b[snoopaddr.idx].tag == snoopaddr.tag) begi..." h="2" c="g"/>
+  <tr cr="m" t="A" l="537" lnk="__HDL_srcfile_29.htm#537" z="					if (frame_a[snoopaddr.idx].tag == snoopaddr.tag) begin //t..." h="0" c="r"/>
+  </table>
+  </div><div><a name="cvg13562"/><hr/><table>
+  <tr l="538" lnk="__HDL_srcfile_29.htm#538" z="							if (dmif.ccinv) begin " c="Y" p="50.00"/><tr/>
+  <tr cr="m" t="I" l="538" lnk="__HDL_srcfile_29.htm#538" z="							if (dmif.ccinv) begin " h="0" c="r"/>
+  <tr cr="c" t="E" l="542" lnk="__HDL_srcfile_29.htm#542" z="							else begin //no invalidate // not a requester write!" h="2" c="g"/>
+  </table>
+  </div><div><a name="cvg13563"/><hr/><table>
+  <tr l="547" lnk="__HDL_srcfile_29.htm#547" z="							if (dmif.ccinv) begin " c="Y" p="50.00"/><tr/>
+  <tr cr="m" t="I" l="547" lnk="__HDL_srcfile_29.htm#547" z="							if (dmif.ccinv) begin " h="0" c="r"/>
+  <tr cr="c" t="E" l="551" lnk="__HDL_srcfile_29.htm#551" z="							else begin //no invalidate // not a requester write!" h="2" c="g"/>
+  </table>
+  </div><div><a name="cvg13564"/><hr/><table>
+  <tr l="559" lnk="__HDL_srcfile_29.htm#559" z="					 if (ddif.dmemWEN &amp;&amp; hit) begin //write hit" c="Y" p="66.66"/><tr/>
+  <tr cr="c" t="I" l="559" lnk="__HDL_srcfile_29.htm#559" z="					 if (ddif.dmemWEN &amp;&amp; hit) begin //write hit" h="6" c="g"/>
+  <tr cr="m" t="T" l="572" lnk="__HDL_srcfile_29.htm#572" z="						else if (ddif.dmemREN &amp;&amp; hit) begin //read hit" h="0" c="r"/>
+  <tr cr="c" t="A" l="559" lnk="__HDL_srcfile_29.htm#559" z="					 if (ddif.dmemWEN &amp;&amp; hit) begin //write hit" h="19" c="g"/>
+  </table>
+  </div><div><a name="cvg13565"/><hr/><table>
+  <tr l="562" lnk="__HDL_srcfile_29.htm#562" z="						    if (n_used_a[addr.idx]) begin" c="Y" p="66.66"/><tr/>
+  <tr cr="c" t="I" l="562" lnk="__HDL_srcfile_29.htm#562" z="						    if (n_used_a[addr.idx]) begin" h="3" c="g"/>
+  <tr cr="c" t="T" l="566" lnk="__HDL_srcfile_29.htm#566" z="						    else if (n_used_b[addr.idx]) begin" h="3" c="g"/>
+  <tr cr="m" t="A" l="562" lnk="__HDL_srcfile_29.htm#562" z="						    if (n_used_a[addr.idx]) begin" h="0" c="r"/>
+  </table>
+  </div><div class="missing"><a name="cvg13566"/><hr/><table>
+  <tr l="575" lnk="__HDL_srcfile_29.htm#575" z="						    if (n_used_a[addr.idx]) begin" c="R" p="0.00"/><tr/>
+  <tr cr="m" t="I" l="575" lnk="__HDL_srcfile_29.htm#575" z="						    if (n_used_a[addr.idx]) begin" h="0" c="r"/>
+  <tr cr="m" t="T" l="578" lnk="__HDL_srcfile_29.htm#578" z="						    else if (n_used_b[addr.idx]) begin" h="0" c="r"/>
+  <tr cr="m" t="A" l="575" lnk="__HDL_srcfile_29.htm#575" z="						    if (n_used_a[addr.idx]) begin" h="0" c="r"/>
+  </table>
+  </div><div><a name="cvg13567"/><hr/><table>
+  <tr l="593" lnk="__HDL_srcfile_29.htm#593" z="		if(dmif.ccwait) begin" c="R" p="33.33"/><tr/>
+  <tr cr="m" t="I" l="593" lnk="__HDL_srcfile_29.htm#593" z="		if(dmif.ccwait) begin" h="0" c="r"/>
+  <tr cr="m" t="T" l="617" lnk="__HDL_srcfile_29.htm#617" z="				  if (frame_a[flush_count_a].valid &amp;&amp; frame_a[flush_count_a..." h="0" c="r"/>
+  <tr cr="c" t="A" l="593" lnk="__HDL_srcfile_29.htm#593" z="		if(dmif.ccwait) begin" h="8" c="g"/>
+  </table>
+  </div><div class="missing"><a name="cvg13568"/><hr/><table>
+  <tr l="596" lnk="__HDL_srcfile_29.htm#596" z="					if (frame_a[snoopaddr.idx].tag == snoopaddr.tag) begin //t..." c="R" p="0.00"/><tr/>
+  <tr cr="m" t="I" l="596" lnk="__HDL_srcfile_29.htm#596" z="					if (frame_a[snoopaddr.idx].tag == snoopaddr.tag) begin //t..." h="0" c="r"/>
+  <tr cr="m" t="T" l="605" lnk="__HDL_srcfile_29.htm#605" z="					else if (frame_b[snoopaddr.idx].tag == snoopaddr.tag) begi..." h="0" c="r"/>
+  <tr cr="m" t="A" l="596" lnk="__HDL_srcfile_29.htm#596" z="					if (frame_a[snoopaddr.idx].tag == snoopaddr.tag) begin //t..." h="0" c="r"/>
+  </table>
+  </div><div class="missing"><a name="cvg13569"/><hr/><table>
+  <tr l="597" lnk="__HDL_srcfile_29.htm#597" z="							if (dmif.ccinv) begin " c="R" p="0.00"/><tr/>
+  <tr cr="m" t="I" l="597" lnk="__HDL_srcfile_29.htm#597" z="							if (dmif.ccinv) begin " h="0" c="r"/>
+  <tr cr="m" t="E" l="601" lnk="__HDL_srcfile_29.htm#601" z="							else begin //no invalidate // not a requester write!" h="0" c="r"/>
+  </table>
+  </div><div class="missing"><a name="cvg13570"/><hr/><table>
+  <tr l="606" lnk="__HDL_srcfile_29.htm#606" z="							if (dmif.ccinv) begin " c="R" p="0.00"/><tr/>
+  <tr cr="m" t="I" l="606" lnk="__HDL_srcfile_29.htm#606" z="							if (dmif.ccinv) begin " h="0" c="r"/>
+  <tr cr="m" t="E" l="610" lnk="__HDL_srcfile_29.htm#610" z="							else begin //no invalidate // not a requester write!" h="0" c="r"/>
+  </table>
+  </div><div><a name="cvg13571"/><hr/><table>
+  <tr l="641" lnk="__HDL_srcfile_29.htm#641" z="		if(dmif.ccwait) begin" c="R" p="33.33"/><tr/>
+  <tr cr="m" t="I" l="641" lnk="__HDL_srcfile_29.htm#641" z="		if(dmif.ccwait) begin" h="0" c="r"/>
+  <tr cr="m" t="T" l="667" lnk="__HDL_srcfile_29.htm#667" z="      if (frame_b[flush_count_b].valid &amp;&amp; frame_b[flush_count_b..." h="0" c="r"/>
+  <tr cr="c" t="A" l="641" lnk="__HDL_srcfile_29.htm#641" z="		if(dmif.ccwait) begin" h="8" c="g"/>
+  </table>
+  </div><div class="missing"><a name="cvg13572"/><hr/><table>
+  <tr l="644" lnk="__HDL_srcfile_29.htm#644" z="					if (frame_a[snoopaddr.idx].tag == snoopaddr.tag) begin //t..." c="R" p="0.00"/><tr/>
+  <tr cr="m" t="I" l="644" lnk="__HDL_srcfile_29.htm#644" z="					if (frame_a[snoopaddr.idx].tag == snoopaddr.tag) begin //t..." h="0" c="r"/>
+  <tr cr="m" t="T" l="653" lnk="__HDL_srcfile_29.htm#653" z="					else if (frame_b[snoopaddr.idx].tag == snoopaddr.tag) begi..." h="0" c="r"/>
+  <tr cr="m" t="A" l="644" lnk="__HDL_srcfile_29.htm#644" z="					if (frame_a[snoopaddr.idx].tag == snoopaddr.tag) begin //t..." h="0" c="r"/>
+  </table>
+  </div><div class="missing"><a name="cvg13573"/><hr/><table>
+  <tr l="645" lnk="__HDL_srcfile_29.htm#645" z="							if (dmif.ccinv) begin " c="R" p="0.00"/><tr/>
+  <tr cr="m" t="I" l="645" lnk="__HDL_srcfile_29.htm#645" z="							if (dmif.ccinv) begin " h="0" c="r"/>
+  <tr cr="m" t="E" l="649" lnk="__HDL_srcfile_29.htm#649" z="							else begin //no invalidate // not a requester write!" h="0" c="r"/>
+  </table>
+  </div><div class="missing"><a name="cvg13574"/><hr/><table>
+  <tr l="654" lnk="__HDL_srcfile_29.htm#654" z="							if (dmif.ccinv) begin " c="R" p="0.00"/><tr/>
+  <tr cr="m" t="I" l="654" lnk="__HDL_srcfile_29.htm#654" z="							if (dmif.ccinv) begin " h="0" c="r"/>
+  <tr cr="m" t="E" l="658" lnk="__HDL_srcfile_29.htm#658" z="							else begin //no invalidate // not a requester write!" h="0" c="r"/>
+  </table>
+  </div><div class="covered"><a name="cvg13575"/><hr/><table>
+  <tr l="695" lnk="__HDL_srcfile_29.htm#695" z="	  if (!dmif.ccwait) begin" c="G" p="100.00"/><tr/>
+  <tr cr="c" t="I" l="695" lnk="__HDL_srcfile_29.htm#695" z="	  if (!dmif.ccwait) begin" h="9" c="g"/>
+  <tr cr="c" t="A" l="695" lnk="__HDL_srcfile_29.htm#695" z="	  if (!dmif.ccwait) begin" h="2" c="g"/>
+  </table>
+  </div><div class="covered"><a name="cvg13576"/><hr/><table>
+  <tr l="699" lnk="__HDL_srcfile_29.htm#699" z="     if (!dmif.dwait) begin //is this right?" c="G" p="100.00"/><tr/>
+  <tr cr="c" t="I" l="699" lnk="__HDL_srcfile_29.htm#699" z="     if (!dmif.dwait) begin //is this right?" h="4" c="g"/>
+  <tr cr="c" t="A" l="699" lnk="__HDL_srcfile_29.htm#699" z="     if (!dmif.dwait) begin //is this right?" h="5" c="g"/>
+  </table>
+  </div><div><a name="cvg13577"/><hr/><table>
+  <tr l="700" lnk="__HDL_srcfile_29.htm#700" z="        if (used_a[addr.idx]) begin //frame a is chosen" c="Y" p="66.66"/><tr/>
+  <tr cr="c" t="I" l="700" lnk="__HDL_srcfile_29.htm#700" z="        if (used_a[addr.idx]) begin //frame a is chosen" h="2" c="g"/>
+  <tr cr="c" t="T" l="703" lnk="__HDL_srcfile_29.htm#703" z="        else if (used_b[addr.idx]) begin //frame b is chosen" h="2" c="g"/>
+  <tr cr="m" t="A" l="700" lnk="__HDL_srcfile_29.htm#700" z="        if (used_a[addr.idx]) begin //frame a is chosen" h="0" c="r"/>
+  </table>
+  </div><div class="covered"><a name="cvg13578"/><hr/><table>
+  <tr l="715" lnk="__HDL_srcfile_29.htm#715" z="     if (!dmif.dwait) begin //is this right?" c="G" p="100.00"/><tr/>
+  <tr cr="c" t="I" l="715" lnk="__HDL_srcfile_29.htm#715" z="     if (!dmif.dwait) begin //is this right?" h="5" c="g"/>
+  <tr cr="c" t="A" l="715" lnk="__HDL_srcfile_29.htm#715" z="     if (!dmif.dwait) begin //is this right?" h="2" c="g"/>
+  </table>
+  </div><div><a name="cvg13579"/><hr/><table>
+  <tr l="716" lnk="__HDL_srcfile_29.htm#716" z="        if (used_a[addr.idx]) begin //frame a is chosen" c="Y" p="66.66"/><tr/>
+  <tr cr="c" t="I" l="716" lnk="__HDL_srcfile_29.htm#716" z="        if (used_a[addr.idx]) begin //frame a is chosen" h="2" c="g"/>
+  <tr cr="c" t="T" l="719" lnk="__HDL_srcfile_29.htm#719" z="        else if (used_b[addr.idx]) begin //frame b is chosen" h="3" c="g"/>
+  <tr cr="m" t="A" l="716" lnk="__HDL_srcfile_29.htm#716" z="        if (used_a[addr.idx]) begin //frame a is chosen" h="0" c="r"/>
+  </table>
+  </div><div><a name="cvg13580"/><hr/><table>
+  <tr l="726" lnk="__HDL_srcfile_29.htm#726" z="      if (used_a[addr.idx]) begin //frame a is chosen" c="Y" p="66.66"/><tr/>
+  <tr cr="c" t="I" l="726" lnk="__HDL_srcfile_29.htm#726" z="      if (used_a[addr.idx]) begin //frame a is chosen" h="3" c="g"/>
+  <tr cr="c" t="T" l="733" lnk="__HDL_srcfile_29.htm#733" z="      else if (used_b[addr.idx]) begin //frame b is chosen" h="4" c="g"/>
+  <tr cr="m" t="A" l="726" lnk="__HDL_srcfile_29.htm#726" z="      if (used_a[addr.idx]) begin //frame a is chosen" h="0" c="r"/>
+  </table>
+  </div><div><a name="cvg13581"/><hr/><table>
+  <tr l="729" lnk="__HDL_srcfile_29.htm#729" z="				if (ddif.dmemWEN) begin" c="Y" p="50.00"/><tr/>
+  <tr cr="c" t="I" l="729" lnk="__HDL_srcfile_29.htm#729" z="				if (ddif.dmemWEN) begin" h="3" c="g"/>
+  <tr cr="m" t="A" l="729" lnk="__HDL_srcfile_29.htm#729" z="				if (ddif.dmemWEN) begin" h="0" c="r"/>
+  </table>
+  </div><div><a name="cvg13582"/><hr/><table>
+  <tr l="736" lnk="__HDL_srcfile_29.htm#736" z="				if (ddif.dmemWEN) begin" c="Y" p="50.00"/><tr/>
+  <tr cr="c" t="I" l="736" lnk="__HDL_srcfile_29.htm#736" z="				if (ddif.dmemWEN) begin" h="4" c="g"/>
+  <tr cr="m" t="A" l="736" lnk="__HDL_srcfile_29.htm#736" z="				if (ddif.dmemWEN) begin" h="0" c="r"/>
+  </table>
+  </div><div class="missing"><a name="cvg13583"/><hr/><table>
+  <tr l="745" lnk="__HDL_srcfile_29.htm#745" z="		 if (!dmif.ccwait) begin" c="R" p="0.00"/><tr/>
+  <tr cr="m" t="I" l="745" lnk="__HDL_srcfile_29.htm#745" z="		 if (!dmif.ccwait) begin" h="0" c="r"/>
+  <tr cr="m" t="A" l="745" lnk="__HDL_srcfile_29.htm#745" z="		 if (!dmif.ccwait) begin" h="0" c="r"/>
+  </table>
+  </div><div class="missing"><a name="cvg13584"/><hr/><table>
+  <tr l="747" lnk="__HDL_srcfile_29.htm#747" z="      if (used_a[addr.idx]) begin //frame a is chosen" c="R" p="0.00"/><tr/>
+  <tr cr="m" t="I" l="747" lnk="__HDL_srcfile_29.htm#747" z="      if (used_a[addr.idx]) begin //frame a is chosen" h="0" c="r"/>
+  <tr cr="m" t="T" l="751" lnk="__HDL_srcfile_29.htm#751" z="      else if (used_b[addr.idx]) begin //frame b is chosen" h="0" c="r"/>
+  <tr cr="m" t="A" l="747" lnk="__HDL_srcfile_29.htm#747" z="      if (used_a[addr.idx]) begin //frame a is chosen" h="0" c="r"/>
+  </table>
+  </div><div class="missing"><a name="cvg13585"/><hr/><table>
+  <tr l="759" lnk="__HDL_srcfile_29.htm#759" z="      if (used_a[addr.idx]) begin //frame a is chosen" c="R" p="0.00"/><tr/>
+  <tr cr="m" t="I" l="759" lnk="__HDL_srcfile_29.htm#759" z="      if (used_a[addr.idx]) begin //frame a is chosen" h="0" c="r"/>
+  <tr cr="m" t="T" l="763" lnk="__HDL_srcfile_29.htm#763" z="      else if (used_b[addr.idx]) begin //frame b is chosen" h="0" c="r"/>
+  <tr cr="m" t="A" l="759" lnk="__HDL_srcfile_29.htm#759" z="      if (used_a[addr.idx]) begin //frame a is chosen" h="0" c="r"/>
+  </table>
+  </div><div class="missing"><a name="cvg13586"/><hr/><table>
+  <tr l="768" lnk="__HDL_srcfile_29.htm#768" z="      if (used_a[addr.idx]) begin //frame a is chosen" c="R" p="0.00"/><tr/>
+  <tr cr="m" t="I" l="768" lnk="__HDL_srcfile_29.htm#768" z="      if (used_a[addr.idx]) begin //frame a is chosen" h="0" c="r"/>
+  <tr cr="m" t="T" l="771" lnk="__HDL_srcfile_29.htm#771" z="      else if (used_b[addr.idx]) begin //frame b is chosen" h="0" c="r"/>
+  <tr cr="m" t="A" l="768" lnk="__HDL_srcfile_29.htm#768" z="      if (used_a[addr.idx]) begin //frame a is chosen" h="0" c="r"/>
+  </table>
+  </div><div class="covered"><a name="cvg13587"/><hr/><table>
+  <tr l="809" lnk="__HDL_srcfile_29.htm#809" z="	    if (frame_a[snoopaddr.idx].tag == snoopaddr.tag) begin //t..." c="G" p="100.00"/><tr/>
+  <tr cr="c" t="I" l="809" lnk="__HDL_srcfile_29.htm#809" z="	    if (frame_a[snoopaddr.idx].tag == snoopaddr.tag) begin //t..." h="1" c="g"/>
+  <tr cr="c" t="T" l="813" lnk="__HDL_srcfile_29.htm#813" z="			else if (frame_b[snoopaddr.idx].tag == snoopaddr.tag) begin ..." h="4" c="g"/>
+  <tr cr="c" t="A" l="809" lnk="__HDL_srcfile_29.htm#809" z="	    if (frame_a[snoopaddr.idx].tag == snoopaddr.tag) begin //t..." h="3" c="g"/>
+  </table>
+  </div><div><a name="cvg13588"/><hr/><table>
+  <tr l="821" lnk="__HDL_srcfile_29.htm#821" z="	    if (frame_a[snoopaddr.idx].tag == snoopaddr.tag) begin //t..." c="Y" p="66.66"/><tr/>
+  <tr cr="m" t="I" l="821" lnk="__HDL_srcfile_29.htm#821" z="	    if (frame_a[snoopaddr.idx].tag == snoopaddr.tag) begin //t..." h="0" c="r"/>
+  <tr cr="c" t="T" l="825" lnk="__HDL_srcfile_29.htm#825" z="			else if (frame_b[snoopaddr.idx].tag == snoopaddr.tag) begin ..." h="1" c="g"/>
+  <tr cr="c" t="A" l="821" lnk="__HDL_srcfile_29.htm#821" z="	    if (frame_a[snoopaddr.idx].tag == snoopaddr.tag) begin //t..." h="1" c="g"/>
+  </table>
+  </div><script type="text/javascript" src="../scripts/buildbranchpage.js"></script>
+  <!-- make sure jumps to last few line nos work -->
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+  
+</body>
+</html>
