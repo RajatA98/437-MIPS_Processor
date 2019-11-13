@@ -109,7 +109,7 @@ end
 
 //fetch decode latch signal input assignments
 assign fdif.imemload = dpif.imemload;
-assign fdif.flush = emif.halt_MEM || ((flush_ID /*|| flush_ID_BP*/) && hazard_enable) || (flush_ID_fw && fw_enable) || d_flush;
+assign fdif.flush = emif.halt_MEM || ((flush_ID /*|| flush_ID_BP*/) && hazard_enable) || (flush_ID_fw) || d_flush;
 
 
 //enable block fdif
@@ -242,7 +242,7 @@ end
 
 
 //assign deif.enable = hazard_enable ? (dpif.ihit || dpif.dhit) && (enable_EX) : (dpif.ihit || dpif.dhit); //check
-assign deif.flush =  emif.halt_MEM || ((flush_EX) && hazard_enable)|| (flush_EX_fw && fw_enable);
+assign deif.flush =  emif.halt_MEM || ((flush_EX) && hazard_enable)|| (flush_EX_fw);
 assign deif.memtoReg = memtoReg;
 assign deif.memWr = memWr;
 assign deif.ALU_Src = ALU_Src;
@@ -440,7 +440,7 @@ end
 
 
 
-  assign emif.flush = emif.halt_MEM || ((flush_MEM) && hazard_enable) || (flush_MEM_fw && fw_enable);
+  assign emif.flush = emif.halt_MEM || ((flush_MEM) && hazard_enable) || (flush_MEM_fw);
   //assign emif.enable = hazard_enable ? (dpif.ihit || dpif.dhit) && (enable_MEM) : (dpif.ihit || dpif.dhit);
   assign emif.RegWr_EX = deif.RegWr_EX;
   assign emif.RegDst_EX = deif.RegDst_EX;
