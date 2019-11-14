@@ -216,6 +216,20 @@ begin
 			ALUop = ALU_ADD;
 			memWr = 1'b1;
 		end
+		LL:
+		begin
+			RegWr = 1'b1;
+			ALU_Src = 1'b1;
+			ALUop = ALU_ADD;
+			memtoReg = 1'b1;
+		end
+		SC:
+		begin
+
+			ALU_Src = 1'b1;
+			ALUop = ALU_ADD;
+			memWr = 1'b1;
+		end
 		HALT:
 		begin
 			halt = 1'b1;

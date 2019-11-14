@@ -93,7 +93,7 @@ add wave -noupdate -expand -group CPU0 -color {Green Yellow} /system_tb/DUT/CPU/
 add wave -noupdate -expand -group CPU0 -color {Green Yellow} /system_tb/DUT/CPU/dcif0/dmemload
 add wave -noupdate -expand -group CPU0 -color {Green Yellow} /system_tb/DUT/CPU/dcif0/dmemstore
 add wave -noupdate -expand -group CPU0 -color {Green Yellow} /system_tb/DUT/CPU/dcif0/dmemaddr
-add wave -noupdate -expand -group CPU0 -color {Green Yellow} -subitemconfig {{/system_tb/DUT/CPU/DP0/RF/reg_file[31]} {-color {Green Yellow} -height 17} {/system_tb/DUT/CPU/DP0/RF/reg_file[30]} {-color {Green Yellow} -height 17} {/system_tb/DUT/CPU/DP0/RF/reg_file[29]} {-color {Green Yellow} -height 17} {/system_tb/DUT/CPU/DP0/RF/reg_file[28]} {-color {Green Yellow} -height 17} {/system_tb/DUT/CPU/DP0/RF/reg_file[27]} {-color {Green Yellow} -height 17} {/system_tb/DUT/CPU/DP0/RF/reg_file[26]} {-color {Green Yellow} -height 17} {/system_tb/DUT/CPU/DP0/RF/reg_file[25]} {-color {Green Yellow} -height 17} {/system_tb/DUT/CPU/DP0/RF/reg_file[24]} {-color {Green Yellow} -height 17} {/system_tb/DUT/CPU/DP0/RF/reg_file[23]} {-color {Green Yellow} -height 17} {/system_tb/DUT/CPU/DP0/RF/reg_file[22]} {-color {Green Yellow} -height 17} {/system_tb/DUT/CPU/DP0/RF/reg_file[21]} {-color {Green Yellow} -height 17} {/system_tb/DUT/CPU/DP0/RF/reg_file[20]} {-color {Green Yellow} -height 17} {/system_tb/DUT/CPU/DP0/RF/reg_file[19]} {-color {Green Yellow} -height 17} {/system_tb/DUT/CPU/DP0/RF/reg_file[18]} {-color {Green Yellow} -height 17} {/system_tb/DUT/CPU/DP0/RF/reg_file[17]} {-color {Green Yellow} -height 17} {/system_tb/DUT/CPU/DP0/RF/reg_file[16]} {-color {Green Yellow} -height 17} {/system_tb/DUT/CPU/DP0/RF/reg_file[15]} {-color {Green Yellow} -height 17} {/system_tb/DUT/CPU/DP0/RF/reg_file[14]} {-color {Green Yellow} -height 17} {/system_tb/DUT/CPU/DP0/RF/reg_file[13]} {-color {Green Yellow} -height 17} {/system_tb/DUT/CPU/DP0/RF/reg_file[12]} {-color {Green Yellow} -height 17} {/system_tb/DUT/CPU/DP0/RF/reg_file[11]} {-color {Green Yellow} -height 17} {/system_tb/DUT/CPU/DP0/RF/reg_file[10]} {-color {Green Yellow} -height 17} {/system_tb/DUT/CPU/DP0/RF/reg_file[9]} {-color {Green Yellow} -height 17} {/system_tb/DUT/CPU/DP0/RF/reg_file[8]} {-color {Green Yellow} -height 17} {/system_tb/DUT/CPU/DP0/RF/reg_file[7]} {-color {Green Yellow} -height 17} {/system_tb/DUT/CPU/DP0/RF/reg_file[6]} {-color {Green Yellow} -height 17} {/system_tb/DUT/CPU/DP0/RF/reg_file[5]} {-color {Green Yellow} -height 17} {/system_tb/DUT/CPU/DP0/RF/reg_file[4]} {-color {Green Yellow} -height 17} {/system_tb/DUT/CPU/DP0/RF/reg_file[3]} {-color {Green Yellow} -height 17} {/system_tb/DUT/CPU/DP0/RF/reg_file[2]} {-color {Green Yellow} -height 17} {/system_tb/DUT/CPU/DP0/RF/reg_file[1]} {-color {Green Yellow} -height 17} {/system_tb/DUT/CPU/DP0/RF/reg_file[0]} {-color {Green Yellow} -height 17}} /system_tb/DUT/CPU/DP0/RF/reg_file
+add wave -noupdate -expand -group CPU0 -color {Green Yellow} /system_tb/DUT/CPU/DP0/RF/reg_file
 add wave -noupdate -group CACHE1 -color Orange /system_tb/DUT/CPU/CM1/cif/iwait
 add wave -noupdate -group CACHE1 -color Orange /system_tb/DUT/CPU/CM1/cif/dwait
 add wave -noupdate -group CACHE1 -color Orange /system_tb/DUT/CPU/CM1/cif/iREN
@@ -153,10 +153,14 @@ add wave -noupdate -color {Orange Red} /system_tb/DUT/CPU/DP0/flush_ID_fw
 add wave -noupdate -color {Orange Red} /system_tb/DUT/CPU/DP0/flush_EX_fw
 add wave -noupdate -color {Orange Red} /system_tb/DUT/CPU/DP0/flush_MEM_fw
 add wave -noupdate /system_tb/DUT/CPU/DP0/fdif/flush
+add wave -noupdate /system_tb/DUT/CPU/DP0/fdif/enable
 add wave -noupdate /system_tb/DUT/CPU/DP0/deif/flush
+add wave -noupdate /system_tb/DUT/CPU/DP0/deif/enable
 add wave -noupdate /system_tb/DUT/CPU/DP0/emif/flush
+add wave -noupdate /system_tb/DUT/CPU/DP0/emif/enable
+add wave -noupdate /system_tb/DUT/CPU/DP0/hazard_enable
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {3020814 ps} 0}
+WaveRestoreCursors {{Cursor 1} {6738823 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 168
 configure wave -valuecolwidth 176
@@ -172,4 +176,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {2905 ns} {3331 ns}
+WaveRestoreZoom {6559200 ps} {7023200 ps}

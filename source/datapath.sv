@@ -113,14 +113,14 @@ end
 
 //fetch decode latch signal input assignments
 assign fdif.imemload = dpif.imemload;
-assign fdif.flush = emif.halt_MEM || ((flush_ID /*|| flush_ID_BP*/) && hazard_enable) || (flush_ID_fw && fw_enable) || d_flush;
+assign fdif.flush = emif.halt_MEM || ((flush_ID /*|| flush_ID_BP*/) && hazard_enable) || (flush_ID_fw) || d_flush;
 
 
 //enable block fdif
 always_comb
 begin
 	d_flush = 1'b0;
-	if (hazard_enable) begin
+	if (hazard_enable && !flush_ID_fw) begin
 		if (dpif.ihit) begin
 		fdif.enable = (((dpif.dhit && d_request) || (!dpif.dhit && !d_request))&& enable_ID);
 		end
@@ -249,7 +249,7 @@ end
 
 
 //assign deif.enable = hazard_enable ? (dpif.ihit || dpif.dhit) && (enable_EX) : (dpif.ihit || dpif.dhit); //check
-assign deif.flush =  emif.halt_MEM || ((flush_EX) && hazard_enable)|| (flush_EX_fw && fw_enable);
+assign deif.flush =  emif.halt_MEM || ((flush_EX) && hazard_enable)|| (flush_EX_fw);
 assign deif.memtoReg = memtoReg;
 assign deif.memWr = memWr;
 assign deif.ALU_Src = ALU_Src;
@@ -447,7 +447,7 @@ end
 
 
 
-  assign emif.flush = emif.halt_MEM || ((flush_MEM) && hazard_enable) || (flush_MEM_fw && fw_enable);
+  assign emif.flush = emif.halt_MEM || ((flush_MEM) && hazard_enable) || (flush_MEM_fw);
   //assign emif.enable = hazard_enable ? (dpif.ihit || dpif.dhit) && (enable_MEM) : (dpif.ihit || dpif.dhit);
   assign emif.RegWr_EX = deif.RegWr_EX;
   assign emif.RegDst_EX = deif.RegDst_EX;
@@ -676,10 +676,10 @@ end
 //pc_halt block
 always_comb begin
 		if (emif.memtoReg_MEM || emif.memWr_MEM) begin
-				pc_halt = dpif.halt || ((pc_enable) && hazard_enable) || emif.halt_MEM || !(dpif.dhit && dpif.ihit);
+				pc_halt = dpif.halt || ((pc_enable) && hazard_enable && !(flush_ID_fw && flush_EX_fw && flush_MEM_fw)) || emif.halt_MEM || !(dpif.dhit && dpif.ihit);
 		end
 		else begin
-				pc_halt = dpif.halt || ((pc_enable) && hazard_enable) || emif.halt_MEM;
+				pc_halt = dpif.halt || ((pc_enable) && hazard_enable && !(flush_ID_fw && flush_EX_fw && flush_MEM_fw)) || emif.halt_MEM;
 		end
 
 end

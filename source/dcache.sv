@@ -715,7 +715,7 @@ always_comb begin
      ddif.flushed = 1;
 
 		if (dmif.ccwait) begin
-			dmif.cctrans = 0;
+			dmif.cctrans = 1;
 			dmif.ccwrite = 0;
 		end
      //dmif.dWEN = 1;
