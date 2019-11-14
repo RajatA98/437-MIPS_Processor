@@ -60,6 +60,23 @@ always_ff @ (posedge CLK, negedge nRST) begin
     end
 end
 
+
+//RMW register
+word_t linkreg, n_linkreg;
+logic rmw_valid, n_rmw_valid;
+
+always_ff @ (posedge CLK, negedge nRST) begin
+    if (!nRST) begin
+      linkreg <= '0;
+      rmw_valid <= '0;
+    end
+    else begin
+      linkreg <= n_linkreg;
+      rmw_valid <= n_rmw_valid;
+    end
+end
+
+
 	//checking dmemaddr
 	always_ff @ (posedge CLK, negedge nRST) begin
     if (!nRST) begin
@@ -353,7 +370,7 @@ always_comb begin
 		 if (dmif.ccwait && dirty_snoop) begin
 				 next_state = SNOOP_WB1;
 			end
-		
+
      else if (dmif.dwait) begin
         next_state = MISS;
      end
@@ -500,8 +517,8 @@ always_comb begin
 					else begin
 						next_state = IDLE;
 					end
-			end	
-	 end 
+			end
+	 end
    endcase
 end
 
@@ -550,33 +567,41 @@ always_comb begin
 	 //coherence additions
 	 dmif.cctrans = 0;
 	 dmif.ccwrite = ddif.dmemWEN;
-	
+
+   //atomicity additions
+   n_rmw_valid = rmw_valid;
+   n_linkreg = linkreg;
 
    case(dcache_state)
    IDLE: begin //basically where you check tags and stuff // in this state, LRU has not been updated yet
       lru_enable = 1;
       ddif.dhit = 0;
-			
-		
+
+
 			if(dmif.ccwait) begin
 					dmif.cctrans = 1;
 					dmif.ccwrite = dirty_snoop;
+
+          if ((dmif.ccsnoopaddr == linkreg) && ddif.datomic) begin
+              n_rmw_valid = 0;
+          end
+
 					if (frame_a[snoopaddr.idx].tag == snoopaddr.tag) begin //the address exists in frame a
-							if (dmif.ccinv) begin 
+							if (dmif.ccinv) begin
 									next_frame_a[snoopaddr.idx].valid = '0;
-									next_frame_a[snoopaddr.idx].dirty = '0; 						 
+									next_frame_a[snoopaddr.idx].dirty = '0;
 							end
 							else begin //no invalidate // not a requester write!
-									next_frame_a[snoopaddr.idx].dirty = '0; 	
+									next_frame_a[snoopaddr.idx].dirty = '0;
 							end
 					end
 					else if (frame_b[snoopaddr.idx].tag == snoopaddr.tag) begin //the address exists in frame b
-							if (dmif.ccinv) begin 
+							if (dmif.ccinv) begin
 									next_frame_b[snoopaddr.idx].valid = '0;
-									next_frame_b[snoopaddr.idx].dirty = '0; 						 
+									next_frame_b[snoopaddr.idx].dirty = '0;
 							end
 							else begin //no invalidate // not a requester write!
-									next_frame_b[snoopaddr.idx].dirty = '0; 	
+									next_frame_b[snoopaddr.idx].dirty = '0;
 							end
 					end
 			end
@@ -586,6 +611,23 @@ always_comb begin
 					 if (ddif.dmemWEN && hit) begin //write hit
 						    ddif.dhit = 1;
 								n_hit_count = hit_count + 1;
+
+             if (ddif.datomic) begin
+                if (rmw_valid && (linkreg == ddif.dmemaddr)) begin //we got the lock
+						       if (n_used_a[addr.idx]) begin
+						          next_frame_a[addr.idx].data[addr.blkoff] = ddif.dmemstore;
+						       end
+						       else if (n_used_b[addr.idx]) begin
+						          next_frame_b[addr.idx].data[addr.blkoff] = ddif.dmemstore;
+						       end
+                   ddif.dmemload = '1;
+                end
+                else begin //did not get lock
+                   ddif.dmemload = '0;
+                end
+
+             end
+             else begin
 						    if (n_used_a[addr.idx]) begin
 						      next_frame_a[addr.idx].data[addr.blkoff] = ddif.dmemstore;
 						      //next_frame_a[addr.idx].dirty = 1;
@@ -594,11 +636,18 @@ always_comb begin
 						      next_frame_b[addr.idx].data[addr.blkoff] = ddif.dmemstore;
 						      //next_frame_b[addr.idx].dirty = 1;
 						    end
+             end
 						end
 
 						else if (ddif.dmemREN && hit) begin //read hit
 						    ddif.dhit = 1;
 								n_hit_count = hit_count + 1;
+
+                if (ddif.datomic) begin //LL instruction
+                    n_rmw_valid = 1;
+                    n_linkreg = ddif.dmemaddr; //putting address to link register
+                end
+
 						    if (n_used_a[addr.idx]) begin
 						      ddif.dmemload =  frame_a[addr.idx].data[addr.blkoff];
 						    end
@@ -607,7 +656,7 @@ always_comb begin
 						    end
 						end
 
-			end 
+			end
 
     end
 
@@ -620,22 +669,28 @@ always_comb begin
 		if(dmif.ccwait) begin
 					dmif.cctrans = 1;
 					dmif.ccwrite = dirty_snoop;
+
+
+          if ((dmif.ccsnoopaddr == linkreg) && ddif.datomic) begin
+              n_rmw_valid = 0;
+          end
+
 					if (frame_a[snoopaddr.idx].tag == snoopaddr.tag) begin //the address exists in frame a
-							if (dmif.ccinv) begin 
+							if (dmif.ccinv) begin
 									next_frame_a[snoopaddr.idx].valid = '0;
-									next_frame_a[snoopaddr.idx].dirty = '0; 						 
+									next_frame_a[snoopaddr.idx].dirty = '0;
 							end
 							else begin //no invalidate // not a requester write!
-									next_frame_a[snoopaddr.idx].dirty = '0; 	
+									next_frame_a[snoopaddr.idx].dirty = '0;
 							end
 					end
 					else if (frame_b[snoopaddr.idx].tag == snoopaddr.tag) begin //the address exists in frame b
-							if (dmif.ccinv) begin 
+							if (dmif.ccinv) begin
 									next_frame_b[snoopaddr.idx].valid = '0;
-									next_frame_b[snoopaddr.idx].dirty = '0; 						 
+									next_frame_b[snoopaddr.idx].dirty = '0;
 							end
 							else begin //no invalidate // not a requester write!
-									next_frame_b[snoopaddr.idx].dirty = '0; 	
+									next_frame_b[snoopaddr.idx].dirty = '0;
 							end
 					end
 			end
@@ -669,22 +724,27 @@ always_comb begin
 		if(dmif.ccwait) begin
 					dmif.cctrans = 1;
 					dmif.ccwrite = dirty_snoop;
+
+          if ((dmif.ccsnoopaddr == linkreg) && ddif.datomic) begin
+              n_rmw_valid = 0;
+          end
+
 					if (frame_a[snoopaddr.idx].tag == snoopaddr.tag) begin //the address exists in frame a
-							if (dmif.ccinv) begin 
+							if (dmif.ccinv) begin
 									next_frame_a[snoopaddr.idx].valid = '0;
-									next_frame_a[snoopaddr.idx].dirty = '0; 						 
+									next_frame_a[snoopaddr.idx].dirty = '0;
 							end
 							else begin //no invalidate // not a requester write!
-									next_frame_a[snoopaddr.idx].dirty = '0; 	
+									next_frame_a[snoopaddr.idx].dirty = '0;
 							end
 					end
 					else if (frame_b[snoopaddr.idx].tag == snoopaddr.tag) begin //the address exists in frame b
-							if (dmif.ccinv) begin 
+							if (dmif.ccinv) begin
 									next_frame_b[snoopaddr.idx].valid = '0;
-									next_frame_b[snoopaddr.idx].dirty = '0; 						 
+									next_frame_b[snoopaddr.idx].dirty = '0;
 							end
 							else begin //no invalidate // not a requester write!
-									next_frame_b[snoopaddr.idx].dirty = '0; 	
+									next_frame_b[snoopaddr.idx].dirty = '0;
 							end
 					end
 			end
@@ -728,22 +788,28 @@ always_comb begin
 		if(dmif.ccwait) begin
 					dmif.cctrans = 1;
 					dmif.ccwrite = dirty_snoop;
+
+
+          if ((dmif.ccsnoopaddr == linkreg) && ddif.datomic) begin
+              n_rmw_valid = 0;
+          end
+
 					if (frame_a[snoopaddr.idx].tag == snoopaddr.tag) begin //the address exists in frame a
-							if (dmif.ccinv) begin 
+							if (dmif.ccinv) begin
 									next_frame_a[snoopaddr.idx].valid = '0;
-									next_frame_a[snoopaddr.idx].dirty = '0; 						 
+									next_frame_a[snoopaddr.idx].dirty = '0;
 							end
 							else begin //no invalidate // not a requester write!
-									next_frame_a[snoopaddr.idx].dirty = '0; 	
+									next_frame_a[snoopaddr.idx].dirty = '0;
 							end
 					end
 					else if (frame_b[snoopaddr.idx].tag == snoopaddr.tag) begin //the address exists in frame b
-							if (dmif.ccinv) begin 
+							if (dmif.ccinv) begin
 									next_frame_b[snoopaddr.idx].valid = '0;
-									next_frame_b[snoopaddr.idx].dirty = '0; 						 
+									next_frame_b[snoopaddr.idx].dirty = '0;
 							end
 							else begin //no invalidate // not a requester write!
-									next_frame_b[snoopaddr.idx].dirty = '0; 	
+									next_frame_b[snoopaddr.idx].dirty = '0;
 							end
 					end
 			end
@@ -761,7 +827,7 @@ always_comb begin
            next_frame_b[addr.idx].data[0] = dmif.dload;
         end
      end
-		end	
+		end
 		end
 
    MISS2: begin
@@ -784,18 +850,18 @@ always_comb begin
         next_frame_a[addr.idx].tag = addr.tag;
         next_frame_a[addr.idx].valid = 1;
 				if (ddif.dmemWEN) begin
-						next_frame_a[addr.idx].dirty = 1;						
+						next_frame_a[addr.idx].dirty = 1;
 				end
       end
       else if (used_b[addr.idx]) begin //frame b is chosen
         next_frame_b[addr.idx].tag = addr.tag;
         next_frame_b[addr.idx].valid = 1;
 				if (ddif.dmemWEN) begin
-						next_frame_b[addr.idx].dirty = 1;						
+						next_frame_b[addr.idx].dirty = 1;
 				end
       end
 
-		
+
 
    end
    WBACK: begin
@@ -803,22 +869,28 @@ always_comb begin
 		 if(dmif.ccwait) begin
 					dmif.cctrans = 1;
 					dmif.ccwrite = dirty_snoop;
+
+
+          if ((dmif.ccsnoopaddr == linkreg) && ddif.datomic) begin
+              n_rmw_valid = 0;
+          end
+
 					if (frame_a[snoopaddr.idx].tag == snoopaddr.tag) begin //the address exists in frame a
-							if (dmif.ccinv) begin 
+							if (dmif.ccinv) begin
 									next_frame_a[snoopaddr.idx].valid = '0;
-									next_frame_a[snoopaddr.idx].dirty = '0; 						 
+									next_frame_a[snoopaddr.idx].dirty = '0;
 							end
 							else begin //no invalidate // not a requester write!
-									next_frame_a[snoopaddr.idx].dirty = '0; 	
+									next_frame_a[snoopaddr.idx].dirty = '0;
 							end
 					end
 					else if (frame_b[snoopaddr.idx].tag == snoopaddr.tag) begin //the address exists in frame b
-							if (dmif.ccinv) begin 
+							if (dmif.ccinv) begin
 									next_frame_b[snoopaddr.idx].valid = '0;
-									next_frame_b[snoopaddr.idx].dirty = '0; 						 
+									next_frame_b[snoopaddr.idx].dirty = '0;
 							end
 							else begin //no invalidate // not a requester write!
-									next_frame_b[snoopaddr.idx].dirty = '0; 	
+									next_frame_b[snoopaddr.idx].dirty = '0;
 							end
 					end
 			end
@@ -866,21 +938,21 @@ always_comb begin
 					dmif.cctrans = 1;
 					dmif.ccwrite = dirty_snoop;
 					if (frame_a[snoopaddr.idx].tag == snoopaddr.tag) begin //the address exists in frame a
-							if (dmif.ccinv) begin 
+							if (dmif.ccinv) begin
 									next_frame_a[snoopaddr.idx].valid = '0;
-									next_frame_a[snoopaddr.idx].dirty = '0; 						 
+									next_frame_a[snoopaddr.idx].dirty = '0;
 							end
 							else begin //no invalidate // not a requester write!
-									next_frame_a[snoopaddr.idx].dirty = '0; 	
+									next_frame_a[snoopaddr.idx].dirty = '0;
 							end
 					end
 					else if (frame_b[snoopaddr.idx].tag == snoopaddr.tag) begin //the address exists in frame b
-							if (dmif.ccinv) begin 
+							if (dmif.ccinv) begin
 									next_frame_b[snoopaddr.idx].valid = '0;
-									next_frame_b[snoopaddr.idx].dirty = '0; 						 
+									next_frame_b[snoopaddr.idx].dirty = '0;
 							end
 							else begin //no invalidate // not a requester write!
-									next_frame_b[snoopaddr.idx].dirty = '0; 	
+									next_frame_b[snoopaddr.idx].dirty = '0;
 							end
 					end
 
