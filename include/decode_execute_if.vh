@@ -64,14 +64,15 @@ logic [4:0]shamt_EX;
 
 word_t next_addr_EX, imemaddr_EX, instr_EX;
 
+logic datomic, datomic_EX;
 //eanble and flush
 logic enable, flush;
 
 modport idex (
 
-input enable, flush, memtoReg, memWr, ALUop, ALU_Src, EXTop, halt, PC_Src, RegDst, RegWr, Wsel, busA, busB, rs, rt, opcode, funct, imm16, shamt, next_addr_ID, imemaddr_ID, instr_ID, final_wsel, branch_addr,
+input enable, flush, memtoReg, memWr, ALUop, ALU_Src, EXTop, halt, PC_Src, RegDst, RegWr, Wsel, busA, busB, rs, rt, opcode, funct, imm16, shamt, next_addr_ID, imemaddr_ID, instr_ID, final_wsel, branch_addr, datomic,
 
-output memtoReg_EX, memWr_EX, ALUop_EX, ALU_Src_EX, EXTop_EX, halt_EX, PC_Src_EX, RegDst_EX, RegWr_EX, Wsel_EX, busA_EX, busB_EX,rs_EX, rt_EX, opcode_EX, funct_EX, imm16_EX, shamt_EX, next_addr_EX, imemaddr_EX, instr_EX, final_wsel_EX, branch_addr_EX
+output memtoReg_EX, memWr_EX, ALUop_EX, ALU_Src_EX, EXTop_EX, halt_EX, PC_Src_EX, RegDst_EX, RegWr_EX, Wsel_EX, busA_EX, busB_EX,rs_EX, rt_EX, opcode_EX, funct_EX, imm16_EX, shamt_EX, next_addr_EX, imemaddr_EX, instr_EX, final_wsel_EX, branch_addr_EX, datomic_EX
 );
 
 endinterface

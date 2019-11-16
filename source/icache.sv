@@ -70,7 +70,7 @@ end
 
 always_comb
 begin
-	cif.iREN = 1'b0;
+	cif.iREN = 1'b1;
 	cif.iaddr = dcif.imemaddr;
 	n_state = state;
 	n_frames = frames;
@@ -92,7 +92,7 @@ begin
 		end
 		MISS:
 		begin
-			cif.iREN = 1'b1;
+			//cif.iREN = 1'b1;
 			if(cif.iwait)
 			begin
 				n_state = MISS;

@@ -224,23 +224,35 @@ always_comb begin
     end
     else if ((!write_hit_a) && (!write_hit_b)) begin //none are valid // in here we want to keep LRU the same?????
         miss = 1;
-       // n_hit_count = hit_count - 1;
-        if (!used_a[addr.idx] && used_b[addr.idx]) begin //set a is least recently used
+
+				//the weirdness
+				if (frame_a[addr.idx].tag == addr.tag) begin
            n_used_a[addr.idx] = 1;
            n_used_b[addr.idx] = 0;
            dirty = set_a.dirty;
-        end
-        else if (!used_b[addr.idx] && used_a[addr.idx]) begin  //set b is least recently used
+				end 
+				else if (frame_b[addr.idx].tag == addr.tag) begin
            n_used_a[addr.idx] = 0;
            n_used_b[addr.idx] = 1;
            dirty = set_b.dirty;
-        end
-        else if (!used_a[addr.idx]  && !used_b[addr.idx]) begin //both sets were never used - default to use set a
-           n_used_a[addr.idx] = 1;
-           n_used_b[addr.idx] = 0;
-           dirty = set_a.dirty;
-        end
-
+				end
+			  else begin
+        	if (!used_a[addr.idx] && used_b[addr.idx]) begin //set a is least recently used
+           	n_used_a[addr.idx] = 1;
+           	n_used_b[addr.idx] = 0;
+           	dirty = set_a.dirty;
+       	 	end
+        	else if (!used_b[addr.idx] && used_a[addr.idx]) begin  //set b is least recently used
+           	n_used_a[addr.idx] = 0;
+           	n_used_b[addr.idx] = 1;
+           	dirty = set_b.dirty;
+        	end
+       	 	else if (!used_a[addr.idx]  && !used_b[addr.idx]) begin //both sets were never used - default to use set a
+           	n_used_a[addr.idx] = 1;
+           	n_used_b[addr.idx] = 0;
+           	dirty = set_a.dirty;
+        	end
+			  end
     end
 
    end
@@ -611,16 +623,19 @@ always_comb begin
 					 if (ddif.dmemWEN && hit) begin //write hit
 						    ddif.dhit = 1;
 								n_hit_count = hit_count + 1;
-
-             if (ddif.datomic) begin
+						 if (rmw_valid && (linkreg == ddif.dmemaddr)) begin
+								n_rmw_valid = 0;
+						 end
+             if (ddif.datomic) begin //store conditional
                 if (rmw_valid && (linkreg == ddif.dmemaddr)) begin //we got the lock
+								   n_rmw_valid = 0;
 						       if (n_used_a[addr.idx]) begin
 						          next_frame_a[addr.idx].data[addr.blkoff] = ddif.dmemstore;
 						       end
 						       else if (n_used_b[addr.idx]) begin
 						          next_frame_b[addr.idx].data[addr.blkoff] = ddif.dmemstore;
 						       end
-                   ddif.dmemload = '1;
+                   ddif.dmemload = 32'h1;
                 end
                 else begin //did not get lock
                    ddif.dmemload = '0;
@@ -671,7 +686,7 @@ always_comb begin
 					dmif.ccwrite = dirty_snoop;
 
 
-          if ((dmif.ccsnoopaddr == linkreg) && ddif.datomic) begin
+          if ((dmif.ccsnoopaddr == linkreg)) begin
               n_rmw_valid = 0;
           end
 

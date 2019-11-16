@@ -205,7 +205,8 @@ assign imm16 = it.imm;
 	//output to cache
 	output logic iREN
 );*/
-
+logic datomic;
+assign dpif.datomic = emif.datomic_MEM;
 
 ////CHANGED BY JIHAN (NEED TO CHECK)
 	control_unit CU(
@@ -221,7 +222,8 @@ assign imm16 = it.imm;
 		.RegDst(RegDst),
 		.RegWr(RegWr),
 		.Wsel(Wsel),
-		.iREN(dpif.imemREN)
+		.iREN(dpif.imemREN),
+		.datomic(datomic)
 	);
 
 //assign outputs of control unit to inputs of ID/EX latch
@@ -257,6 +259,8 @@ assign deif.EXTop = EXTop;
 assign deif.halt = temp_halt;
 assign deif.PC_Src = PC_Src;
 assign deif.RegDst = RegDst;
+
+assign deif.datomic = datomic;
 
 assign deif.RegWr = RegWr;
 assign deif.Wsel = Wsel;
@@ -431,10 +435,10 @@ begin
 	if (hazard_enable) begin
 		if (dpif.ihit) begin
 		emif.enable = (((dpif.dhit && d_request) || (!dpif.dhit && !d_request)) && enable_MEM);
-	end
-	else begin
-		emif.enable = (!dpif.ihit && dpif.dhit) && enable_MEM;
-	end
+		end
+		else begin
+			emif.enable = (!dpif.ihit && dpif.dhit) && enable_MEM;
+		end
 		
 	end
 	else if (dpif.ihit) begin
@@ -456,6 +460,8 @@ end
   assign emif.PC_Src_EX = deif.PC_Src_EX;
   assign emif.Wsel_EX = deif.Wsel_EX;
   assign emif.busA_EX = deif.busA_EX;
+
+	assign emif.datomic_EX = deif.datomic_EX;
 	//assign emif.busB_EX = deif.busB_EX ;
   assign emif.imemaddr_EX = deif.imemaddr_EX;
   assign emif.jump_addr = jump_addr_EX;
@@ -562,6 +568,7 @@ assign mwif.next_addr_MEM = emif.next_addr_MEM;
 assign mwif.jump_addr_MEM = emif.jump_addr_MEM;
 assign mwif.branch_addr_MEM = emif.branch_addr_MEM;
 assign mwif.shamt_MEM = emif.shamt_MEM;
+
 
 logic [4:0] final_rt, final_rs;
 
@@ -675,7 +682,7 @@ end
 
 //pc_halt block
 always_comb begin
-		if (emif.memtoReg_MEM || emif.memWr_MEM) begin
+		if (emif.memtoReg_MEM || emif.memWr_MEM) begin //needs to wait for BOTH ihit and dhit to come (if read and write to memory)
 				pc_halt = dpif.halt || ((pc_enable) && hazard_enable && !(flush_ID_fw && flush_EX_fw && flush_MEM_fw)) || emif.halt_MEM || !(dpif.dhit && dpif.ihit);
 		end
 		else begin

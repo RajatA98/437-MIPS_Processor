@@ -27,7 +27,7 @@ word_t Output_Port;
 //enable and flush
 
 logic enable, flush;
-
+logic datomic_MEM, datomic_EX;
 
 logic [4:0] final_wsel_EX, final_wsel_MEM;
 //outputs
@@ -53,9 +53,9 @@ word_t Output_Port_MEM;
 
 modport exmem(
 
-input RegWr_EX, RegDst_EX, memtoReg_EX, memWr_EX, PC_Src_EX, Wsel_EX, busA_EX, busB_EX, next_addr_EX, imemaddr_EX, jump_addr, branch_addr, extended, rs_EX, rt_EX, opcode_EX, funct_EX, imm16_EX, shamt_EX, zero, Output_Port, enable, flush,halt_EX, instr_EX,
+input RegWr_EX, RegDst_EX, memtoReg_EX, memWr_EX, PC_Src_EX, Wsel_EX, busA_EX, busB_EX, next_addr_EX, imemaddr_EX, jump_addr, branch_addr, extended, rs_EX, rt_EX, opcode_EX, funct_EX, imm16_EX, shamt_EX, zero, Output_Port, enable, flush,halt_EX, instr_EX, datomic_EX,
 
-output RegWr_MEM, RegDst_MEM, memtoReg_MEM, memWr_MEM, PC_Src_MEM, Wsel_MEM, instr_MEM, busA_MEM, busB_MEM, next_addr_MEM, imemaddr_MEM, jump_addr_MEM, branch_addr_MEM, extended_MEM,  rs_MEM, rt_MEM, opcode_MEM, funct_MEM, imm16_MEM, shamt_MEM, zero_MEM, Output_Port_MEM, halt_MEM
+output RegWr_MEM, RegDst_MEM, memtoReg_MEM, memWr_MEM, PC_Src_MEM, Wsel_MEM, instr_MEM, busA_MEM, busB_MEM, next_addr_MEM, imemaddr_MEM, jump_addr_MEM, branch_addr_MEM, extended_MEM,  rs_MEM, rt_MEM, opcode_MEM, funct_MEM, imm16_MEM, shamt_MEM, zero_MEM, Output_Port_MEM, halt_MEM, datomic_MEM
 
 );
 

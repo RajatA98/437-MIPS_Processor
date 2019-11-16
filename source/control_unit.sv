@@ -23,7 +23,7 @@ module control_unit
 	output logic RegWr,
 	output logic [1:0]Wsel,
 	//output to cache
-	output logic iREN
+	output logic iREN, datomic
 );
 
 r_t rt;
@@ -42,6 +42,7 @@ begin
 	RegWr = 1'b0;
 	Wsel = 2'b0;
 	iREN = 1'b1;
+	datomic = 1'b0;
 	casez(rt.opcode)
 		RTYPE:
 		begin
@@ -211,7 +212,7 @@ begin
 		end
 		SW:
 		begin
-
+	
 			ALU_Src = 1'b1;
 			ALUop = ALU_ADD;
 			memWr = 1'b1;
@@ -222,13 +223,16 @@ begin
 			ALU_Src = 1'b1;
 			ALUop = ALU_ADD;
 			memtoReg = 1'b1;
+			datomic = 1'b1;
 		end
 		SC:
 		begin
-
+			RegWr = 1'b1;
+			datomic = 1'b1;
 			ALU_Src = 1'b1;
 			ALUop = ALU_ADD;
 			memWr = 1'b1;
+			memtoReg = 1'b1;
 		end
 		HALT:
 		begin
