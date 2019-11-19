@@ -13,7 +13,6 @@
 #a0 - for lock
 #a1 - for subcrc
 #a2, 3 - submm
-#t6 - sw sp pointer
 #----------------------------------------------------------
 # First Processor
 #----------------------------------------------------------
@@ -24,14 +23,19 @@
 
 mainp0:
 	push $ra
-	ori $a0, $zero, l      # move lock to arguement register
-  jal lock                # try to aquire the lock
+	
+	
+	
+		
 
-loop:
-	jal crc32
-	or $3 $0 $v0           #pushes crc val on the stack
-	
-	
+#----------------------------------------------------------
+# Second Processor
+#----------------------------------------------------------
+  org   0x200               # second processor p1
+  ori   $sp, $zero, 0x7ffc 	#stack
+  jal   mainp1              # go to program
+  halt
+
 #----------------------------------------------------------
 #subroutine_crc
 #----------------------------------------------------------
@@ -58,23 +62,6 @@ l3:
 l2:
   or $v0, $a1, $0
   jr $ra
-	
-push_process:
-	lw $t6, mystack($0)
-	addi $t6, $t6, -4 
-	sw $3,4($t6)
-	sw $t6, mystack($0)
-	jr $ra		
-l:
-  cfw 0x0
-#----------------------------------------------------------
-# Second Processor
-#----------------------------------------------------------
-  org   0x200               # second processor p1
-  ori   $sp, $zero, 0x7ffc 	#stack
-  jal   mainp1              # go to program
-  halt
-
 
 #----------------------------------------------------------
 #subroutine_mm
@@ -116,7 +103,12 @@ minrtn:
 #push pop process for shared stack
 #--------------------------------------------------
 
-
+push_process:
+	lw $t6, mystack($0)
+	addi $t6, $t6, -4 
+	sw $3,4($t6)
+	sw $t6, mystack($0)
+	jr $ra
 pop_process: 
 	lw $t6, mystack($0)
 	lw $12, 4($t6)
@@ -152,8 +144,6 @@ aquire:
 unlock:
   sw    $0, 0($a0)
   jr    $ra
-
-
 org 0xF000
 mystack:
 cfw 2000
