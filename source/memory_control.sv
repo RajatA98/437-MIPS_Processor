@@ -28,8 +28,7 @@ import cpu_types_pkg::*;
 //output logic select
 
 
-typedef enum logic [3:0] {
-										IDLE, 
+typedef enum logic [3:0] { 
 										ARBITRATE,
 										INSTR,
 										SNOOP,
@@ -43,11 +42,13 @@ typedef enum logic [3:0] {
 
 states n_state, state;
 logic busrequest0, busrequest1, writerequest, readrequest, drequest1, drequest0, flag, choose, n_choose, n_cinv0, n_cinv1, n_cwait0, n_cwait1;
-word_t c_dload0, c_dload1, n_dload0, n_dload1, n_csnoopaddr0, n_csnoopaddr1;
+word_t n_csnoopaddr0, n_csnoopaddr1, c_dload0, c_dload1, n_dload0, n_dload1;
+
+
 always_ff @(posedge CLK, negedge nRST)
 begin
 	if(!nRST)
-		state <= IDLE;
+		state <= ARBITRATE;
 	else
 		state <= n_state;
 end
@@ -61,12 +62,15 @@ begin
 		choose <= choose;
 end	
 
+
 assign busrequest0 = (ccif.dWEN[0] || ccif.dREN[0] || ccif.iREN[0]);
 assign busrequest1 = (ccif.dWEN[1] || ccif.dREN[1] || ccif.iREN[1]);
 assign drequest0 = (ccif.dWEN[0] || ccif.dREN[0]);
 assign drequest1 = (ccif.dWEN[1] || ccif.dREN[1]);
 assign writerequest = (ccif.dWEN[0] || ccif.dWEN[1]);
 assign readrequest = (ccif.dREN[0] || ccif.dREN[1]);
+
+// NEXT STATE LOGIC 
 
 always_comb
 begin
@@ -77,23 +81,22 @@ begin
 	ccif.iwait[1] = 1'b1;
 	case(state)
 		
-		IDLE:
-		begin
-			if(busrequest1 || busrequest0)
-				n_state = ARBITRATE;
-			else
-				n_state = IDLE;
-		end
 		ARBITRATE:
 		begin
-			if (writerequest) begin
-				n_state = WB1;
-			end
-			else if(readrequest)begin // this is prioritized?
-				n_state = SNOOP;
+
+			if(busrequest1 || busrequest0) begin
+				if (writerequest) begin
+					n_state = WB1;
+				end
+				else if(readrequest)begin // this is prioritized?
+					n_state = SNOOP;
+				end
+				else begin
+					n_state = INSTR;
+				end
 			end
 			else begin
-				n_state = INSTR;
+				n_state = ARBITRATE;
 			end
 		end
 		INSTR:
@@ -108,14 +111,9 @@ begin
 				begin
 					ccif.iwait[0] = 1'b0;
 				end
-				if(busrequest1 || busrequest0)
-				begin
-					n_state = ARBITRATE;
-				end
-				else
-				begin
-					n_state = IDLE;
-				end
+					
+				n_state = ARBITRATE;
+		
 			end
 			else
 				n_state = INSTR;
@@ -201,14 +199,7 @@ begin
 		end
 		WAIT:
 		begin
-			if(busrequest1 || busrequest0)
-			begin
 				n_state = ARBITRATE;
-			end
-			else
-			begin
-				n_state = IDLE;
-			end
 		end
 		RAM1:
 		begin
@@ -242,14 +233,9 @@ begin
 				begin
 					ccif.dwait[0] = 1'b0;
 				end
-				if(busrequest1 || busrequest0)
-				begin
+				
 					n_state = ARBITRATE;
-				end
-				else
-				begin
-					n_state = IDLE;
-				end
+				
 			end
 			else
 			begin
@@ -288,14 +274,9 @@ begin
 				begin
 					ccif.dwait[0] = 1'b0;
 				end
-				if(busrequest1 || busrequest0)
-				begin
+				
 					n_state = ARBITRATE;
-				end
-				else
-				begin
-					n_state = IDLE;
-				end
+				
 			end
 			else
 			begin
@@ -304,6 +285,26 @@ begin
 		end
 	endcase
 end
+
+//latch inputs to RAM 
+logic n_ramREN, n_ramWEN;
+word_t n_ramaddr, n_ramstore;
+
+always_ff @ (posedge CLK, negedge nRST) begin
+	if(!nRST) begin
+		ccif.ramREN <= '0;
+		ccif.ramWEN <= '0;
+		ccif.ramaddr <= '0;
+		ccif.ramstore <= '0;
+	end
+	else begin
+		ccif.ramREN <= n_ramREN;
+		ccif.ramWEN <= n_ramWEN;
+		ccif.ramaddr <= n_ramaddr;
+		ccif.ramstore <= n_ramstore;
+	end
+end
+
 
 
 always_comb
@@ -331,55 +332,69 @@ begin
 	n_cwait1 = 0;
 	n_csnoopaddr1 = ccif.ccsnoopaddr[1]; 
 	n_cinv1 = ccif.ccinv[1];
-	ccif.ramaddr = '0;
-	ccif.ramREN = '0;
-	ccif.ramWEN = '0;
-	ccif.ramstore = '0;
+	
+	//what i commented out to latch inputs to RAM 
+  //ccif.ramaddr = '0;
+	//ccif.ramREN = '0;
+	//ccif.ramWEN = '0;
+	//ccif.ramstore = '0;
+
+	n_ramREN = '0;
+	n_ramWEN = '0;
+  //n_ramaddr = '0;
+  n_ramstore = '0;
+
+	//ccif.dload[1] = '0;
+	//ccif.dload[0] = '0;
 	//ccif.dwait[0] = 1'b1;
 	//ccif.dwait[1] = 1'b1;
 	//ccif.iwait[0] = 1'b1;
 	//ccif.iwait[1] = 1'b1;
 	case(state)
-		IDLE:
-		begin
-		end
 		ARBITRATE:
 		begin
-		flag = 1'b1;
-			//d request
-			if (drequest0 && drequest1) begin
-				if(choose)
-					n_choose = 1'b0;
-				else
-					n_choose = 1'b1;
-			end
-			else if (drequest0 && !drequest1) begin
-					n_choose = 0;
-			end
-			else if (!drequest0 && drequest1) begin
-					n_choose = 1;
-			end
-			//i request
-			else if (ccif.iREN[0] && ccif.iREN[1]) begin
-				if(choose)
-					n_choose = 1'b0;
-				else
-					n_choose = 1'b1;
-			end
-		  else if (ccif.iREN[0]) begin
-					n_choose = '0;
-			end
-			else if (ccif.iREN[1]) begin
-					n_choose = '1;
-			end
+					if(busrequest1 || busrequest0) begin
+									flag = 1'b1;
+									//d request
+									if (drequest0 && drequest1) begin
+										if(choose)
+											n_choose = 1'b0;
+										else
+											n_choose = 1'b1;
+									end
+									else if (drequest0 && !drequest1) begin
+											n_choose = 0;
+									end
+									else if (!drequest0 && drequest1) begin
+											n_choose = 1;
+									end
+									//i request
+									else if (ccif.iREN[0] && ccif.iREN[1]) begin
+										if(choose)
+											n_choose = 1'b0;
+										else
+											n_choose = 1'b1;
+									end
+									else if (ccif.iREN[0]) begin
+											n_choose = '0;
+									end
+									else if (ccif.iREN[1]) begin
+											n_choose = '1;
+									end
+					end
 		end
 		INSTR:
 		begin
 			if(choose)
 			begin	
+				n_ramREN = ccif.iREN[1];
+				//n_ramaddr = ccif.iaddr[1];
+				ccif.iload[1] = ccif.ramload;
+
+				/*what i commented out to latch inputs to RAM 
 				ccif.ramREN = ccif.iREN[1];
 				ccif.ramaddr = ccif.iaddr[1];
-				ccif.iload[1] = ccif.ramload;
+				ccif.iload[1] = ccif.ramload;*/
 				/*if(ccif.ramstate == ACCESS)
 				begin
 					ccif.iwait[1] = 1'b0;
@@ -387,9 +402,14 @@ begin
 			end
 			else
 			begin
+				n_ramREN = ccif.iREN[0];
+				//n_ramaddr = ccif.iaddr[0];
+				ccif.iload[0] = ccif.ramload;
+
+/*what i commented out to latch inputs to RAM 
 				ccif.ramREN = ccif.iREN[0];
 				ccif.ramaddr = ccif.iaddr[0];
-				ccif.iload[0] = ccif.ramload;
+				ccif.iload[0] = ccif.ramload;*/
 				/*if(ccif.ramstate == ACCESS)
 				begin
 					ccif.iwait[0] = 1'b0;
@@ -425,11 +445,18 @@ begin
 			if(choose)
 			begin
 				n_cwait0 = 1'b1;
+
+				n_ramWEN = ccif.dWEN[0];
+				n_ramaddr = ccif.daddr[0];
+				n_ramstore = ccif.dstore[0];
+				n_dload1 = ccif.dstore[0];
+
 				//latch1wb = 1'b1;
+/*what i commented out to latch inputs to RAM 
 				ccif.ramWEN = ccif.dWEN[0];
 				ccif.ramaddr = ccif.daddr[0];
 				ccif.ramstore = ccif.dstore[0];
-				n_dload1 = ccif.dstore[0];
+				n_dload1 = ccif.dstore[0];*/
 				//ccif.ccwait[0] = 1'b1;
 				/*if(ccif.ramstate == ACCESS)
 				begin
@@ -439,11 +466,18 @@ begin
 			else
 			begin
 				n_cwait1 = 1'b1;
+
+				n_ramWEN = ccif.dWEN[1];
+				n_ramaddr = ccif.daddr[1];
+				n_ramstore = ccif.dstore[1];
+
 				//latch0wb = 1'b1;
+
+/*what i commented out to latch inputs to RAM 
 				ccif.ramWEN = ccif.dWEN[1];
 				ccif.ramaddr = ccif.daddr[1];
 				ccif.ramstore = ccif.dstore[1];
-				n_dload0 = ccif.dstore[1];
+				n_dload0 = ccif.dstore[1];*/
 				//ccif.ccwait[1] = 1'b1;
 				/*if(ccif.ramstate == ACCESS)
 				begin
@@ -458,11 +492,19 @@ begin
 			if(choose)
 			begin
 				n_cwait0 = 1'b1;	
+
+				n_ramWEN = ccif.dWEN[0];
+				n_ramaddr = ccif.daddr[0];
+				n_ramstore = ccif.dstore[0];
+				n_dload1 = ccif.dstore[0];
+
 				//latch1wb = 1'b1;
+
+/*what i commented out to latch inputs to RAM 
 				ccif.ramWEN = ccif.dWEN[0];
 				ccif.ramaddr = ccif.daddr[0];
 				ccif.ramstore = ccif.dstore[0];
-				n_dload1 = ccif.dstore[0];
+				n_dload1 = ccif.dstore[0];*/
 				//ccif.ccwait[0] = 1'b1;
 				/*if(ccif.ramstate == ACCESS)
 				begin
@@ -473,11 +515,19 @@ begin
 			else
 			begin
 				n_cwait1 = 1'b1;
+
 				//latch0wb = 1'b1;
+
+				n_ramWEN = ccif.dWEN[1];
+				n_ramaddr = ccif.daddr[1];
+				n_ramstore = ccif.dstore[1];
+				n_dload0 = ccif.dstore[1];
+
+/*what i commented out to latch inputs to RAM 
 				ccif.ramWEN = ccif.dWEN[1];
 				ccif.ramaddr = ccif.daddr[1];
 				ccif.ramstore = ccif.dstore[1];
-				n_dload0 = ccif.dstore[1];
+				n_dload0 = ccif.dstore[1];*/
 				//ccif.ccwait[1f] = 1'b1;
 				/*if(ccif.ramstate == ACCESS)
 				begin
@@ -490,8 +540,12 @@ begin
 		begin
 			if(choose)
 			begin	
+				n_ramREN = ccif.dREN[1];
+				n_ramaddr = ccif.daddr[1];
+
+/*what i commented out to latch inputs to RAM 
 				ccif.ramREN = ccif.dREN[1];
-				ccif.ramaddr = ccif.daddr[1];
+				ccif.ramaddr = ccif.daddr[1];*/
 				/*if(ccif.ramstate == ACCESS)
 				begin
 					ccif.dwait[1] = 1'b0;
@@ -500,8 +554,13 @@ begin
 			end
 			else
 			begin
+				n_ramREN = ccif.dREN[0];
+				n_ramaddr = ccif.daddr[0];
+
+
+/*what i commented out to latch inputs to RAM 
 				ccif.ramREN = ccif.dREN[0];
-				ccif.ramaddr = ccif.daddr[0];
+				ccif.ramaddr = ccif.daddr[0];*/
 				/*if(ccif.ramstate == ACCESS)
 				begin
 					ccif.dwait[0] = 1'b0;
@@ -513,8 +572,12 @@ begin
 		begin
 			if(choose)
 			begin	
+				n_ramREN = ccif.dREN[1];
+				n_ramaddr = ccif.daddr[1];
+
+/*what i commented out to latch inputs to RAM 
 				ccif.ramREN = ccif.dREN[1];
-				ccif.ramaddr = ccif.daddr[1];
+				ccif.ramaddr = ccif.daddr[1];*/
 				/*if(ccif.ramstate == ACCESS)
 				begin
 					ccif.dwait[1] = 1'b0;
@@ -523,8 +586,13 @@ begin
 			end
 			else
 			begin
+
+				n_ramREN = ccif.dREN[0];
+				n_ramaddr = ccif.daddr[0];
+
+/*what i commented out to latch inputs to RAM 
 				ccif.ramREN = ccif.dREN[0];
-				ccif.ramaddr = ccif.daddr[0];
+				ccif.ramaddr = ccif.daddr[0];*/
 				/*if(ccif.ramstate == ACCESS)
 				begin
 					ccif.dwait[0] = 1'b0;
@@ -536,9 +604,14 @@ begin
 		begin
 			if(choose)
 			begin	
+				n_ramWEN = ccif.dWEN[1];
+				n_ramaddr = ccif.daddr[1];
+				n_ramstore = ccif.dstore[1];
+
+/*what i commented out to latch inputs to RAM 
 				ccif.ramWEN = ccif.dWEN[1];
 				ccif.ramaddr = ccif.daddr[1];
-				ccif.ramstore = ccif.dstore[1];
+				ccif.ramstore = ccif.dstore[1];*/
 				/*if(ccif.ramstate == ACCESS)
 				begin
 					ccif.dwait[1] = 1'b0;
@@ -546,9 +619,15 @@ begin
 			end
 			else
 			begin
+				n_ramWEN = ccif.dWEN[0];
+				n_ramaddr = ccif.daddr[0];
+				n_ramstore = ccif.dstore[0];
+
+
+/*what i commented out to latch inputs to RAM 
 				ccif.ramWEN = ccif.dWEN[0];
 				ccif.ramaddr = ccif.daddr[0];
-				ccif.ramstore = ccif.dstore[0];
+				ccif.ramstore = ccif.dstore[0];*/
 				/*if(ccif.ramstate == ACCESS)
 				begin
 					ccif.dwait[0] = 1'b0;
@@ -559,9 +638,15 @@ begin
 		begin
 			if(choose)
 			begin	
+
+				n_ramWEN = ccif.dWEN[1];
+				n_ramaddr = ccif.daddr[1];
+				n_ramstore = ccif.dstore[1];
+
+/*what i commented out to latch inputs to RAM 
 				ccif.ramWEN = ccif.dWEN[1];
 				ccif.ramaddr = ccif.daddr[1];
-				ccif.ramstore = ccif.dstore[1];
+				ccif.ramstore = ccif.dstore[1];*/
 
 				/*if(ccif.ramstate == ACCESS)
 				begin
@@ -570,9 +655,14 @@ begin
 			end
 			else
 			begin
+				n_ramWEN = ccif.dWEN[0];
+			  n_ramaddr = ccif.daddr[0];
+				n_ramstore = ccif.dstore[0];
+
+/*what i commented out to latch inputs to RAM 
 				ccif.ramWEN = ccif.dWEN[0];
 				ccif.ramaddr = ccif.daddr[0];
-				ccif.ramstore = ccif.dstore[0];
+				ccif.ramstore = ccif.dstore[0];*/
 				/*if(ccif.ramstate == ACCESS)
 				begin
 					ccif.dwait[0] = 1'b0;
@@ -618,8 +708,8 @@ begin
 	end
 end
 
-assign ccif.dload[0] = ((state == SHARED_WB1 || state == SHARED_WB2)? c_dload0 : (state == RAM1 || state == RAM2) && !choose)? ccif.ramload : '0;
-assign ccif.dload[1] = ((state == SHARED_WB1 || state == SHARED_WB2)? c_dload1 : (state == RAM1 || state == RAM2) && choose)? ccif.ramload : '0;
+assign ccif.dload[0] = ((state == SHARED_WB1 || state == SHARED_WB2 || state == WAIT)? c_dload0 : (state == RAM1 || state == RAM2) && !choose)? ccif.ramload : '0;
+assign ccif.dload[1] = ((state == SHARED_WB1 || state == SHARED_WB2 || state == WAIT)? c_dload1 : (state == RAM1 || state == RAM2) && choose)? ccif.ramload : '0;
 //assign ccif.dwait[0] = ((ccif.ramstate == ACCESS) && drequest0 && !choose) ? 1'b0:1'b1;		
 //assign ccif.dwait[1] = ((ccif.ramstate == ACCESS) && drequest1 && choose) ? 1'b0:1'b1;		
 //assign ccif.iwait[0] = ((ccif.ramstate == ACCESS) && !drequest0 && !choose) ? 1'b0:1'b1;		

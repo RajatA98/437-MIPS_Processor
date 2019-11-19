@@ -21,6 +21,36 @@ ori   $5, $zero, 0x40
 nop
 nop
 nop
+
+nop
+nop
+nop
+
+nop
+nop
+nop
+
+
+nop
+nop
+nop
+
+nop
+nop
+nop
+
+
+nop
+nop
+nop
+
+nop
+nop
+nop
+
+nop
+nop
+nop
 lw    $3, 0($2)
 
 halt

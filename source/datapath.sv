@@ -67,6 +67,18 @@ memory_wb MW(CLK, nRST, mwif);
 logic d_request, d_flush, ihit_flag, dhit_flag, nihit_flag, ndhit_flag;
 assign d_request = emif.memtoReg_MEM || emif.memWr_MEM;
 
+i_t r_ID, r_EX, r_MEM, r_WB;
+r_t i_ID, i_EX, i_MEM, i_WB;
+
+assign r_ID = fdif.instr_ID;
+assign i_ID = fdif.instr_ID;
+assign r_EX = deif.instr_EX;
+assign i_EX = deif.instr_EX;
+assign r_MEM = emif.instr_MEM;
+assign i_MEM = emif.instr_MEM;
+assign i_WB = mwif.instr_WB;
+assign r_WB = mwif.instr_WB;
+
 always_comb
 begin
 	nihit_flag = ihit_flag;
@@ -584,19 +596,25 @@ always_comb begin
   fw_enable = 1; //if hazard is not detected, should not be a forwarding
   hazard_enable = 0; //would determine if flush and enable signals are being considered or not*/
 
-	if(hazard_detect != 0)
+	if(hazard_detect != 0 )
 	begin
-		if(hazard_detect == 2)
+		if((hazard_detect == 2) || (hazard_detect == 3)) //load word hazard 
 		begin
 			hazard_enable = 1;			
-			if(Asel !=0)
+			if(Asel !=0 || ((Bsel != 0) && (hazard_detect == 3)))
 				fw_enable = 1;
 			else
 				fw_enable = 0;
 				
 		end
+		//else if(hazard_detect == 3)
+		//begin
+			//hazard_enable = 1;
+			//fw_enable = 1;
+		//end
 		else
 		begin
+		
 			hazard_enable = 1;
     	fw_enable = 0;
 		end

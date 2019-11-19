@@ -21,7 +21,7 @@ module dcache(
   dcache_frame next_frame_b [7:0];
 
   //parsing address input
-  dcachef_t addr, snoopaddr;
+  dcachef_t addr, snoopaddr, prev_snoopaddr;
   assign addr = ddif.dmemaddr;
 	assign prev_dmemaddr = ddif.dmemaddr;
 	assign snoopaddr = dmif.ccsnoopaddr;
@@ -33,7 +33,7 @@ module dcache(
   assign set_a = frame_a[addr.idx];
   assign set_b = frame_b[addr.idx];
 
-typedef enum logic [3:0] {IDLE, STOP, MISS, MISS2, WBACK, WBACK2, FLUSH_A, NEXT_FLUSH_A, FLUSH_B, NEXT_FLUSH_B, SNOOP_WB1, SNOOP_WB2} dcache_state_t;
+typedef enum logic [3:0] {IDLE, STOP, MISS, MISS2, WBACK, WBACK2, FLUSH_A, NEXT_FLUSH_A, FLUSH_B, NEXT_FLUSH_B, SNOOP_WB1, SNOOP_WB2, WAIT} dcache_state_t;
 dcache_state_t dcache_state, next_state, prev_state;
 
 //to indicate which one is recently used
@@ -58,6 +58,18 @@ always_ff @ (posedge CLK, negedge nRST) begin
     else begin
 				halt_flag <= n_halt_flag;
     end
+end
+
+//track prev value of snoopaddress
+always_ff @ (posedge CLK, negedge nRST) begin
+    if (!nRST) begin
+				prev_snoopaddr <= '0;
+    end
+    else begin
+				prev_snoopaddr <= snoopaddr;
+    end
+
+
 end
 
 
@@ -523,37 +535,20 @@ always_comb begin
 					next_state = SNOOP_WB2;
 			end
 			else begin
-					if (halt_flag) begin
-						next_state = FLUSH_A;
-					end
-					else begin
-						next_state = IDLE;
-					end
+					next_state = WAIT;
 			end
 	 end
+	 WAIT: begin
+				if (halt_flag) begin
+					next_state = FLUSH_A;
+				end
+				else begin
+					next_state = IDLE;
+				end
+	  end
+
    endcase
 end
-
-
-//Hit count block
-/*always_comb begin
-	n_hit_count = hit_count;
-	if (dcache_state == IDLE) begin
-		if (ddif.dhit == 0) begin
-				if (prev_dhit == 1) begin
-				end
-		end
-		else begin
-				//if (prev_state == IDLE) begin
-						//n_hit_count = hit_count - 1;
-				//end
-		end
-
-	end
-end*/
-
-
-
 
 
 //Output Logic (Remember to include mux to choose which set to write to)
@@ -943,37 +938,8 @@ always_comb begin
 
    end
 
-   /*HIT_COUNT: begin
-      dmif.dWEN = 1;
-			dmif.daddr = 'h3100;
-			dmif.dstore = (hit_count - miss_cnt);
-   end*/
 
-	 /*SNOOP: begin
-					dmif.cctrans = 1;
-					dmif.ccwrite = dirty_snoop;
-					if (frame_a[snoopaddr.idx].tag == snoopaddr.tag) begin //the address exists in frame a
-							if (dmif.ccinv) begin
-									next_frame_a[snoopaddr.idx].valid = '0;
-									next_frame_a[snoopaddr.idx].dirty = '0;
-							end
-							else begin //no invalidate // not a requester write!
-									next_frame_a[snoopaddr.idx].dirty = '0;
-							end
-					end
-					else if (frame_b[snoopaddr.idx].tag == snoopaddr.tag) begin //the address exists in frame b
-							if (dmif.ccinv) begin
-									next_frame_b[snoopaddr.idx].valid = '0;
-									next_frame_b[snoopaddr.idx].dirty = '0;
-							end
-							else begin //no invalidate // not a requester write!
-									next_frame_b[snoopaddr.idx].dirty = '0;
-							end
-					end
-
-	 end*/
-
-	 SNOOP_WB1: begin //writing back first block
+	 SNOOP_WB1: begin //writing back first block //cache to cache transfer?
       dmif.dWEN = 1;
 	    if (frame_a[snoopaddr.idx].tag == snoopaddr.tag) begin //the address exists in frame a
 					dmif.daddr = {frame_a[snoopaddr.idx].tag,snoopaddr.idx,3'b000};
@@ -990,12 +956,31 @@ always_comb begin
 	    if (frame_a[snoopaddr.idx].tag == snoopaddr.tag) begin //the address exists in frame a
 					dmif.daddr = {frame_a[snoopaddr.idx].tag,snoopaddr.idx,3'b100};
 					dmif.dstore = frame_a[snoopaddr.idx].data[1];
+					next_frame_a[prev_snoopaddr.idx].valid = '1;
+					next_frame_a[prev_snoopaddr.idx].data[0] = dmif.dload;
+
 			end
 			else if (frame_b[snoopaddr.idx].tag == snoopaddr.tag) begin //the address exists in frame b
 					dmif.daddr = {frame_b[snoopaddr.idx].tag,snoopaddr.idx,3'b100};
 					dmif.dstore = frame_b[snoopaddr.idx].data[1];
+					next_frame_b[prev_snoopaddr.idx].valid = '1;
+					next_frame_b[prev_snoopaddr.idx].data[0] = dmif.dload;
 			end
 	 end
+
+	 WAIT: begin
+	    if (frame_a[prev_snoopaddr.idx].tag == prev_snoopaddr.tag) begin //the address exists in frame a
+					next_frame_a[prev_snoopaddr.idx].valid = '1;
+					next_frame_a[prev_snoopaddr.idx].data[0] = dmif.dload;
+
+			end
+			else if (frame_b[prev_snoopaddr.idx].tag == prev_snoopaddr.tag) begin //the address exists in frame b
+					next_frame_b[prev_snoopaddr.idx].valid = '1;
+					next_frame_b[prev_snoopaddr.idx].data[0] = dmif.dload;
+			end
+	 end
+
+
 
    endcase
 
