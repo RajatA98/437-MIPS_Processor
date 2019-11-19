@@ -33,7 +33,7 @@ module dcache(
   assign set_a = frame_a[addr.idx];
   assign set_b = frame_b[addr.idx];
 
-typedef enum logic [3:0] {IDLE, STOP, MISS, MISS2, WBACK, WBACK2, FLUSH_A, NEXT_FLUSH_A, FLUSH_B, NEXT_FLUSH_B, SNOOP_WB1, SNOOP_WB2, WAIT} dcache_state_t;
+typedef enum logic [3:0] {IDLE, STOP, MISS, MISS2, WBACK, WBACK2, FLUSH_A, NEXT_FLUSH_A, FLUSH_B, NEXT_FLUSH_B, SNOOP_WB1, SNOOP_WB2, WAIT, WAITRAM} dcache_state_t;
 dcache_state_t dcache_state, next_state, prev_state;
 
 //to indicate which one is recently used
@@ -399,7 +399,7 @@ always_comb begin
         next_state = MISS;
      end
      else if (!dmif.dwait) begin
-        next_state = MISS2;
+        next_state = WAITRAM;
 				n_miss_cnt = miss_cnt + 1;
      end
    end
@@ -420,7 +420,7 @@ always_comb begin
         next_state = WBACK;
      end
      else if (!dmif.dwait) begin
-        next_state = WBACK2;
+        next_state = WAITRAM;
      end
    end
    WBACK2: begin
@@ -431,14 +431,7 @@ always_comb begin
        next_state = MISS;
      end
    end
-   /*HIT_COUNT: begin
-     if (dmif.dwait) begin
-        next_state = HIT_COUNT;
-     end
-     else if (!dmif.dwait) begin
-       next_state = FLUSH_A;
-     end
-   end*/
+
    FLUSH_A: begin
 			if (dmif.ccwait && dirty_snoop) begin
 				 next_state = SNOOP_WB1;
@@ -514,20 +507,13 @@ always_comb begin
       end
    end
 
-	 /*SNOOP: begin
-			if (dirty_snoop) begin
-				 next_state = SNOOP_WB1;
-			end
-			else begin
-				 next_state = IDLE;
-			end
-	 end*/
+
    SNOOP_WB1: begin
 			if (dmif.dwait) begin
 					next_state = SNOOP_WB1;
 			end
 			else begin
-					next_state = SNOOP_WB2;
+					next_state = WAITRAM;
 			end
 	 end
 	 SNOOP_WB2: begin
@@ -547,6 +533,20 @@ always_comb begin
 				end
 	  end
 
+
+		WAITRAM: begin
+
+			if (prev_state == SNOOP_WB1) begin
+				next_state = SNOOP_WB2;
+			end
+      else if (prev_state == MISS) begin
+        next_state = MISS2;
+      end
+      else if (prev_state == WBACK) begin
+        next_state = WBACK2;
+      end
+
+		end
    endcase
 end
 
@@ -980,7 +980,8 @@ always_comb begin
 			end
 	 end
 
-
+	WAITRAM: begin
+ 	end 
 
    endcase
 

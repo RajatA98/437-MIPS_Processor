@@ -38,12 +38,23 @@ typedef enum logic [3:0] {
 										RAM1,
 										RAM2,
 										WB1,
-										WB2} states;
+										WB2, WAITRAM} states;
 
-states n_state, state;
+states n_state, state, prev_state;
 logic busrequest0, busrequest1, writerequest, readrequest, drequest1, drequest0, flag, choose, n_choose, n_cinv0, n_cinv1, n_cwait0, n_cwait1;
 word_t n_csnoopaddr0, n_csnoopaddr1, c_dload0, c_dload1, n_dload0, n_dload1;
 
+//track previous state
+always_ff @ (posedge CLK, negedge nRST) begin
+    if (!nRST) begin
+				prev_state <= ARBITRATE;
+    end
+    else begin
+				prev_state <= state;
+    end
+
+
+end
 
 always_ff @(posedge CLK, negedge nRST)
 begin
@@ -171,7 +182,7 @@ begin
 				begin
 					ccif.dwait[1] = 1'b0;
 				end
-				n_state = SHARED_WB2;
+				n_state = WAITRAM;
 			end
 			else
 			begin
@@ -213,7 +224,7 @@ begin
 				begin
 					ccif.dwait[0] = 1'b0;
 				end
-				n_state = RAM2;
+				n_state = WAITRAM;
 			end
 			else
 			begin
@@ -255,7 +266,7 @@ begin
 				begin
 					ccif.dwait[0] = 1'b0;
 				end
-				n_state = WB2;
+				n_state = WAITRAM;
 			end
 			else
 			begin
@@ -283,12 +294,25 @@ begin
 				n_state = WB2;
 			end
 		end
+
+
+		WAITRAM: begin
+			if (prev_state == RAM1) begin
+					n_state = RAM2;
+			end
+			else if (prev_state == WB1) begin
+					n_state = WB2;			
+			end
+			else if (prev_state == SHARED_WB1) begin
+					n_state = SHARED_WB2;
+			end
+		end
 	endcase
 end
 
 //latch inputs to RAM 
 logic n_ramREN, n_ramWEN;
-word_t n_ramaddr, n_ramstore;
+word_t n_ramstore, n_ramaddr;
 
 always_ff @ (posedge CLK, negedge nRST) begin
 	if(!nRST) begin
@@ -305,7 +329,7 @@ always_ff @ (posedge CLK, negedge nRST) begin
 	end
 end
 
-
+// OUTPUT LOGIC
 
 always_comb
 begin
@@ -341,8 +365,9 @@ begin
 
 	n_ramREN = '0;
 	n_ramWEN = '0;
-  //n_ramaddr = '0;
+  n_ramaddr = '0;
   n_ramstore = '0;
+	//ccif.ramaddr = '0;
 
 	//ccif.dload[1] = '0;
 	//ccif.dload[0] = '0;
@@ -388,7 +413,7 @@ begin
 			if(choose)
 			begin	
 				n_ramREN = ccif.iREN[1];
-				//n_ramaddr = ccif.iaddr[1];
+				n_ramaddr = ccif.iaddr[1];
 				ccif.iload[1] = ccif.ramload;
 
 				/*what i commented out to latch inputs to RAM 
@@ -403,8 +428,9 @@ begin
 			else
 			begin
 				n_ramREN = ccif.iREN[0];
-				//n_ramaddr = ccif.iaddr[0];
+				n_ramaddr = ccif.iaddr[0];
 				ccif.iload[0] = ccif.ramload;
+
 
 /*what i commented out to latch inputs to RAM 
 				ccif.ramREN = ccif.iREN[0];
@@ -448,6 +474,7 @@ begin
 
 				n_ramWEN = ccif.dWEN[0];
 				n_ramaddr = ccif.daddr[0];
+
 				n_ramstore = ccif.dstore[0];
 				n_dload1 = ccif.dstore[0];
 
@@ -469,6 +496,7 @@ begin
 
 				n_ramWEN = ccif.dWEN[1];
 				n_ramaddr = ccif.daddr[1];
+
 				n_ramstore = ccif.dstore[1];
 
 				//latch0wb = 1'b1;
@@ -494,7 +522,8 @@ begin
 				n_cwait0 = 1'b1;	
 
 				n_ramWEN = ccif.dWEN[0];
-				n_ramaddr = ccif.daddr[0];
+			  n_ramaddr = ccif.daddr[0];
+
 				n_ramstore = ccif.dstore[0];
 				n_dload1 = ccif.dstore[0];
 
@@ -520,6 +549,7 @@ begin
 
 				n_ramWEN = ccif.dWEN[1];
 				n_ramaddr = ccif.daddr[1];
+
 				n_ramstore = ccif.dstore[1];
 				n_dload0 = ccif.dstore[1];
 
@@ -542,6 +572,7 @@ begin
 			begin	
 				n_ramREN = ccif.dREN[1];
 				n_ramaddr = ccif.daddr[1];
+
 
 /*what i commented out to latch inputs to RAM 
 				ccif.ramREN = ccif.dREN[1];
@@ -590,6 +621,8 @@ begin
 				n_ramREN = ccif.dREN[0];
 				n_ramaddr = ccif.daddr[0];
 
+
+
 /*what i commented out to latch inputs to RAM 
 				ccif.ramREN = ccif.dREN[0];
 				ccif.ramaddr = ccif.daddr[0];*/
@@ -606,6 +639,7 @@ begin
 			begin	
 				n_ramWEN = ccif.dWEN[1];
 				n_ramaddr = ccif.daddr[1];
+
 				n_ramstore = ccif.dstore[1];
 
 /*what i commented out to latch inputs to RAM 
@@ -621,6 +655,7 @@ begin
 			begin
 				n_ramWEN = ccif.dWEN[0];
 				n_ramaddr = ccif.daddr[0];
+
 				n_ramstore = ccif.dstore[0];
 
 
@@ -634,6 +669,11 @@ begin
 				end*/
 			end
 		end
+		
+	  WAITRAM: begin
+		end
+
+
 		WB2:
 		begin
 			if(choose)
@@ -641,6 +681,7 @@ begin
 
 				n_ramWEN = ccif.dWEN[1];
 				n_ramaddr = ccif.daddr[1];
+
 				n_ramstore = ccif.dstore[1];
 
 /*what i commented out to latch inputs to RAM 
@@ -657,6 +698,7 @@ begin
 			begin
 				n_ramWEN = ccif.dWEN[0];
 			  n_ramaddr = ccif.daddr[0];
+
 				n_ramstore = ccif.dstore[0];
 
 /*what i commented out to latch inputs to RAM 
