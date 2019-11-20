@@ -29,15 +29,20 @@ mainp0:
 	
 	ori $t7, $0, 1           #r15 fine
 	ori $t8, $0, 256				 #r24 fine
-	ori $a1, $0, 0x0000			
-  
+	ori $a1, $0, 0x0000
+			
+  #ori $t9, $0, 0xF000
 
 loop0:
 	ori $a0, $zero, l      # move lock to arguement register r4 fine
 	jal lock                # try to aquire the lock	
 	jal crc32
 	or $v1, $0, $v0           #pushes crc val on the stack // change reg
+#wait1:
+	#lw $t9, mystack($0)
+	#beq $t9, $0, wait1
 	#ori $v1, $0, 3
+	
 	jal push_process
 	ori   $a0, $zero, l      # move lock to arguement register r4 fine
   jal   unlock              # release the lock
@@ -77,11 +82,12 @@ l2:
 	
 push_process:
 	lw $t6, mystack($0)
-	#beq $t6, $0, pop_process
 	addi $t6, $t6, -4 
 	sw $v1,4($t6)
 	sw $t6, mystack($0)
 	jr $ra		
+
+		
 l:
   cfw 0x0
 #----------------------------------------------------------
@@ -89,7 +95,8 @@ l:
 #----------------------------------------------------------
   org   0x200               # second processor p1
   ori   $sp, $zero, 0x7ffc 	#stack
-	ori 	$t5, $0, mystack
+	ori 	$t5, $0, 40
+	#addi $t5, $t5, 44
   jal   mainp1              # go to program
   halt
 mainp1:
@@ -106,6 +113,9 @@ mainp1:
 loop1:
 	ori $a0, $zero, l      # move lock to arguement register
 	jal lock                # try to aquire the lock
+#wait2:	
+	#lw $t6, mystack($0)
+	#beq $t6, $t5, wait2 
 	jal pop_process
 	or $a2, $0, $v1        #a- thing being poped off
 	or $a3, $0, $t9				#b- current min
@@ -120,12 +130,12 @@ loop1:
 	addi $t7, $t7, 1
 	bne $t7, $t8, loop1
 	
-	ori $a0, $zero, l      # move lock to arguement register
-	jal lock                # try to aquire the lock
+	#ori $a0, $zero, l      # move lock to arguement register
+	#jal lock                # try to aquire the lock
 	ori $t3, $0, 8
 	srlv $t4, $t3, $t2
-	ori $a0, $zero, l      # move lock to arguement register
-  jal unlock              # release the lock
+	#ori $a0, $zero, l      # move lock to arguement register
+  #jal unlock              # release the lock
 	pop $ra
 	jr $ra
 
@@ -174,7 +184,7 @@ pop_process:
 	lw $t6, mystack($0)
 	#beq $t6, $t5, pop_process 
 	lw $v1, 4($t6)
-	sw $zero, mystack($0)
+	sw $zero, 4($t6)
 	addi $t6, $t6, 4
 	#sw $t6, mystack($0)
 
@@ -199,7 +209,10 @@ aquire:
   sc    $t0, 0($a0)
   beq   $t0, $0, lock       # if sc failed retry
   jr    $ra
-
+#wait:
+#	lw $t0, 0($a0)
+#	beq $t0, $0, aquire
+#	j wait
 
 # pass in an address to unlock function in argument register 0
 # returns when lock is free
