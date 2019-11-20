@@ -290,6 +290,7 @@ assign deif.final_wsel = rfif.wsel;
 assign deif.next_addr_ID = fdif.next_addr_ID;
 
 /////////////////////////DECODE STAGE/////////////////////
+logic [1:0] hazard_detect;
 	r_t rt, rt_ID;
 	
 	i_t it_b;
@@ -373,8 +374,14 @@ always_comb
 		end*/
 		
 		else if(emif.PC_Src_MEM == 2'd3) begin
-			next_addr = emif.busA_MEM;
-			fdif.next_addr = emif.busA_MEM;
+					if (hazard_detect) begin
+						next_addr = emif.Output_Port_MEM; //the usual code
+						fdif.next_addr = emif.Output_Port_MEM;
+					end
+					else begin
+						next_addr = emif.busA_MEM; //the usual code
+						fdif.next_addr = emif.busA_MEM;
+					end 
 		end
 		else if ((bp_choose && hazard_enable) || not_taken) begin
       //for branch
@@ -589,7 +596,6 @@ assign final_rt = mwif.instr_WB[20:16];
 
 
 ///////LOGIC FOR FORWARDING UNIT TO OVERRIDE HAZARD UNIT
-logic [1:0] hazard_detect;
 
 
 always_comb begin

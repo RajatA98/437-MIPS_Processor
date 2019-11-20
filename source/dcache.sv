@@ -589,7 +589,7 @@ always_comb begin
 					dmif.cctrans = 1;
 					dmif.ccwrite = dirty_snoop;
 
-          if ((dmif.ccsnoopaddr == linkreg) && ddif.datomic) begin
+          if ((dmif.ccsnoopaddr[31:3] == linkreg[31:3]) && ddif.datomic) begin
               n_rmw_valid = 0;
           end
 
@@ -618,11 +618,11 @@ always_comb begin
 					 if (ddif.dmemWEN && hit) begin //write hit
 						    ddif.dhit = 1;
 								n_hit_count = hit_count + 1;
-						 if (rmw_valid && (linkreg == ddif.dmemaddr)) begin
+						 if (rmw_valid && (linkreg[31:3] == ddif.dmemaddr[31:3])) begin
 								n_rmw_valid = 0;
 						 end
              if (ddif.datomic) begin //store conditional
-                if (rmw_valid && (linkreg == ddif.dmemaddr)) begin //we got the lock
+                if (rmw_valid && (linkreg[31:3] == ddif.dmemaddr[31:3])) begin //we got the lock
 								   n_rmw_valid = 0;
 						       if (n_used_a[addr.idx]) begin
 						          next_frame_a[addr.idx].data[addr.blkoff] = ddif.dmemstore;
@@ -681,7 +681,7 @@ always_comb begin
 					dmif.ccwrite = dirty_snoop;
 
 
-          if ((dmif.ccsnoopaddr == linkreg)) begin
+          if ((dmif.ccsnoopaddr[31:3] == linkreg[31:3]) && ddif.datomic) begin
               n_rmw_valid = 0;
           end
 
@@ -735,7 +735,7 @@ always_comb begin
 					dmif.cctrans = 1;
 					dmif.ccwrite = dirty_snoop;
 
-          if ((dmif.ccsnoopaddr == linkreg) && ddif.datomic) begin
+          if ((dmif.ccsnoopaddr[31:3] == linkreg[31:3]) && ddif.datomic) begin
               n_rmw_valid = 0;
           end
 
@@ -800,7 +800,7 @@ always_comb begin
 					dmif.ccwrite = dirty_snoop;
 
 
-          if ((dmif.ccsnoopaddr == linkreg) && ddif.datomic) begin
+          if ((dmif.ccsnoopaddr[31:3] == linkreg[31:3]) && ddif.datomic) begin
               n_rmw_valid = 0;
           end
 
@@ -881,7 +881,7 @@ always_comb begin
 					dmif.ccwrite = dirty_snoop;
 
 
-          if ((dmif.ccsnoopaddr == linkreg) && ddif.datomic) begin
+          if ((dmif.ccsnoopaddr[31:3] == linkreg[31:3]) && ddif.datomic) begin
               n_rmw_valid = 0;
           end
 

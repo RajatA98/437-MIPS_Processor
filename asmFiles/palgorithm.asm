@@ -29,23 +29,25 @@ mainp0:
 	
 	ori $t7, $0, 1           #r15 fine
 	ori $t8, $0, 256				 #r24 fine
-	ori $a1, $0, 0x0000
-			
-  #ori $t9, $0, 0xF000
+	ori $a0, $0, 0xC
+	nop
+	
 
 loop0:
+	jal crc32	
+	
+wait1:
+	lw $t9, mystack($0)
+	beq $t9, $0, wait1
+	or $v1, $0, $v0           #pushes crc val on the stack // change reg
+	
 	ori $a0, $zero, l      # move lock to arguement register r4 fine
 	jal lock                # try to aquire the lock	
-	jal crc32
-	or $v1, $0, $v0           #pushes crc val on the stack // change reg
-#wait1:
-	#lw $t9, mystack($0)
-	#beq $t9, $0, wait1
-	#ori $v1, $0, 3
-	
 	jal push_process
 	ori   $a0, $zero, l      # move lock to arguement register r4 fine
   jal   unlock              # release the lock
+	or $a0, $0, $v0
+	
 	addi $t7, $t7, 1					#r15 = r15 + 1
 	bne $t7, $t8, loop0				#r15 == r24 ? 0:1
 
@@ -68,16 +70,16 @@ l1:
   beq $t4, $zero, l2  	#r12 == 0? 1:0
 
   ori $t5, $0, 31				#r13
-  srlv $t4, $t5, $a1		#srtv r12, r13, r5
+  srlv $t4, $t5, $a0		#srtv r12, r13, r5
   ori $t5, $0, 1 				
-  sllv $a1, $t5, $a1
+  sllv $a0, $t5, $a0
   beq $t4, $0, l3
-  xor $a1, $a1, $t1
+  xor $a0, $a0, $t1
 l3:
   addiu $t2, $t2, 1
   j l1
 l2:
-  or $v0, $a1, $0
+  or $v0, $a0, $0
   jr $ra
 	
 push_process:
@@ -96,7 +98,7 @@ l:
   org   0x200               # second processor p1
   ori   $sp, $zero, 0x7ffc 	#stack
 	ori 	$t5, $0, 40
-	#addi $t5, $t5, 44
+	
   jal   mainp1              # go to program
   halt
 mainp1:
@@ -111,12 +113,15 @@ mainp1:
 	
 
 loop1:
+	
+wait2:	
+	lw $t6, mystack($0)
+	beq $t6, $t5, wait2 
 	ori $a0, $zero, l      # move lock to arguement register
 	jal lock                # try to aquire the lock
-#wait2:	
-	#lw $t6, mystack($0)
-	#beq $t6, $t5, wait2 
 	jal pop_process
+	ori $a0, $zero, l      # move lock to arguement register
+  jal unlock              # release the lock
 	or $a2, $0, $v1        #a- thing being poped off
 	or $a3, $0, $t9				#b- current min
 	jal min
@@ -125,17 +130,17 @@ loop1:
 	jal max
 	or $t1, $0, $v0       #update max
 	add $t2, $t2, $v1 			#update sum
-	ori $a0, $zero, l      # move lock to arguement register
-  jal unlock              # release the lock
+	
 	addi $t7, $t7, 1
 	bne $t7, $t8, loop1
 	
-	#ori $a0, $zero, l      # move lock to arguement register
-	#jal lock                # try to aquire the lock
+	
 	ori $t3, $0, 8
 	srlv $t4, $t3, $t2
-	#ori $a0, $zero, l      # move lock to arguement register
-  #jal unlock              # release the lock
+	
+	
+	
+	
 	pop $ra
 	jr $ra
 
@@ -182,17 +187,11 @@ minrtn:
 
 pop_process: 
 	lw $t6, mystack($0)
-	#beq $t6, $t5, pop_process 
+	
 	lw $v1, 4($t6)
 	sw $zero, 4($t6)
 	addi $t6, $t6, 4
-	#sw $t6, mystack($0)
-
-	#lw $t6, mystack($0)
-	#lw $13, 4($t6)
-
-	#addi $t6, $t6, 4
-	#sw $t6, mystack($0)
+	
 	jr $ra
 
 #--------------------------------------------------
@@ -209,10 +208,7 @@ aquire:
   sc    $t0, 0($a0)
   beq   $t0, $0, lock       # if sc failed retry
   jr    $ra
-#wait:
-#	lw $t0, 0($a0)
-#	beq $t0, $0, aquire
-#	j wait
+
 
 # pass in an address to unlock function in argument register 0
 # returns when lock is free
