@@ -14,31 +14,35 @@
 #a1 - for subcrc
 #a2, 3 - submm
 #t6 - sw sp pointer
-#t7 - counter variable that counts up to 256 to generate 256 crc val
+#s1 - counter variable that counts up to 256 to generate 256 crc val
 
 #----------------------------------------------------------
 # First Processor
 #----------------------------------------------------------
   org   0x0000              # first processor p0
   ori   $sp, $zero, 0x3ffc  # stack
+	ori   $s4, $0, 0xFF70
   jal   mainp0              # go to program
 	halt
 
 mainp0:
 	push $ra
 	
-	ori $t7, $0, 1           #r15 fine
-	ori $t8, $0, 256				 #r24 fine
-	ori $a0, $0, 0xC
-	nop
+	ori $s1, $0, 0           #r15 fine
+	ori $s2, $0, 256				 #r24 fine
+	ori $s0, $0, 0xC         #seed
+	
+
 	
 
 loop0:
-	jal crc32	
+	
 	
 wait1:
-	lw $t9, mystack($0)
-	beq $t9, $0, wait1
+	lw $s3, mystack($0)
+	beq $s3, $s4, wait1
+	or $a0, $0, $s0
+	jal crc32	
 	or $v1, $0, $v0           #pushes crc val on the stack // change reg
 	
 	ori $a0, $zero, l      # move lock to arguement register r4 fine
@@ -46,10 +50,10 @@ wait1:
 	jal push_process
 	ori   $a0, $zero, l      # move lock to arguement register r4 fine
   jal   unlock              # release the lock
-	or $a0, $0, $v0
+	or $s0, $0, $v0
 	
-	addi $t7, $t7, 1					#r15 = r15 + 1
-	bne $t7, $t8, loop0				#r15 == r24 ? 0:1
+	addi $s1, $s1, 1					#r15 = r15 + 1
+	bne $s1, $s2, loop0				#r15 == r24 ? 0:1
 
 	pop $ra
 	jr $ra
@@ -83,6 +87,7 @@ l2:
   jr $ra
 	
 push_process:
+	
 	lw $t6, mystack($0)
 	addi $t6, $t6, -4 
 	sw $v1,4($t6)
@@ -97,50 +102,47 @@ l:
 #----------------------------------------------------------
   org   0x200               # second processor p1
   ori   $sp, $zero, 0x7ffc 	#stack
-	ori 	$t5, $0, 40
+	ori 	$s0, $0, 0xFF98
 	
   jal   mainp1              # go to program
   halt
 mainp1:
 	push $ra
 	
-	ori $t7, $0, 1 
-	ori $t8, $0, 256
-	ori $t9, $0, -1 #initial min val
-	ori $t1, $0, 0 #initial max val
-  ori $t2, $0, 0 #initial sum 
+	ori $s1, $0, 0 
+	ori $s2, $0, 256
+	ori $s3, $0, -1 #initial min val
+	ori $s4, $0, 0 #initial max val
+  ori $s5, $0, 0 #initial sum 
 	
 	
 
 loop1:
 	
 wait2:	
-	lw $t6, mystack($0)
-	beq $t6, $t5, wait2 
+	lw $s7, mystack($0)
+	beq $s7, $s0, wait2 
 	ori $a0, $zero, l      # move lock to arguement register
 	jal lock                # try to aquire the lock
 	jal pop_process
 	ori $a0, $zero, l      # move lock to arguement register
   jal unlock              # release the lock
 	or $a2, $0, $v1        #a- thing being poped off
-	or $a3, $0, $t9				#b- current min
+	or $a3, $0, $s3				#b- current min
 	jal min
-	or $t9, $0, $v0       #update min
-	or $a3, $0, $t1			#b- current max
+	or $s3, $0, $v0       #update min
+	or $a3, $0, $s4			#b- current max
 	jal max
-	or $t1, $0, $v0       #update max
-	add $t2, $t2, $v1 			#update sum
+	or $s4, $0, $v0       #update max
+	add $s5, $s5, $v1 			#update sum
 	
-	addi $t7, $t7, 1
-	bne $t7, $t8, loop1
-	
-	
-	ori $t3, $0, 8
-	srlv $t4, $t3, $t2
+	addi $s1, $s1, 1
+	bne $s1, $s2, loop1
 	
 	
-	
-	
+	ori $s6, $0, 8
+	srlv $s6, $s6, $s5 # check asm -i
+
 	pop $ra
 	jr $ra
 
@@ -189,8 +191,10 @@ pop_process:
 	lw $t6, mystack($0)
 	
 	lw $v1, 4($t6)
+	andi $v1, $v1, 0xFFFF #jihan changed this
 	sw $zero, 4($t6)
 	addi $t6, $t6, 4
+	sw $t6, mystack($0)
 	
 	jr $ra
 
@@ -217,6 +221,6 @@ unlock:
   jr    $ra
 
 
-org 0xF000
+org 0x0FF0
 mystack:
-cfw 40
+cfw 0xFF98
